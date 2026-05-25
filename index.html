@@ -1,4 +1,12 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EvokCode — AI-First Software Agency</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -98,8 +106,8 @@ body{background:var(--bg);color:var(--fg);font-family:'Outfit',system-ui,sans-se
 .prog-label{display:flex;justify-content:space-between;font-size:10px;color:var(--fg3);margin-bottom:5px}
 .prog-track{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-bottom:14px;overflow:hidden}
 .prog-fill{height:100%;border-radius:2px}
-.notif-row{display:flex;gap:7px}
-.notif-inp{flex:1;background:var(--bg3);border:var(--brd);border-radius:8px;padding:9px 11px;color:var(--fg);font-size:12px;font-family:'Outfit',sans-serif;outline:none;min-width:0}
+.notif-row{display:flex;gap:7px;flex-wrap:wrap}
+.notif-inp{flex:1;min-width:160px;background:var(--bg3);border:var(--brd);border-radius:8px;padding:9px 11px;color:var(--fg);font-size:12px;font-family:'Outfit',sans-serif;outline:none;min-width:0}
 .notif-inp::placeholder{color:var(--fg3)}
 .notif-btn{padding:9px 13px;border-radius:8px;background:var(--gold);color:#07050A;font-size:11px;font-weight:600;border:none;cursor:pointer;white-space:nowrap;font-family:'Syne',sans-serif;flex-shrink:0}
 
@@ -668,6 +676,13 @@ function switchV(id,btn){
   document.getElementById('v-'+id).classList.add('on');
   btn.classList.add('on');
 }
+(function(){
+  const p=new URLSearchParams(location.search).get('view');
+  if(p==='cms'){
+    const btns=document.querySelectorAll('.vb');
+    switchV('cms',btns[1]);
+  }
+})();
 function toggleM(){
   const m=document.getElementById('mm');
   m.classList.toggle('open');
@@ -750,3 +765,5 @@ function renderProds(){
 }
 renderProds();
 </script>
+</body>
+</html>
