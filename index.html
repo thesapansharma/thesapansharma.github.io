@@ -1,0 +1,752 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080810;--bg2:#0E0E1C;--bg3:#161628;--bg4:#1E1E34;
+  --fg:#EEEAF0;--fg2:#9B97AC;--fg3:#58566A;
+  --gold:#C9A86C;--goldb:#7A6030;--goldf:#FFF7E6;
+  --gr:#22C55E;--bl:#60A5FA;--pu:#A78BFA;--re:#F87171;
+  --brd:0.5px solid rgba(255,255,255,0.07);--br:10px;--br2:16px;
+}
+body{background:var(--bg);color:var(--fg);font-family:'Outfit',system-ui,sans-serif;font-size:14px;overflow-x:hidden}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+.view-bar{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:var(--brd)}
+.vb{padding:11px 8px;font-size:12px;font-weight:500;text-align:center;cursor:pointer;background:var(--bg2);color:var(--fg3);border:none;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.vb i{font-size:14px}
+.vb.on{background:var(--bg3);color:var(--gold);border-bottom:2px solid var(--gold)}
+.view{display:none}.view.on{display:block}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:rgba(8,8,16,.95);border-bottom:var(--brd);position:sticky;top:0;z-index:40}
+.brand{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.5px}
+.brand em{font-style:normal;color:var(--gold)}
+.hbg{background:var(--bg3);border:var(--brd);border-radius:8px;padding:7px 9px;cursor:pointer;color:var(--fg2);font-size:16px;line-height:1;display:flex;align-items:center}
+.mmenu{display:none;flex-direction:column;background:var(--bg2);border-bottom:var(--brd)}
+.mmenu.open{display:flex}
+.mmi{padding:12px 20px;font-size:13px;color:var(--fg2);cursor:pointer;border-bottom:var(--brd);transition:color .15s}
+.mmi:hover{color:var(--fg)}
+.mmi:last-child{border-bottom:none}
+
+/* HERO */
+.hero{padding:44px 20px 36px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border:0.5px solid rgba(201,168,108,.4);border-radius:20px;font-size:11px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.pulse{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:p 2s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(28px,7vw,40px);font-weight:800;line-height:1.08;letter-spacing:-1px;margin-bottom:14px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{font-size:13px;color:var(--fg2);line-height:1.7;margin-bottom:26px;max-width:310px;margin-left:auto;margin-right:auto}
+.btn-g{display:block;width:100%;padding:13px;border-radius:var(--br);background:var(--gold);color:#07050A;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'Syne',sans-serif;margin-bottom:8px;letter-spacing:-.2px;transition:opacity .15s}
+.btn-g:hover{opacity:.86}
+.btn-o{display:block;width:100%;padding:12px;border-radius:var(--br);border:var(--brd);background:transparent;color:var(--fg2);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+.btn-o:hover{color:var(--fg);border-color:rgba(255,255,255,.15)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,.05);border-top:var(--brd);border-bottom:var(--brd)}
+.stat{background:var(--bg2);padding:16px 12px;text-align:center}
+.sv{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px}
+.sv em{font-style:normal;color:var(--gold)}
+.sl{font-size:10px;color:var(--fg3);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+
+/* SECTION */
+.sec{padding:32px 20px}
+.sec-lbl{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.sec h2{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,30px);font-weight:800;letter-spacing:-.5px;line-height:1.12;margin-bottom:10px}
+.sec p{font-size:13px;color:var(--fg2);line-height:1.65;margin-bottom:20px}
+
+/* AI ADVANTAGE */
+.adv-section{background:var(--bg2);border-top:var(--brd);border-bottom:var(--brd)}
+.adv-intro{padding:32px 20px 20px}
+.adv-intro h2{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,30px);font-weight:800;letter-spacing:-.5px;line-height:1.12;margin-bottom:10px}
+.adv-intro p{font-size:13px;color:var(--fg2);line-height:1.65}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.05);margin-bottom:0}
+.compare-col{padding:18px 16px;background:var(--bg2)}
+.compare-col.them{background:var(--bg)}
+.col-hd{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.col-hd.us{color:var(--gold)}
+.col-hd.them{color:var(--fg3)}
+.adv-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
+.adv-item i{font-size:14px;flex-shrink:0;margin-top:1px}
+.adv-item-text{font-size:12px;line-height:1.5}
+.adv-item-text strong{display:block;font-weight:600;font-size:12px;margin-bottom:1px}
+.adv-item-text span{color:var(--fg3);font-size:11px}
+.ai-pillars{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:20px;background:var(--bg)}
+.pillar{background:var(--bg2);border:var(--brd);border-radius:var(--br);padding:14px}
+.pillar-icon{font-size:22px;margin-bottom:8px}
+.pillar-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:5px}
+.pillar-desc{font-size:11px;color:var(--fg2);line-height:1.55}
+.pillar.highlight{border-color:rgba(201,168,108,.35);background:rgba(201,168,108,.04)}
+.quote-strip{padding:20px;background:var(--bg3);border-top:var(--brd);border-bottom:var(--brd)}
+.quote-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.2px;line-height:1.4;margin-bottom:8px;color:var(--fg)}
+.quote-sub{font-size:12px;color:var(--fg3)}
+
+/* PRODUCTS */
+.product-card{background:var(--bg2);border:var(--brd);border-radius:var(--br2);padding:20px;margin:0 20px 12px;position:relative}
+.product-card.flag{border-color:rgba(201,168,108,.35);background:rgba(201,168,108,.03)}
+.pc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.pc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.bdg{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500}
+.bdg-gold{background:rgba(201,168,108,.13);color:var(--gold);border:0.5px solid rgba(201,168,108,.3)}
+.bdg-gr{background:rgba(34,197,94,.1);color:#4ADE80;border:0.5px solid rgba(34,197,94,.2)}
+.bdg-pu{background:rgba(167,139,250,.1);color:var(--pu);border:0.5px solid rgba(167,139,250,.2)}
+.pc-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:5px}
+.pc-desc{font-size:12px;color:var(--fg2);line-height:1.6;margin-bottom:10px}
+.pc-domain{font-size:10px;color:var(--fg3);font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+.pc-tech{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.pc-tech span{padding:2px 7px;border-radius:4px;font-size:10px;background:rgba(255,255,255,.04);border:var(--brd);color:var(--fg3);font-family:'JetBrains Mono',monospace}
+.prog-label{display:flex;justify-content:space-between;font-size:10px;color:var(--fg3);margin-bottom:5px}
+.prog-track{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-bottom:14px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px}
+.notif-row{display:flex;gap:7px}
+.notif-inp{flex:1;background:var(--bg3);border:var(--brd);border-radius:8px;padding:9px 11px;color:var(--fg);font-size:12px;font-family:'Outfit',sans-serif;outline:none;min-width:0}
+.notif-inp::placeholder{color:var(--fg3)}
+.notif-btn{padding:9px 13px;border-radius:8px;background:var(--gold);color:#07050A;font-size:11px;font-weight:600;border:none;cursor:pointer;white-space:nowrap;font-family:'Syne',sans-serif;flex-shrink:0}
+
+/* PROCESS */
+.proc-item{display:flex;gap:14px;padding:0 20px;margin-bottom:20px}
+.proc-num{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:rgba(201,168,108,.18);line-height:1;width:36px;flex-shrink:0}
+.proc-body{}
+.proc-title{font-weight:600;font-size:14px;margin-bottom:4px}
+.proc-desc{font-size:12px;color:var(--fg2);line-height:1.6}
+
+/* TECH */
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);border-radius:var(--br2);overflow:hidden}
+.tech-it{background:var(--bg2);padding:16px 8px;text-align:center}
+.ti-icon{font-size:20px;margin-bottom:6px}
+.ti-name{font-size:10px;color:var(--fg3)}
+
+/* CONTACT */
+.ci-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ci-icon{width:36px;height:36px;border-radius:9px;background:var(--bg3);border:var(--brd);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-icon i{font-size:16px;color:var(--gold)}
+.ci-label{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px}
+.ci-val{font-size:13px;font-weight:500}
+.cf{background:var(--bg2);border:var(--brd);border-radius:var(--br2);padding:20px;margin-top:20px}
+.fl{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px}
+.fi,.fs,.ft{width:100%;padding:9px 12px;background:var(--bg3);border:var(--brd);border-radius:var(--br);color:var(--fg);font-size:13px;font-family:'Outfit',sans-serif;outline:none;margin-bottom:12px}
+.ft{min-height:70px;resize:vertical;line-height:1.5}
+.fs option{background:var(--bg2)}
+
+/* FOOTER */
+.foot{padding:24px 20px;border-top:var(--brd);text-align:center}
+.foot-brand{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:12px}
+.foot-brand em{font-style:normal;color:var(--gold)}
+.foot-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:14px}
+.foot-links a{font-size:10px;color:var(--fg3);text-decoration:none;font-family:'JetBrains Mono',monospace}
+.foot-copy{font-size:11px;color:var(--fg3)}
+
+/* CMS */
+.cms{background:var(--bg);min-height:100vh}
+.cms-nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border-bottom:var(--brd)}
+.cms-logo{font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px;color:var(--fg2)}
+.cms-logo i{color:var(--gold);font-size:15px}
+.cms-usr{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--fg2)}
+.cms-av{width:26px;height:26px;border-radius:50%;background:rgba(201,168,108,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold)}
+.cms-tabs{display:flex;overflow-x:auto;gap:2px;padding:8px 12px;background:var(--bg2);border-bottom:var(--brd);scrollbar-width:none}
+.cms-tabs::-webkit-scrollbar{display:none}
+.ctab{display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:8px;font-size:11px;cursor:pointer;color:var(--fg3);white-space:nowrap;border:0.5px solid transparent;transition:all .15s;background:transparent;font-family:'Outfit',sans-serif}
+.ctab:hover{background:var(--bg3);color:var(--fg2)}
+.ctab.on{background:var(--bg3);border-color:rgba(201,168,108,.3);color:var(--gold);font-weight:500}
+.ctab i{font-size:13px}
+.cms-body{padding:14px}
+.cms-pg{display:none}.cms-pg.on{display:block}
+.cms-h{font-size:13px;font-weight:500;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.add-btn{display:flex;align-items:center;gap:4px;padding:6px 11px;border-radius:7px;background:var(--gold);color:#07050A;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'Syne',sans-serif}
+.cms-card{background:var(--bg3);border:var(--brd);border-radius:var(--br);padding:14px;margin-bottom:10px}
+.cc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.cc-title{font-size:13px;font-weight:500}
+.cc-sub{font-size:10px;color:var(--fg3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.cc-acts{display:flex;gap:5px;flex-shrink:0}
+.act{padding:5px 9px;border-radius:6px;font-size:11px;border:var(--brd);background:var(--bg4);color:var(--fg2);cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:3px}
+.act.del{color:var(--re);border-color:rgba(248,113,113,.2)}
+.cms-f{margin-bottom:10px}
+.cms-f label{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px}
+.cms-f input,.cms-f select,.cms-f textarea{width:100%;padding:8px 10px;background:var(--bg4);border:var(--brd);border-radius:7px;color:var(--fg);font-size:12px;font-family:'Outfit',sans-serif;outline:none}
+.cms-f textarea{min-height:55px;resize:vertical;line-height:1.5}
+.cms-f select option{background:var(--bg2)}
+.cms-save{width:100%;padding:11px;border-radius:var(--br);background:var(--gold);color:#07050A;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'Syne',sans-serif;margin-top:4px}
+.st{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 8px;border-radius:20px}
+.st-live{background:rgba(34,197,94,.1);color:#4ADE80}
+.st-cs{background:rgba(201,168,108,.1);color:var(--gold)}
+.st-dr{background:rgba(90,88,112,.2);color:var(--fg3)}
+.cms-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+.cm{background:var(--bg3);border-radius:var(--br);padding:12px}
+.cm-l{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.cm-v{font-size:20px;font-weight:600;font-family:'Syne',sans-serif}
+.tgl-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:var(--brd)}
+.tgl-row:last-child{border-bottom:none}
+.tgl-info{}
+.tgl-t{font-size:13px}
+.tgl-s{font-size:10px;color:var(--fg3);margin-top:2px}
+.tgl{position:relative;width:36px;height:20px;flex-shrink:0}
+.tgl input{opacity:0;width:0;height:0}
+.tgl-track{position:absolute;inset:0;background:var(--bg4);border-radius:10px;cursor:pointer;border:var(--brd);transition:background .2s}
+.tgl input:checked+.tgl-track{background:var(--gold)}
+.tgl-thumb{position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:var(--fg);border-radius:50%;transition:.2s;pointer-events:none}
+.tgl input:checked~.tgl-thumb{left:19px}
+.lead-card{background:var(--bg3);border:var(--brd);border-radius:var(--br);padding:12px;margin-bottom:8px}
+</style>
+
+<h2 class="sr-only">EvokCode agency — mobile-first site with AI advantage section, coming soon products with SchoolBrain in pipeline, plus a fully mobile-friendly CMS admin panel</h2>
+
+<div class="view-bar">
+  <button class="vb on" onclick="switchV('site',this)"><i class="ti ti-world" aria-hidden="true"></i> Live site</button>
+  <button class="vb" onclick="switchV('cms',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> CMS panel</button>
+</div>
+
+<!-- ═══════════════════════════ SITE ═══════════════════════════ -->
+<div id="v-site" class="view on">
+
+<div class="nav">
+  <div class="brand">Evoke<em>Code</em></div>
+  <button class="hbg" onclick="toggleM()" aria-label="Open menu"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
+</div>
+<div class="mmenu" id="mm">
+  <div class="mmi" onclick="goTo('hero')">Home</div>
+  <div class="mmi" onclick="goTo('advantage')">Why us</div>
+  <div class="mmi" onclick="goTo('products')">Products</div>
+  <div class="mmi" onclick="goTo('process')">Process</div>
+  <div class="mmi" onclick="goTo('contact')">Contact</div>
+</div>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="eyebrow"><span class="pulse"></span>AI-First Software Agency</div>
+  <h1>We don't just build software.<br>We build <em>intelligent</em> systems.</h1>
+  <p>While others write code, we architect AI-native products that think, learn, and scale — shipped to your own subdomain in days, not months.</p>
+  <button class="btn-g" onclick="goTo('advantage')">See why we're different</button>
+  <button class="btn-o" onclick="goTo('contact')">Start a project</button>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="sv">7<em>+</em></div><div class="sl">AI products built</div></div>
+  <div class="stat"><div class="sv">48<em>h</em></div><div class="sl">MVP turnaround</div></div>
+  <div class="stat"><div class="sv">100<em>%</em></div><div class="sl">AI-powered core</div></div>
+  <div class="stat"><div class="sv">0<em>₹</em></div><div class="sl">Hidden fees</div></div>
+</div>
+
+<!-- AI ADVANTAGE SECTION -->
+<div class="adv-section" id="advantage">
+  <div class="adv-intro">
+    <div class="sec-lbl">Why choose us</div>
+    <h2>We're not a typical agency. We're an AI lab that ships products.</h2>
+    <p>Most agencies outsource AI features as an add-on. We build AI into the architecture from day one — local LLMs, RAG pipelines, vector memory, and intelligent automation are our defaults, not our extras.</p>
+  </div>
+
+  <div class="compare-row">
+    <div class="compare-col us">
+      <div class="col-hd us"><i class="ti ti-rocket" aria-hidden="true" style="font-size:13px"></i>EvokCode</div>
+      <div class="adv-item">
+        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong>Local LLM integration</strong><span>Qwen, Llama, Mistral on your own server. Zero API costs, full privacy.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong>RAG memory systems</strong><span>ChromaDB-backed semantic search over your own documents & data.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong>Multi-agent workflows</strong><span>AI agents that plan, execute, and verify — not just chatbots.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong>48h MVPs</strong><span>Rapid deployment with full AI stack. See it live before you pay more.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong>Subdomain per product</strong><span>Every product gets its own domain, brand, and independent codebase.</span></div>
+      </div>
+    </div>
+    <div class="compare-col them">
+      <div class="col-hd them"><i class="ti ti-building" aria-hidden="true" style="font-size:13px"></i>Other agencies</div>
+      <div class="adv-item">
+        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong style="color:var(--fg2)">Expensive API calls</strong><span>OpenAI tokens billed to you, forever. No ownership.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong style="color:var(--fg2)">Copy-paste AI wrappers</strong><span>Basic ChatGPT API calls dressed up as AI products.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong style="color:var(--fg2)">No AI architecture</strong><span>AI bolted on after build. Not designed for intelligence.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong style="color:var(--fg2)">Months to delivery</strong><span>6–12 week timelines for basic features. Endless revisions.</span></div>
+      </div>
+      <div class="adv-item">
+        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
+        <div class="adv-item-text"><strong style="color:var(--fg2)">One-size-fits-all</strong><span>Generic platforms. No dedicated branding or subdomain.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-strip">
+    <div class="quote-text">"The gap between agencies that use AI tools and agencies that build AI systems is the same as the gap between a rider and an engineer."</div>
+    <div class="quote-sub">— EvokCode founding principle</div>
+  </div>
+
+  <div class="ai-pillars">
+    <div class="pillar highlight">
+      <div class="pillar-icon">🧠</div>
+      <div class="pillar-title">Local LLMs</div>
+      <div class="pillar-desc">Qwen, Mistral, Llama running on your infra. No data leaves your server.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">🔍</div>
+      <div class="pillar-title">RAG pipelines</div>
+      <div class="pillar-desc">Semantic search over your documents using ChromaDB vector memory.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">⚡</div>
+      <div class="pillar-title">Fast APIs</div>
+      <div class="pillar-desc">FastAPI backends with async endpoints, JWT auth, and role-based access.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">📊</div>
+      <div class="pillar-title">AI dashboards</div>
+      <div class="pillar-desc">React analytics with real-time AI insights, not just charts.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="sec" id="products" style="padding-bottom:0">
+  <div style="padding:0 0 20px">
+    <div class="sec-lbl">Our pipeline</div>
+    <h2>7 products. 7 subdomains.</h2>
+    <p>Every product is being built in-house — AI-native from the ground up. Notify yourself for any you care about.</p>
+  </div>
+</div>
+
+<!-- SchoolBrain -->
+<div class="product-card flag" style="margin-bottom:12px">
+  <div class="pc-top">
+    <div class="pc-icon" style="background:rgba(96,165,250,.1);border:0.5px solid rgba(96,165,250,.2)">🧠</div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+      <span class="bdg bdg-gold">In pipeline</span>
+      <span class="bdg bdg-pu">Flagship</span>
+    </div>
+  </div>
+  <div class="pc-title">SchoolBrain.ai</div>
+  <div class="pc-desc">AI-powered school analytics — identifies struggling students, generates quizzes, creates 7-day intervention plans, and answers teacher queries via RAG-powered chat. Built with local Qwen 2.5 + ChromaDB. Backend fully functional.</div>
+  <div class="pc-domain">schoolbrain.evokecode.in</div>
+  <div class="pc-tech"><span>FastAPI</span><span>Qwen 2.5</span><span>ChromaDB</span><span>RAG</span><span>React</span><span>JWT</span></div>
+  <div class="prog-label"><span>Build progress</span><span>85%</span></div>
+  <div class="prog-track"><div class="prog-fill" style="width:85%;background:var(--bl)"></div></div>
+  <div class="notif-row">
+    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-sb">
+    <button class="notif-btn" onclick="notifyMe('sb')">Notify me</button>
+  </div>
+</div>
+
+<!-- ClinicAI -->
+<div class="product-card" style="margin-bottom:12px">
+  <div class="pc-top">
+    <div class="pc-icon" style="background:rgba(34,197,94,.08);border:0.5px solid rgba(34,197,94,.2)">🏥</div>
+    <span class="bdg bdg-gold">Coming soon</span>
+  </div>
+  <div class="pc-title">ClinicAI</div>
+  <div class="pc-desc">Smart clinic management with AI appointment scheduling, patient risk scoring, prescription summaries and automated WhatsApp follow-ups.</div>
+  <div class="pc-domain">clinic.evokecode.in</div>
+  <div class="pc-tech"><span>FastAPI</span><span>LLM</span><span>PostgreSQL</span><span>Twilio</span></div>
+  <div class="prog-label"><span>Build progress</span><span>72%</span></div>
+  <div class="prog-track"><div class="prog-fill" style="width:72%;background:var(--gold)"></div></div>
+  <div class="notif-row">
+    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-cl">
+    <button class="notif-btn" onclick="notifyMe('cl')">Notify me</button>
+  </div>
+</div>
+
+<!-- TalentOS -->
+<div class="product-card" style="margin-bottom:12px">
+  <div class="pc-top">
+    <div class="pc-icon" style="background:rgba(167,139,250,.08);border:0.5px solid rgba(167,139,250,.2)">💼</div>
+    <span class="bdg bdg-gold">Coming soon</span>
+  </div>
+  <div class="pc-title">TalentOS</div>
+  <div class="pc-desc">AI recruitment — LLM resume parsing, candidate ranking, bias-free scoring and auto interview question generation for HR teams.</div>
+  <div class="pc-domain">talent.evokecode.in</div>
+  <div class="pc-tech"><span>Python</span><span>Ollama</span><span>React</span><span>PDF parsing</span></div>
+  <div class="prog-label"><span>Build progress</span><span>48%</span></div>
+  <div class="prog-track"><div class="prog-fill" style="width:48%;background:var(--pu)"></div></div>
+  <div class="notif-row">
+    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-ta">
+    <button class="notif-btn" onclick="notifyMe('ta')">Notify me</button>
+  </div>
+</div>
+
+<!-- RetailMind -->
+<div class="product-card" style="margin-bottom:12px">
+  <div class="pc-top">
+    <div class="pc-icon" style="background:rgba(251,146,60,.08);border:0.5px solid rgba(251,146,60,.2)">🛒</div>
+    <span class="bdg bdg-gold">Coming soon</span>
+  </div>
+  <div class="pc-title">RetailMind</div>
+  <div class="pc-desc">Retail analytics AI — inventory prediction, demand forecasting, customer segmentation and AI-powered reorder recommendations.</div>
+  <div class="pc-domain">retail.evokecode.in</div>
+  <div class="pc-tech"><span>FastAPI</span><span>ML models</span><span>Redis</span><span>Recharts</span></div>
+  <div class="prog-label"><span>Build progress</span><span>35%</span></div>
+  <div class="prog-track"><div class="prog-fill" style="width:35%;background:#FB923C"></div></div>
+  <div class="notif-row">
+    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-re">
+    <button class="notif-btn" onclick="notifyMe('re')">Notify me</button>
+  </div>
+</div>
+
+<!-- LegalBot -->
+<div class="product-card" style="margin-bottom:12px">
+  <div class="pc-top">
+    <div class="pc-icon" style="background:rgba(201,168,108,.08);border:0.5px solid rgba(201,168,108,.25)">⚖️</div>
+    <span class="bdg bdg-gold">Coming soon</span>
+  </div>
+  <div class="pc-title">LegalBot</div>
+  <div class="pc-desc">AI legal assistant for SMEs — contract drafting, clause analysis, risk flagging and Indian law RAG queries.</div>
+  <div class="pc-domain">legal.evokecode.in</div>
+  <div class="pc-tech"><span>RAG</span><span>ChromaDB</span><span>LLM</span><span>PDF</span></div>
+  <div class="prog-label"><span>Build progress</span><span>20%</span></div>
+  <div class="prog-track"><div class="prog-fill" style="width:20%;background:var(--gold)"></div></div>
+  <div class="notif-row">
+    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-le">
+    <button class="notif-btn" onclick="notifyMe('le')">Notify me</button>
+  </div>
+</div>
+
+<!-- FinSight -->
+<div class="product-card" style="margin-bottom:12px">
+  <div class="pc-top">
+    <div class="pc-icon" style="background:rgba(20,184,166,.08);border:0.5px solid rgba(20,184,166,.2)">📈</div>
+    <span class="bdg bdg-gold">Coming soon</span>
+  </div>
+  <div class="pc-title">FinSight</div>
+  <div class="pc-desc">Finance AI for SMBs — cash flow tracking, anomaly detection, plain-language P&L summaries and 30-day runway forecast.</div>
+  <div class="pc-domain">finsight.evokecode.in</div>
+  <div class="pc-tech"><span>FastAPI</span><span>Qwen</span><span>SQLite</span><span>Charts</span></div>
+  <div class="prog-label"><span>Build progress</span><span>60%</span></div>
+  <div class="prog-track"><div class="prog-fill" style="width:60%;background:#14B8A6"></div></div>
+  <div class="notif-row">
+    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-fi">
+    <button class="notif-btn" onclick="notifyMe('fi')">Notify me</button>
+  </div>
+</div>
+
+<!-- PropertyAI -->
+<div class="product-card" style="margin-bottom:20px">
+  <div class="pc-top">
+    <div class="pc-icon" style="background:rgba(244,63,94,.08);border:0.5px solid rgba(244,63,94,.2)">🏠</div>
+    <span class="bdg bdg-gold">Coming soon</span>
+  </div>
+  <div class="pc-title">PropertyAI</div>
+  <div class="pc-desc">Real-estate AI — property valuation, smart lead scoring, rental yield prediction and AI-generated property descriptions.</div>
+  <div class="pc-domain">property.evokecode.in</div>
+  <div class="pc-tech"><span>FastAPI</span><span>ML</span><span>Maps API</span><span>React</span></div>
+  <div class="prog-label"><span>Build progress</span><span>15%</span></div>
+  <div class="prog-track"><div class="prog-fill" style="width:15%;background:#F43F5E"></div></div>
+  <div class="notif-row">
+    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-pr">
+    <button class="notif-btn" onclick="notifyMe('pr')">Notify me</button>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div class="sec" id="process" style="background:var(--bg2);border-top:var(--brd);border-bottom:var(--brd);padding-bottom:0">
+  <div class="sec-lbl">How we work</div>
+  <h2>From idea to deployed in days</h2>
+</div>
+<div style="background:var(--bg2);padding:0 0 24px">
+  <div class="proc-item"><div class="proc-num">01</div><div class="proc-body"><div class="proc-title">Discovery call</div><div class="proc-desc">Map your requirements, users, and data flows. We identify where AI adds the most value — not where it sounds impressive.</div></div></div>
+  <div class="proc-item"><div class="proc-num">02</div><div class="proc-body"><div class="proc-title">AI architecture design</div><div class="proc-desc">Design LLM integration, RAG pipelines, data schema and API structure before touching feature code.</div></div></div>
+  <div class="proc-item"><div class="proc-num">03</div><div class="proc-body"><div class="proc-title">Build & ship</div><div class="proc-desc">Agile sprints with daily demos. Deployed on your subdomain within 48h of first sprint completion.</div></div></div>
+  <div class="proc-item"><div class="proc-num">04</div><div class="proc-body"><div class="proc-title">AI tuning & iteration</div><div class="proc-desc">Post-launch: model fine-tuning, prompt engineering, RAG refinement based on real usage data.</div></div></div>
+</div>
+
+<!-- TECH -->
+<div class="sec" id="stack">
+  <div class="sec-lbl">Technology</div>
+  <h2>Our battle-tested AI stack</h2>
+  <div class="tech-grid">
+    <div class="tech-it"><div class="ti-icon">⚡</div><div class="ti-name">FastAPI</div></div>
+    <div class="tech-it"><div class="ti-icon">🤖</div><div class="ti-name">Qwen / Ollama</div></div>
+    <div class="tech-it"><div class="ti-icon">🗄️</div><div class="ti-name">ChromaDB</div></div>
+    <div class="tech-it"><div class="ti-icon">⚛️</div><div class="ti-name">React</div></div>
+    <div class="tech-it"><div class="ti-icon">🐘</div><div class="ti-name">PostgreSQL</div></div>
+    <div class="tech-it"><div class="ti-icon">🔐</div><div class="ti-name">JWT Auth</div></div>
+    <div class="tech-it"><div class="ti-icon">📦</div><div class="ti-name">Docker</div></div>
+    <div class="tech-it"><div class="ti-icon">🌐</div><div class="ti-name">Nginx</div></div>
+    <div class="tech-it"><div class="ti-icon">🧬</div><div class="ti-name">LangChain</div></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="sec" id="contact">
+  <div class="sec-lbl">Get in touch</div>
+  <h2>Let's build your AI product</h2>
+  <p>Have a problem to solve or a product to ship? We'll design the right AI architecture and ship it fast.</p>
+  <div class="ci-row"><div class="ci-icon"><i class="ti ti-mail" aria-hidden="true"></i></div><div><div class="ci-label">Email</div><div class="ci-val">hello@evokecode.in</div></div></div>
+  <div class="ci-row"><div class="ci-icon"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></div><div><div class="ci-label">WhatsApp</div><div class="ci-val">+91 98765 43210</div></div></div>
+  <div class="ci-row"><div class="ci-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div><div><div class="ci-label">Based in</div><div class="ci-val">Ludhiana, Punjab · Remote worldwide</div></div></div>
+  <div class="cf">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px;letter-spacing:-.2px">Start a project</div>
+    <label class="fl">Name</label><input class="fi" type="text" placeholder="Arjun Mehta">
+    <label class="fl">Email</label><input class="fi" type="email" placeholder="arjun@company.com">
+    <label class="fl">Project type</label>
+    <select class="fs" style="margin-bottom:12px"><option>AI SaaS Platform</option><option>Analytics Dashboard</option><option>Custom Backend API</option><option>LLM / RAG System</option><option>EdTech Product</option><option>Something else</option></select>
+    <label class="fl">Budget</label>
+    <select class="fs" style="margin-bottom:12px"><option>₹50k–₹1L</option><option>₹1L–₹3L</option><option>₹3L–₹10L</option><option>₹10L+</option><option>Let's discuss</option></select>
+    <label class="fl">Tell us about it</label>
+    <textarea class="ft" placeholder="Describe what you want to build…"></textarea>
+    <button class="btn-g" onclick="submitCF(this)" style="margin-top:4px">Send message</button>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="foot-brand">Evoke<em>Code</em></div>
+  <div class="foot-links">
+    <a href="#">schoolbrain.evokecode.in</a>
+    <a href="#">clinic.evokecode.in</a>
+    <a href="#">talent.evokecode.in</a>
+    <a href="#">retail.evokecode.in</a>
+    <a href="#">legal.evokecode.in</a>
+    <a href="#">finsight.evokecode.in</a>
+    <a href="#">property.evokecode.in</a>
+  </div>
+  <div class="foot-copy">© 2025 EvokCode · All rights reserved</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ CMS ═══════════════════════════ -->
+<div id="v-cms" class="view cms">
+  <div class="cms-nav">
+    <div class="cms-logo"><i class="ti ti-settings" aria-hidden="true"></i>EvokCode CMS</div>
+    <div class="cms-usr"><div class="cms-av">A</div>Admin</div>
+  </div>
+  <div class="cms-tabs">
+    <button class="ctab on" onclick="cTab('dash',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</button>
+    <button class="ctab" onclick="cTab('hero',this)"><i class="ti ti-home" aria-hidden="true"></i>Hero</button>
+    <button class="ctab" onclick="cTab('adv',this)"><i class="ti ti-trophy" aria-hidden="true"></i>Advantage</button>
+    <button class="ctab" onclick="cTab('prods',this)"><i class="ti ti-apps" aria-hidden="true"></i>Products</button>
+    <button class="ctab" onclick="cTab('proc',this)"><i class="ti ti-list-check" aria-hidden="true"></i>Process</button>
+    <button class="ctab" onclick="cTab('contact',this)"><i class="ti ti-mail" aria-hidden="true"></i>Contact</button>
+    <button class="ctab" onclick="cTab('settings',this)"><i class="ti ti-adjustments" aria-hidden="true"></i>Settings</button>
+    <button class="ctab" onclick="cTab('leads',this)"><i class="ti ti-users" aria-hidden="true"></i>Leads</button>
+  </div>
+  <div class="cms-body">
+
+    <!-- DASHBOARD -->
+    <div id="cms-dash" class="cms-pg on">
+      <div class="cms-h">Overview</div>
+      <div class="cms-metrics">
+        <div class="cm"><div class="cm-l">Page views</div><div class="cm-v" style="color:var(--bl)">3,241</div></div>
+        <div class="cm"><div class="cm-l">Notify signups</div><div class="cm-v" style="color:var(--gr)">198</div></div>
+        <div class="cm"><div class="cm-l">Leads</div><div class="cm-v" style="color:var(--gold)">31</div></div>
+        <div class="cm"><div class="cm-l">Live products</div><div class="cm-v" style="color:var(--pu)">0</div></div>
+      </div>
+      <div class="cms-h" style="margin-top:6px">Pipeline status</div>
+      <div id="dash-prods"></div>
+    </div>
+
+    <!-- HERO -->
+    <div id="cms-hero" class="cms-pg">
+      <div class="cms-h">Hero section</div>
+      <div class="cms-f"><label>Eyebrow text</label><input type="text" value="AI-First Software Agency"></div>
+      <div class="cms-f"><label>Headline</label><textarea>We don't just build software. We build intelligent systems.</textarea></div>
+      <div class="cms-f"><label>Subheadline</label><textarea>While others write code, we architect AI-native products that think, learn, and scale.</textarea></div>
+      <div class="cms-f"><label>Primary CTA</label><input type="text" value="See why we're different"></div>
+      <div class="cms-f"><label>Secondary CTA</label><input type="text" value="Start a project"></div>
+      <button class="cms-save" onclick="svd(this)">Save hero</button>
+    </div>
+
+    <!-- ADVANTAGE -->
+    <div id="cms-adv" class="cms-pg">
+      <div class="cms-h">AI advantage section</div>
+      <div class="cms-f"><label>Section headline</label><textarea>We're not a typical agency. We're an AI lab that ships products.</textarea></div>
+      <div class="cms-f"><label>Section description</label><textarea>Most agencies outsource AI features as an add-on. We build AI into the architecture from day one.</textarea></div>
+      <div class="cms-h" style="margin-top:16px">Quote strip</div>
+      <div class="cms-f"><label>Quote text</label><textarea>"The gap between agencies that use AI tools and agencies that build AI systems is the same as the gap between a rider and an engineer."</textarea></div>
+      <div class="cms-f"><label>Quote attribution</label><input type="text" value="EvokCode founding principle"></div>
+      <div class="cms-h" style="margin-top:16px">Our advantages (left column)</div>
+      <div id="adv-list">
+        <div class="cms-card" style="margin-bottom:8px"><div class="cms-f" style="margin-bottom:6px"><label>Advantage title</label><input type="text" value="Local LLM integration"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="Qwen, Llama, Mistral on your own server. Zero API costs, full privacy."></div></div>
+        <div class="cms-card" style="margin-bottom:8px"><div class="cms-f" style="margin-bottom:6px"><label>Advantage title</label><input type="text" value="RAG memory systems"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="ChromaDB-backed semantic search over your own documents & data."></div></div>
+        <div class="cms-card" style="margin-bottom:8px"><div class="cms-f" style="margin-bottom:6px"><label>Advantage title</label><input type="text" value="Multi-agent workflows"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="AI agents that plan, execute, and verify — not just chatbots."></div></div>
+      </div>
+      <button class="cms-save" onclick="svd(this)">Save advantage section</button>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div id="cms-prods" class="cms-pg">
+      <div class="cms-h">Products <button class="add-btn" onclick="addProd()"><i class="ti ti-plus" aria-hidden="true"></i>Add</button></div>
+      <div id="prod-list"></div>
+    </div>
+
+    <!-- PROCESS -->
+    <div id="cms-proc" class="cms-pg">
+      <div class="cms-h">Process steps</div>
+      <div class="cms-card" style="margin-bottom:8px">
+        <div class="cms-f"><label>Step 01 title</label><input type="text" value="Discovery call"></div>
+        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Map your requirements, users, and data flows. We identify where AI adds the most value.</textarea></div>
+      </div>
+      <div class="cms-card" style="margin-bottom:8px">
+        <div class="cms-f"><label>Step 02 title</label><input type="text" value="AI architecture design"></div>
+        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Design LLM integration, RAG pipelines, data schema and API structure.</textarea></div>
+      </div>
+      <div class="cms-card" style="margin-bottom:8px">
+        <div class="cms-f"><label>Step 03 title</label><input type="text" value="Build & ship"></div>
+        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Agile sprints with daily demos. Deployed on your subdomain within 48h.</textarea></div>
+      </div>
+      <div class="cms-card" style="margin-bottom:12px">
+        <div class="cms-f"><label>Step 04 title</label><input type="text" value="AI tuning & iteration"></div>
+        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Post-launch: model fine-tuning, prompt engineering, RAG refinement.</textarea></div>
+      </div>
+      <button class="cms-save" onclick="svd(this)">Save process</button>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="cms-contact" class="cms-pg">
+      <div class="cms-h">Contact info</div>
+      <div class="cms-f"><label>Email</label><input type="text" value="hello@evokecode.in"></div>
+      <div class="cms-f"><label>WhatsApp</label><input type="text" value="+91 98765 43210"></div>
+      <div class="cms-f"><label>Location</label><input type="text" value="Ludhiana, Punjab · Remote worldwide"></div>
+      <div class="cms-f"><label>Response time</label><input type="text" value="Within 4 hours · Mon–Sat"></div>
+      <div class="cms-h" style="margin-top:16px">Form dropdowns</div>
+      <div class="cms-f"><label>Project types</label><textarea>AI SaaS Platform,Analytics Dashboard,Custom Backend API,LLM / RAG System,EdTech Product,Something else</textarea></div>
+      <div class="cms-f"><label>Budget options</label><textarea>₹50k–₹1L,₹1L–₹3L,₹3L–₹10L,₹10L+,Let's discuss</textarea></div>
+      <button class="cms-save" onclick="svd(this)">Save contact</button>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="cms-settings" class="cms-pg">
+      <div class="cms-h">Site settings</div>
+      <div class="cms-f"><label>Agency name</label><input type="text" value="EvokCode"></div>
+      <div class="cms-f"><label>Primary domain</label><input type="text" value="evokecode.in"></div>
+      <div class="cms-f"><label>Tagline</label><input type="text" value="AI-First Software Agency"></div>
+      <div class="cms-f"><label>Meta description</label><textarea>We build intelligent AI-native SaaS products and backends for businesses that want to scale fast.</textarea></div>
+      <div class="cms-h" style="margin-top:16px">Feature toggles</div>
+      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Notify-me forms</div><div class="tgl-s">Email capture on coming soon cards</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">AI advantage section</div><div class="tgl-s">Show comparison with other agencies</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Contact form</div><div class="tgl-s">Show project inquiry form</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Stats bar</div><div class="tgl-s">Show numbers below hero</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Maintenance mode</div><div class="tgl-s">Show maintenance page to visitors</div></div><label class="tgl"><input type="checkbox"><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+      <button class="cms-save" style="margin-top:14px" onclick="svd(this)">Save settings</button>
+    </div>
+
+    <!-- LEADS -->
+    <div id="cms-leads" class="cms-pg">
+      <div class="cms-h">Contact leads <span style="font-size:11px;color:var(--fg3);font-weight:400">31 total</span></div>
+      <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">Priya Sharma</span><span style="font-size:10px;color:var(--fg3)">Today 10:22</span></div><div style="font-size:11px;color:var(--fg3)">priya@school.in</div><div style="font-size:11px;color:var(--bl);margin-top:3px">EdTech Product · ₹1L–₹3L</div></div>
+      <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">Rahul Gupta</span><span style="font-size:10px;color:var(--fg3)">Yesterday</span></div><div style="font-size:11px;color:var(--fg3)">rahul@clinic.co</div><div style="font-size:11px;color:var(--bl);margin-top:3px">AI SaaS Platform · ₹3L–₹10L</div></div>
+      <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">Ananya Singh</span><span style="font-size:10px;color:var(--fg3)">2 days ago</span></div><div style="font-size:11px;color:var(--fg3)">ananya@retail.com</div><div style="font-size:11px;color:var(--bl);margin-top:3px">Analytics Dashboard · ₹50k–₹1L</div></div>
+      <div class="cms-h" style="margin-top:16px">Notify-me signups <span style="font-size:11px;color:var(--fg3);font-weight:400">198 total</span></div>
+      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">doc@hospital.in</div><div style="font-size:10px;color:var(--gold);margin-top:2px">ClinicAI</div></div><span style="font-size:10px;color:var(--fg3)">Today</span></div></div>
+      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">hr@corp.com</div><div style="font-size:10px;color:var(--gold);margin-top:2px">TalentOS</div></div><span style="font-size:10px;color:var(--fg3)">Today</span></div></div>
+      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">teacher@dav.in</div><div style="font-size:10px;color:var(--gold);margin-top:2px">SchoolBrain.ai</div></div><span style="font-size:10px;color:var(--fg3)">Yesterday</span></div></div>
+      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">cfo@startup.io</div><div style="font-size:10px;color:var(--gold);margin-top:2px">FinSight</div></div><span style="font-size:10px;color:var(--fg3)">Yesterday</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const PRODS=[
+  {id:"sb",name:"SchoolBrain.ai",domain:"schoolbrain.evokecode.in",status:"pipeline",pct:85,desc:"AI school analytics platform — student risk detection, quiz gen, RAG chat, intervention plans.",tech:"FastAPI,Qwen 2.5,ChromaDB,React,JWT"},
+  {id:"cl",name:"ClinicAI",domain:"clinic.evokecode.in",status:"coming",pct:72,desc:"Smart clinic management with AI appointment scheduling and patient risk scoring.",tech:"FastAPI,LLM,PostgreSQL,Twilio"},
+  {id:"ta",name:"TalentOS",domain:"talent.evokecode.in",status:"coming",pct:48,desc:"AI recruitment platform with LLM resume parsing and bias-free scoring.",tech:"Python,Ollama,React,PDF parsing"},
+  {id:"re",name:"RetailMind",domain:"retail.evokecode.in",status:"coming",pct:35,desc:"Retail analytics AI with inventory prediction and demand forecasting.",tech:"FastAPI,ML models,Redis,Recharts"},
+  {id:"le",name:"LegalBot",domain:"legal.evokecode.in",status:"coming",pct:20,desc:"AI legal assistant for SMEs — contract drafting and Indian law RAG queries.",tech:"RAG,ChromaDB,LLM,PDF"},
+  {id:"fi",name:"FinSight",domain:"finsight.evokecode.in",status:"coming",pct:60,desc:"Finance AI for SMBs — cash flow, P&L summaries and runway forecast.",tech:"FastAPI,Qwen,SQLite,Charts"},
+  {id:"pr",name:"PropertyAI",domain:"property.evokecode.in",status:"coming",pct:15,desc:"Real estate AI — property valuation, lead scoring and rental yield prediction.",tech:"FastAPI,ML,Maps API,React"},
+];
+
+const pctColors={85:"var(--bl)",72:"var(--gold)",48:"var(--pu)",35:"#FB923C",20:"var(--gold)",60:"#14B8A6",15:"#F43F5E"};
+
+function switchV(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.vb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('v-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+function toggleM(){
+  const m=document.getElementById('mm');
+  m.classList.toggle('open');
+}
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth'});
+  document.getElementById('mm').classList.remove('open');
+}
+function notifyMe(id){
+  const inp=document.getElementById('ni-'+id);
+  if(!inp||!inp.value||!inp.value.includes('@')){if(inp){inp.style.borderColor='rgba(248,113,113,.5)';setTimeout(()=>inp.style.borderColor='',1500);}return;}
+  const btn=inp.nextElementSibling;
+  inp.value='';
+  btn.textContent='Saved ✓';btn.style.background='var(--gr)';btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent='Notify me';btn.style.background='';btn.style.color='';},2500);
+}
+function submitCF(btn){
+  btn.textContent='Sent ✓';btn.style.background='var(--gr)';
+  setTimeout(()=>{btn.textContent='Send message';btn.style.background='var(--gold)';},2500);
+}
+function cTab(id,el){
+  document.querySelectorAll('.cms-pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('cms-'+id).classList.add('on');
+  el.classList.add('on');
+}
+function svd(btn){
+  const t=btn.textContent;
+  btn.textContent='Saved ✓';btn.style.background='var(--gr)';btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent=t;btn.style.background='';btn.style.color='';},2000);
+}
+function addProd(){
+  const list=document.getElementById('prod-list');
+  const d=document.createElement('div');d.className='cms-card';
+  d.innerHTML=`<div class="cc-head"><div><div class="cc-title">New product</div></div><div class="cc-acts"><button class="act del" onclick="this.closest('.cms-card').remove()"><i class="ti ti-trash" aria-hidden="true"></i></button></div></div>
+  <div class="cms-f"><label>Product name</label><input type="text" placeholder="MyProduct"></div>
+  <div class="cms-f"><label>Domain</label><input type="text" placeholder="myproduct.evokecode.in"></div>
+  <div class="cms-f"><label>Status</label><select><option>coming</option><option>pipeline</option><option>live</option><option>draft</option></select></div>
+  <div class="cms-f"><label>Progress %</label><input type="range" min="0" max="100" value="0" step="1" oninput="this.previousElementSibling.textContent='Progress: '+this.value+'%'"></div>
+  <div class="cms-f"><label>Description</label><textarea placeholder="Short description…"></textarea></div>
+  <div class="cms-f"><label>Tech stack (comma separated)</label><input type="text" placeholder="FastAPI,React,LLM"></div>
+  <button class="cms-save" onclick="svd(this)">Save product</button>`;
+  list.appendChild(d);
+}
+function renderProds(){
+  const stColors={pipeline:"var(--bl)",coming:"var(--gold)",live:"var(--gr)",draft:"var(--fg3)"};
+  const stLabel={pipeline:"In pipeline",coming:"Coming soon",live:"Live",draft:"Draft"};
+  document.getElementById('prod-list').innerHTML=PRODS.map(p=>`
+    <div class="cms-card">
+      <div class="cc-head">
+        <div><div class="cc-title">${p.name}</div><div class="cc-sub">${p.domain}</div></div>
+        <span class="st" style="background:${stColors[p.status]}18;color:${stColors[p.status]}">${stLabel[p.status]}</span>
+      </div>
+      <div class="cms-f"><label>Name</label><input type="text" value="${p.name}"></div>
+      <div class="cms-f"><label>Domain</label><input type="text" value="${p.domain}"></div>
+      <div class="cms-f"><label>Description</label><textarea>${p.desc}</textarea></div>
+      <div class="cms-f"><label>Status</label><select>${['pipeline','coming','live','draft'].map(s=>`<option${p.status===s?' selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="cms-f"><label>Progress: ${p.pct}%</label><input type="range" min="0" max="100" value="${p.pct}" step="1" oninput="this.previousElementSibling.textContent='Progress: '+this.value+'%'"></div>
+      <div class="cms-f"><label>Tech stack</label><input type="text" value="${p.tech}"></div>
+      <div style="display:flex;gap:8px">
+        <button class="cms-save" style="flex:1" onclick="svd(this)">Save</button>
+        <button class="act del" style="padding:10px 13px"><i class="ti ti-trash" aria-hidden="true"></i></button>
+      </div>
+    </div>`).join('');
+  const stColors2={pipeline:"var(--bl)",coming:"var(--gold)",live:"var(--gr)",draft:"var(--fg3)"};
+  document.getElementById('dash-prods').innerHTML=PRODS.map(p=>`
+    <div class="cms-card" style="padding:11px 13px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:500">${p.name}</div>
+        <span class="st" style="background:${stColors2[p.status]}18;color:${stColors2[p.status]}">${p.status}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden">
+          <div style="width:${p.pct}%;height:100%;background:${pctColors[p.pct]||'var(--gold)'};border-radius:2px"></div>
+        </div>
+        <span style="font-size:10px;color:var(--fg3);min-width:26px;text-align:right">${p.pct}%</span>
+      </div>
+    </div>`).join('');
+}
+renderProds();
+</script>
