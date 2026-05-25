@@ -18,13 +18,10 @@
   --brd:0.5px solid rgba(255,255,255,0.07);--br:10px;--br2:16px;
 }
 body{background:var(--bg);color:var(--fg);font-family:'Outfit',system-ui,sans-serif;font-size:14px;overflow-x:hidden}
+.view{display:none}.view.on{display:block}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-.view-bar{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:var(--brd)}
-.vb{padding:11px 8px;font-size:12px;font-weight:500;text-align:center;cursor:pointer;background:var(--bg2);color:var(--fg3);border:none;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
-.vb i{font-size:14px}
-.vb.on{background:var(--bg3);color:var(--gold);border-bottom:2px solid var(--gold)}
-.view{display:none}.view.on{display:block}
+
 
 /* NAV */
 .nav{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:rgba(8,8,16,.95);border-bottom:var(--brd);position:sticky;top:0;z-index:40}
@@ -198,10 +195,7 @@ body{background:var(--bg);color:var(--fg);font-family:'Outfit',system-ui,sans-se
 
 <h2 class="sr-only">EvokCode agency — mobile-first site with AI advantage section, coming soon products with SchoolBrain in pipeline, plus a fully mobile-friendly CMS admin panel</h2>
 
-<div class="view-bar">
-  <button class="vb on" onclick="switchV('site',this)"><i class="ti ti-world" aria-hidden="true"></i> Live site</button>
-  <button class="vb" onclick="switchV('cms',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> CMS panel</button>
-</div>
+
 
 <!-- ═══════════════════════════ SITE ═══════════════════════════ -->
 <div id="v-site" class="view on">
