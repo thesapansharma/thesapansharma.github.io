@@ -78,6 +78,17 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 
 .scroll-prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--p),var(--acc),var(--grn));z-index:9999;transform-origin:left;transform:scaleX(0);transition:transform .05s linear;}
 
+/* ═══ CURRENCY BADGE ═══ */
+.currency-flag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:20px;
+  background:var(--grn2);color:var(--grn);
+  border:1px solid rgba(11,154,114,.25);
+  margin-left:auto;
+  transition:opacity .3s;
+}
+
 /* ═══ FLOATING NAV ═══ */
 .nav-wrapper {
   position: fixed;
@@ -90,7 +101,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
   transition: padding var(--t3);
 }
 
-/* Stage 1: Top of page — full-width bar */
 .nav {
   pointer-events: all;
   height: var(--nav-h);
@@ -117,7 +127,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
   margin: 0 auto;
 }
 
-/* Stage 2: Scrolled — floating pill */
 .nav-wrapper.floating {
   padding: 12px 24px;
   pointer-events: none;
@@ -140,7 +149,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     0 32px 64px -8px rgba(0,0,0,0.08);
 }
 
-/* Animated shimmer border on floating pill */
 .nav-wrapper.floating .nav::before {
   content: '';
   position: absolute;
@@ -166,7 +174,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .brand-word{display:inline-flex;align-items:baseline;letter-spacing:2px}
 .brand-dot{width:7px;height:7px;border-radius:50%;background:var(--p);animation:blink 2s ease-in-out infinite;flex-shrink:0}
 
-/* Shrink brand text in pill */
 .nav-wrapper.floating .brand{font-size:17px}
 .nav-wrapper.floating .brand-dot{width:6px;height:6px}
 
@@ -179,7 +186,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .nav-link:hover{color:var(--p);background:var(--p3)}
 .nav-link.active{color:var(--p);background:var(--p3);font-weight:600}
 
-/* Active dot indicator */
 .nav-link.active::after {
   content: '';
   position: absolute;
@@ -211,7 +217,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .hbg.open span:nth-child(2){opacity:0;transform:scaleX(0)}
 .hbg.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);background:var(--p)}
 
-/* Mobile menu — now positioned below the wrapper */
 .mmenu{
   position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);
   z-index:190;width:calc(100% - 32px);max-width:420px;
@@ -231,7 +236,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 .mmenu-cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:var(--r2);background:var(--p);color:#fff;font-size:14px;font-weight:600;transition:all var(--t1);}
 .mmenu-cta-btn:hover{background:var(--p-dark)}
 
-/* ═══ HERO — add top padding for fixed nav ═══ */
+/* ═══ HERO ═══ */
 .hero{
   position:relative;overflow:hidden;
   padding:clamp(100px,14vw,140px) clamp(20px,6vw,80px) clamp(56px,9vw,104px);
@@ -529,7 +534,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
 
 <div class="app" id="app">
 
-<!-- NAV WRAPPER (floating pill container) -->
+<!-- NAV WRAPPER -->
 <header>
   <div class="nav-wrapper" id="nav-wrapper">
     <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
@@ -560,7 +565,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     </nav>
   </div>
 
-  <!-- Mobile menu (floats below pill) -->
+  <!-- Mobile menu -->
   <div class="mmenu" id="mmenu" role="dialog" aria-label="Navigation" aria-hidden="true">
     <a href="#advantage" class="mmi" onclick="closeMenu()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Why us
@@ -635,7 +640,11 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     <div class="stat reveal delay-1"><div class="stat-val" data-target="7" data-suffix="+">0</div><div class="stat-lbl">Products in pipeline</div></div>
     <div class="stat reveal delay-2"><div class="stat-val" data-target="48" data-suffix="h">0</div><div class="stat-lbl">MVP delivery time</div></div>
     <div class="stat reveal delay-3"><div class="stat-val" data-target="100" data-suffix="%">0</div><div class="stat-lbl">AI-native core</div></div>
-    <div class="stat reveal delay-4"><div class="stat-val">₹0</div><div class="stat-lbl">Hidden fees</div></div>
+    <!-- currency-aware "no hidden fees" stat -->
+    <div class="stat reveal delay-4">
+      <div class="stat-val" id="stat-zero-fees">₹0</div>
+      <div class="stat-lbl">Hidden fees</div>
+    </div>
   </div>
 </section>
 
@@ -817,7 +826,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">What does "AI-native" actually mean?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">It means AI is designed into the architecture before the first line of feature code is written. We plan the LLM integration, RAG pipelines, vector memory and agent workflows upfront — not bolted on later.</p></div></div></div>
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">How fast is the 48h MVP claim?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">After discovery and architecture (day one), we start the first sprint immediately. Within 48 hours of sprint start, you get a live, working build on your subdomain. Not a mockup — a real, deployed backend with functional AI.</p></div></div></div>
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">Do I need to understand AI to work with you?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">Not at all. You need to understand your business problem and your users. We translate that into the right AI architecture. Every sprint includes plain-language explanations and demos.</p></div></div></div>
-    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">How much does it cost?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">Projects typically start at ₹50,000 for a focused MVP and scale based on scope. We're transparent about pricing from the first call — no hidden fees, no retainers unless you want ongoing tuning.</p></div></div></div>
+
+    <!-- PRICING FAQ — currency-aware -->
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">How much does it cost?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a" id="faq-pricing-answer">Projects typically start at ₹50,000 for a focused MVP and scale based on scope. We're transparent about pricing from the first call — no hidden fees, no retainers unless you want ongoing tuning.</p></div></div></div>
+
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">Who owns the code and the AI models?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">You do — completely. Full source code handoff, all model weights and database exports, deployed under your subdomain and brand. No dependency on us to keep the lights on.</p></div></div></div>
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">Can you work with my existing team or codebase?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">Yes. We can embed as an AI engineering team alongside your developers, add AI capabilities to an existing product, or integrate with your current stack. Our FastAPI backends connect cleanly with React, Next.js, mobile apps, or any REST consumer.</p></div></div></div>
   </div>
@@ -838,7 +850,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
       </address>
     </div>
     <div class="cf reveal delay-2">
-      <h3 class="cf-title"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>Start a project</h3>
+      <!-- cf-title gets a USD badge injected by JS when non-India -->
+      <h3 class="cf-title" id="cf-title-el">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>Start a project
+      </h3>
       <iframe name="gf-hidden" title="Form submission" style="display:none" aria-hidden="true"></iframe>
       <form id="contact-form" action="https://docs.google.com/forms/d/e/1FAIpQLSc1-MtXcckp_6GFYD80lIPzwR4Jl_4ah_x4Em1-BYz-Ds4DFw/formResponse" method="POST" target="gf-hidden" onsubmit="handleSubmit(event)" novalidate>
         <label class="fl" for="cf-name">Your name</label>
@@ -849,8 +864,18 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-
         <input class="fi" type="tel" id="cf-phone" name="entry.834095551" placeholder="+91 98765 00000" autocomplete="tel">
         <label class="fl" for="cf-type">What do you want to build?</label>
         <select class="fs" id="cf-type" name="entry.743240775" required><option value="">Select project type…</option><option>AI-Native Architecture</option><option>RAG / LLM System</option><option>Analytics Dashboard</option><option>Backend API</option><option>EdTech Product</option><option>Healthcare AI</option><option>Something else</option></select>
+
+        <!-- Budget dropdown — options swapped by JS for non-India visitors -->
         <label class="fl" for="cf-budget">Budget range</label>
-        <select class="fs" id="cf-budget" name="entry.1731338020"><option value="">Select budget…</option><option>₹50k–₹1L</option><option>₹1L–₹3L</option><option>₹3L–₹10L</option><option>₹10L+</option><option>Let's discuss</option></select>
+        <select class="fs" id="cf-budget" name="entry.1731338020">
+          <option value="">Select budget…</option>
+          <option data-inr="₹50k–₹1L"    data-usd="$600–$1,200">₹50k–₹1L</option>
+          <option data-inr="₹1L–₹3L"     data-usd="$1,200–$3,600">₹1L–₹3L</option>
+          <option data-inr="₹3L–₹10L"    data-usd="$3,600–$12,000">₹3L–₹10L</option>
+          <option data-inr="₹10L+"       data-usd="$12,000+">₹10L+</option>
+          <option data-inr="Let's discuss" data-usd="Let's discuss">Let's discuss</option>
+        </select>
+
         <label class="fl" for="cf-msg">Tell us about it</label>
         <textarea class="ft" id="cf-msg" name="entry.985408164" placeholder="Describe what you want to build, the problem it solves, and any timeline…" required></textarea>
         <button type="submit" class="submit-btn" id="submit-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>Send message</button>
@@ -909,15 +934,11 @@ window.addEventListener('scroll', () => {
   const s = window.scrollY;
   const total = document.documentElement.scrollHeight - window.innerHeight;
   scrollProg.style.transform = `scaleX(${s / total})`;
-  // Switch to floating pill after 60px scroll
   navWrapper.classList.toggle('floating', s > 60);
   backTop.classList.toggle('show', s > 400);
 }, { passive: true });
 
-/* ── ACTIVE NAV — works on BOTH scroll directions ───── */
-// We use IntersectionObserver with a rootMargin that creates a
-// detection band in the CENTER of the viewport (not just top).
-// The section whose top edge entered that band most recently = active.
+/* ── ACTIVE NAV ───────────────────────────────────────── */
 const sectionIds = ['hero','advantage','products','process','stack','testimonials','why-ai','faq','contact'];
 let activeSection = '';
 
@@ -928,11 +949,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
       updateActiveLink(activeSection);
     }
   });
-}, {
-  // Trigger when the section crosses 30% from top of viewport
-  rootMargin: '-30% 0px -60% 0px',
-  threshold: 0
-});
+}, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
 
 sectionIds.forEach(id => {
   const el = document.getElementById(id);
@@ -970,7 +987,6 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     const target = document.querySelector(link.getAttribute('href'));
     if (target) {
       e.preventDefault();
-      // Account for floating nav height (pill ~52px + 12px padding top)
       const offset = 80;
       window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
     }
@@ -1061,6 +1077,66 @@ window.addEventListener('scroll', () => {
   const s = window.scrollY;
   document.querySelectorAll('.orb').forEach((orb, i) => { orb.style.transform = `translateY(${s * (i + 1) * .025}px)`; });
 }, { passive: true });
+
+/* ════════════════════════════════════════════════════
+   AUTO CURRENCY DETECTION
+   Uses ipapi.co (free, no key) to detect country.
+   Non-India visitors see USD prices automatically.
+   India visitors keep INR (default).
+   Fails silently — INR is always the safe fallback.
+════════════════════════════════════════════════════ */
+(async function detectCurrency() {
+  try {
+    const res = await fetch('https://ipapi.co/json/', {
+      signal: AbortSignal.timeout(5000)
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.country_code && data.country_code !== 'IN') {
+      applyUSD(data.country_code);
+    }
+  } catch (_) {
+    // Network error or timeout — keep INR defaults
+  }
+})();
+
+function applyUSD(countryCode) {
+  // 1. Stats bar: ₹0 → $0
+  const zeroStat = document.getElementById('stat-zero-fees');
+  if (zeroStat) zeroStat.textContent = '$0';
+
+  // 2. FAQ pricing answer
+  const faqPrice = document.getElementById('faq-pricing-answer');
+  if (faqPrice) {
+    faqPrice.textContent = 'Projects typically start at $600 USD for a focused MVP and scale based on scope. We\'re transparent about pricing from the first call — no hidden fees, no retainers unless you want ongoing tuning.';
+  }
+
+  // 3. Budget dropdown — swap option labels to USD
+  const budgetSelect = document.getElementById('cf-budget');
+  if (budgetSelect) {
+    budgetSelect.querySelectorAll('option[data-usd]').forEach(opt => {
+      opt.textContent = opt.dataset.usd;
+      opt.value = opt.dataset.usd; // also update submitted value
+    });
+  }
+
+  // 4. Currency badge on contact form title
+  const cfTitle = document.getElementById('cf-title-el');
+  if (cfTitle && !cfTitle.querySelector('.currency-flag')) {
+    const badge = document.createElement('span');
+    badge.className = 'currency-flag';
+    badge.setAttribute('title', 'Prices shown in USD for your region');
+    badge.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> USD`;
+    cfTitle.appendChild(badge);
+  }
+
+  // 5. Update placeholder in name field to feel international
+  const nameInput = document.getElementById('cf-name');
+  if (nameInput) nameInput.placeholder = 'e.g. Alex Johnson';
+
+  const phoneInput = document.getElementById('cf-phone');
+  if (phoneInput) phoneInput.placeholder = '+1 555 000 0000';
+}
 </script>
 </body>
 </html>
