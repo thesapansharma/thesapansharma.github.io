@@ -2,762 +2,1431 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EvokCode — AI-First Software Agency</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>VixioX — AI-First Software Agency</title>
+<!-- Icons via inline SVG — no CDN dependency -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & TOKENS ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --w: #FFFFFF; --s: #F7F5FF; --s2: #EEF0FF; --s3: #E4E8FF;
+  --ink: #0A0820; --ink2: #2D2B45; --ink3: #6B6890; --ink4: #A8A6C0;
+  --p: #5B47F0; --p2: #7C6AF5; --p3: #EDE9FF; --pb: #2D1EAA;
+  --a: #FF5C8A; --a2: #FFD6E5; --a3: #FFF0F5;
+  --g: #00D4A0; --g2: #E0FFF8;
+  --o: #FF8C42; --o2: #FFF3EA;
+  --brd: 0.5px solid rgba(91,71,240,0.12);
+  --br: 12px; --br2: 20px; --br3: 28px;
+  --nav-h: 60px;
+  --sidebar-w: 240px;
+}
+html { font-size: 14px; scroll-behavior: smooth; }
+body {
+  background: var(--s);
+  color: var(--ink);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  overflow-x: hidden;
+  min-width: 320px;
+}
+img, svg { max-width: 100%; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* ─── ANIMATIONS ─────────────────────────────────── */
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes pulse-ring { 0%{transform:scale(1);opacity:1} 100%{transform:scale(1.6);opacity:0} }
+@keyframes slide-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shimmer { 0%{left:-100%} 100%{left:200%} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes slideDown { from{opacity:0;max-height:0} to{opacity:1;max-height:600px} }
+
+/* ─── LAYOUT SHELL ───────────────────────────────── */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ─── TOP VIEW SWITCHER ──────────────────────────── */
+.view-bar {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--w);
+  border-bottom: var(--brd);
+  box-shadow: 0 1px 8px rgba(91,71,240,0.06);
+}
+.view-bar.visible { display: grid; }
+.vb {
+  padding: 14px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  background: var(--w);
+  color: var(--ink3);
+  border: none;
+  font-family: 'Space Grotesk', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-bottom: 2px solid transparent;
+  transition: all .2s;
+  letter-spacing: .2px;
+}
+.vb i { font-size: 16px; }
+.vb.on { color: var(--p); border-bottom-color: var(--p); background: var(--s); }
+.vb:hover:not(.on) { background: var(--s); color: var(--ink2); }
+.view { display: none; }
+.view.on { display: block; }
+
+/* ─── NAVBAR ─────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.95);
+  border-bottom: var(--brd);
+  position: sticky;
+  top: 0; /* adjusted by JS if view-bar visible */
+  z-index: 90;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 16px rgba(91,71,240,0.06);
+  gap: 16px;
+}
+.nav-left { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.nav-orb {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--p);
+  animation: blink 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--ink);
+  white-space: nowrap;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.brand em {
+  font-style: normal;
+  color: var(--w);
+  background: var(--p);
+  padding: 2px 7px 3px 6px;
+  border-radius: 4px;
+  letter-spacing: 0;
+  margin-left: 2px;
+}
+
+/* Desktop nav links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  justify-content: center;
+}
+.nav-link {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink3);
+  cursor: pointer;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  font-family: 'Space Grotesk', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.nav-link i { font-size: 15px; }
+.nav-link:hover { color: var(--p); background: var(--p3); }
+
+/* Nav right CTA */
+.nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.nav-cta {
+  padding: 9px 18px;
+  border-radius: 10px;
+  background: var(--p);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  white-space: nowrap;
+  transition: background .15s;
+  display: none;
+}
+.nav-cta:hover { background: var(--pb); }
+
+/* Hamburger */
+.hbg {
+  background: var(--p3);
+  border: none;
+  border-radius: 10px;
+  padding: 9px 11px;
+  cursor: pointer;
+  color: var(--p);
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  transition: background .15s;
+}
+.hbg:hover { background: var(--s3); }
+
+/* ─── MOBILE MENU ────────────────────────────────── */
+.mmenu {
+  display: none;
+  flex-direction: column;
+  background: var(--w);
+  border-bottom: var(--brd);
+  position: sticky;
+  top: calc(49px + var(--nav-h));
+  z-index: 88;
+  box-shadow: 0 8px 24px rgba(91,71,240,0.1);
+  overflow: hidden;
+  animation: fadeIn .2s ease;
+}
+.mmenu.open { display: flex; }
+
+.mmenu-inner {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mmi {
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink2);
+  cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all .15s;
+  border: none;
+  background: transparent;
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: left;
+}
+.mmi:hover { color: var(--p); background: var(--p3); }
+.mmi i { font-size: 17px; color: var(--ink4); }
+.mmi:hover i { color: var(--p); }
+
+.mmenu-cta {
+  padding: 8px 8px 12px;
+  border-top: var(--brd);
+}
+.mmenu-cta-btn {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 10px;
+  background: var(--p);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: background .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.mmenu-cta-btn:hover { background: var(--pb); }
+
+/* ─── HERO ───────────────────────────────────────── */
+.hero {
+  padding: clamp(32px,6vw,80px) clamp(20px,5vw,60px) clamp(40px,6vw,80px);
+  background: var(--w);
+  overflow: hidden;
+  position: relative;
+}
+.hero-orbit { position:absolute;top:0;right:-40px;width:clamp(180px,35vw,320px);height:clamp(180px,35vw,320px);border-radius:50%;border:1px dashed rgba(91,71,240,0.15);pointer-events:none; }
+.hero-orbit2 { position:absolute;top:20px;right:-20px;width:clamp(120px,25vw,220px);height:clamp(120px,25vw,220px);border-radius:50%;border:1px dashed rgba(91,71,240,0.1);pointer-events:none; }
+.hero-dot { position:absolute;width:6px;height:6px;border-radius:50%;background:var(--p);top:28px;right:clamp(40px,8vw,80px);animation:float 3s ease-in-out infinite; }
+.hero-dot2 { position:absolute;width:4px;height:4px;border-radius:50%;background:var(--a);top:60px;right:clamp(15px,4vw,30px);animation:float 4s ease-in-out infinite .5s; }
+.hero-dot3 { position:absolute;width:5px;height:5px;border-radius:50%;background:var(--g);top:80px;right:clamp(60px,12vw,110px);animation:float 3.5s ease-in-out infinite 1s; }
+
+.hero-content { max-width: 560px; }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: var(--p3);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--p);
+  margin-bottom: 18px;
+}
+.eyebrow-dot { width:5px;height:5px;border-radius:50%;background:var(--p);animation:blink 2s ease-in-out infinite; }
+.hero h1 {
+  font-size: clamp(28px, 5.5vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+.hero h1 em { font-style: normal; color: var(--p); }
+.hero p {
+  font-size: clamp(13px, 1.6vw, 16px);
+  color: var(--ink3);
+  line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 440px;
+}
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-primary {
+  padding: 14px 24px;
+  border-radius: var(--br);
+  background: var(--p);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: .1px;
+  position: relative;
+  overflow: hidden;
+  transition: all .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.btn-primary::after { content:'';position:absolute;top:0;left:-100%;width:40%;height:100%;background:rgba(255,255,255,0.15);transform:skewX(-20deg);animation:shimmer 3s ease-in-out infinite 1s; }
+.btn-primary:hover { background: var(--pb); transform: translateY(-1px); }
+.btn-ghost {
+  padding: 13px 22px;
+  border-radius: var(--br);
+  background: transparent;
+  border: 1.5px solid rgba(91,71,240,0.25);
+  color: var(--p);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.btn-ghost:hover { background: var(--p3); border-color: var(--p); transform: translateY(-1px); }
+
+/* ─── STATS ──────────────────────────────────────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(91,71,240,0.08);
+  border-top: var(--brd);
+  border-bottom: var(--brd);
+}
+.stat { background: var(--w); padding: 20px 14px; text-align: center; }
+.sv { font-family: 'Space Grotesk', sans-serif; font-size: clamp(22px,4vw,32px); font-weight: 700; letter-spacing: -1px; color: var(--ink); }
+.sv em { font-style: normal; color: var(--p); }
+.sl { font-size: 10px; color: var(--ink4); margin-top: 3px; text-transform: uppercase; letter-spacing: .6px; font-weight: 500; }
+
+/* ─── SECTIONS ───────────────────────────────────── */
+.sec { padding: clamp(32px,5vw,64px) clamp(20px,5vw,60px); }
+.sec-lbl { display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--p);margin-bottom:10px; }
+.sec-lbl::before { content:'';width:16px;height:2px;border-radius:1px;background:var(--p); }
+.sec h2 { font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,4vw,36px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px;color:var(--ink); }
+.sec p { font-size:clamp(13px,1.5vw,15px);color:var(--ink3);line-height:1.7;margin-bottom:20px; }
+
+/* ─── ADVANTAGE / COMPARE ────────────────────────── */
+.adv-bg { background: var(--s); border-top: var(--brd); border-bottom: var(--brd); }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(91,71,240,0.08); }
+.compare-us { background: var(--w); padding: clamp(16px,3vw,28px) clamp(14px,3vw,24px); }
+.compare-them { background: var(--s); padding: clamp(16px,3vw,28px) clamp(14px,3vw,24px); }
+.col-label { font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:5px; }
+.col-label.us { color: var(--p); }
+.col-label.them { color: var(--ink4); }
+.ai { display:flex;align-items:flex-start;gap:8px;margin-bottom:12px; }
+.ai-ico { font-size:13px;flex-shrink:0;margin-top:1px; }
+.ai strong { display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:2px; }
+.ai span { font-size:11px;color:var(--ink4);line-height:1.5; }
+.ai-them strong { color: var(--ink4); }
+
+.quote-box { padding: clamp(20px,4vw,36px) clamp(20px,4vw,40px); background: var(--p); position: relative; overflow: hidden; }
+.quote-box::before { content:'\201C';position:absolute;top:-10px;left:10px;font-size:100px;color:rgba(255,255,255,0.08);font-family:Georgia,serif;line-height:1; }
+.quote-text { font-size:clamp(14px,2vw,18px);font-weight:500;color:white;line-height:1.6;margin-bottom:8px;position:relative; }
+.quote-by { font-size:11px;color:rgba(255,255,255,0.6);font-family:'Space Mono',monospace;position:relative; }
+
+.pillars { display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:clamp(18px,3vw,32px);background:var(--w); }
+.pillar { background:var(--s);border:var(--brd);border-radius:var(--br);padding:clamp(14px,2vw,20px);transition:all .2s;cursor:default; }
+.pillar:hover { background:var(--p3);border-color:rgba(91,71,240,0.25);transform:translateY(-2px); }
+.pillar-icon { width:36px;height:36px;border-radius:10px;background:var(--p3);display:flex;align-items:center;justify-content:center;margin-bottom:10px;color:var(--p);font-size:17px; }
+.pillar-title { font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px; }
+.pillar-desc { font-size:11px;color:var(--ink3);line-height:1.5; }
+
+/* ─── PRODUCTS ───────────────────────────────────── */
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 0 clamp(20px,5vw,60px) clamp(32px,5vw,60px);
+}
+.product-card {
+  background: var(--w);
+  border: var(--brd);
+  border-radius: var(--br2);
+  padding: clamp(18px,3vw,28px);
+  transition: all .2s;
+  animation: slide-up .4s ease both;
+}
+.product-card:hover { transform: translateY(-2px); border-color: rgba(91,71,240,0.25); box-shadow: 0 8px 32px rgba(91,71,240,0.08); }
+.product-card.flagship { border: 1.5px solid rgba(91,71,240,0.3); background: linear-gradient(135deg,var(--w) 0%,var(--p3) 100%); }
+
+.pc-top { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px; }
+.pc-icon { width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0; }
+.bdg { display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.2px; }
+.bdg-p { background:var(--p3);color:var(--pb); }
+.bdg-g { background:var(--g2);color:#007B5C; }
+.bdg-a { background:var(--a2);color:#C0234E; }
+.bdg-o { background:var(--o2);color:#B05400; }
+.pc-title { font-family:'Space Grotesk',sans-serif;font-size:clamp(16px,2.5vw,20px);font-weight:700;letter-spacing:-.4px;margin-bottom:6px;color:var(--ink); }
+.pc-desc { font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:12px; }
+.pc-domain { font-size:10px;color:var(--ink4);font-family:'Space Mono',monospace;margin-bottom:12px;display:flex;align-items:center;gap:5px; }
+.pc-domain i { font-size:12px;color:var(--p); }
+.pc-tech { display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px; }
+.pc-tech span { padding:3px 9px;border-radius:6px;font-size:10px;background:var(--s2);border:0.5px solid rgba(91,71,240,0.12);color:var(--p2);font-family:'Space Mono',monospace;font-weight:700; }
+.prog-label { display:flex;justify-content:space-between;font-size:10px;font-weight:600;margin-bottom:6px; }
+.prog-label span:first-child { color:var(--ink3); }
+.prog-label span:last-child { color:var(--p);font-family:'Space Mono',monospace; }
+.prog-track { height:4px;background:var(--s2);border-radius:2px;margin-bottom:14px;overflow:hidden; }
+.prog-fill { height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+.notif-row { display:flex;gap:8px; }
+.notif-inp { flex:1;background:var(--s);border:var(--brd);border-radius:9px;padding:10px 13px;color:var(--ink);font-size:12px;font-family:'Space Grotesk',sans-serif;outline:none;min-width:0;transition:border-color .2s; }
+.notif-inp:focus { border-color:rgba(91,71,240,.4); }
+.notif-inp::placeholder { color:var(--ink4); }
+.notif-btn { padding:10px 16px;border-radius:9px;background:var(--p);color:white;font-size:11px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;font-family:'Space Grotesk',sans-serif;flex-shrink:0;transition:all .15s;letter-spacing:.2px; }
+.notif-btn:hover { background:var(--pb); }
+
+/* ─── PROCESS ────────────────────────────────────── */
+.proc-wrap { background:var(--s);border-top:var(--brd);border-bottom:var(--brd); }
+.proc-item { display:flex;gap:14px;padding:20px clamp(20px,5vw,60px) 0; }
+.proc-num { font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--p);width:28px;flex-shrink:0;padding-top:2px; }
+.proc-dot { width:10px;height:10px;border-radius:50%;background:var(--p);flex-shrink:0; }
+.proc-body { padding-bottom:20px; }
+.proc-title { font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px; }
+.proc-desc { font-size:13px;color:var(--ink3);line-height:1.6; }
+
+/* ─── TECH GRID ──────────────────────────────────── */
+.tech-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(91,71,240,0.08);border-radius:var(--br2);overflow:hidden;margin-top:18px; }
+.tech-it { background:var(--w);padding:18px 10px;text-align:center;transition:background .2s;cursor:default; }
+.tech-it:hover { background:var(--p3); }
+.ti-icon { font-size:20px;color:var(--p);margin-bottom:7px; }
+.ti-name { font-size:10px;color:var(--ink3);font-weight:600;letter-spacing:.2px; }
+
+/* ─── CONTACT ────────────────────────────────────── */
+.contact-info-row { display:flex;align-items:center;gap:12px;margin-bottom:14px; }
+.ci-icon { width:38px;height:38px;border-radius:10px;background:var(--p3);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.ci-icon i { font-size:17px;color:var(--p); }
+.ci-label { font-size:10px;color:var(--ink4);font-weight:600;text-transform:uppercase;letter-spacing:.4px; }
+.ci-val { font-size:14px;font-weight:500;color:var(--ink); }
+.cf { background:var(--w);border:var(--brd);border-radius:var(--br2);padding:clamp(18px,3vw,28px);margin-top:20px; }
+.cf-title { font-size:16px;font-weight:700;letter-spacing:-.3px;margin-bottom:18px;color:var(--ink);display:flex;align-items:center;gap:8px; }
+.fl { font-size:10px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px; }
+.fi,.fs,.ft { width:100%;padding:11px 14px;background:var(--s);border:var(--brd);border-radius:var(--br);color:var(--ink);font-size:13px;font-family:'Space Grotesk',sans-serif;outline:none;margin-bottom:13px;transition:border-color .2s; }
+.fi:focus,.fs:focus,.ft:focus { border-color:rgba(91,71,240,.4);background:var(--w); }
+.ft { min-height:80px;resize:vertical;line-height:1.5; }
+.fs option { background:var(--w); }
+
+/* ─── TESTIMONIALS ───────────────────────────────── */
+.testi-grid { display:grid;grid-template-columns:1fr;gap:14px;margin-top:24px; }
+@media(min-width:768px){ .testi-grid { grid-template-columns:repeat(3,1fr); } }
+.testi-card { background:var(--s);border:var(--brd);border-radius:var(--br2);padding:clamp(16px,2.5vw,22px);display:flex;flex-direction:column;gap:12px;transition:border-color .2s; }
+.testi-card:hover { border-color:rgba(91,71,240,.2); }
+.testi-stars { color:#F5A623;font-size:14px;letter-spacing:2px; }
+.testi-text { font-size:13px;line-height:1.7;color:var(--ink2);flex:1; }
+.testi-author { display:flex;align-items:center;gap:10px; }
+.testi-av { width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0; }
+.testi-name { font-size:12px;font-weight:600;color:var(--ink); }
+.testi-role { font-size:10px;color:var(--p);font-weight:500;margin-top:2px; }
+
+/* ─── WHY AI-NATIVE ──────────────────────────────── */
+.why-grid { display:grid;grid-template-columns:1fr;gap:14px;margin-top:24px; }
+@media(min-width:768px){ .why-grid { grid-template-columns:repeat(2,1fr); } }
+.why-card { background:var(--w);border:var(--brd);border-radius:var(--br2);padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:10px; }
+.why-num { font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--p);letter-spacing:.5px; }
+.why-title { font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.2px; }
+.why-body { font-size:13px;line-height:1.75;color:var(--ink3); }
+
+/* ─── FAQ ────────────────────────────────────────── */
+.faq-list { margin-top:24px;display:flex;flex-direction:column;gap:0;border:var(--brd);border-radius:var(--br2);overflow:hidden; }
+.faq-item { border-bottom:var(--brd); }
+.faq-item:last-child { border-bottom:none; }
+.faq-q { display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;gap:12px;transition:background .15s; }
+.faq-q:hover { background:var(--s); }
+.faq-q span { font-size:14px;font-weight:600;color:var(--ink);flex:1; }
+.faq-arrow { color:var(--ink4);flex-shrink:0;transition:transform .2s; }
+.faq-item.open .faq-arrow { transform:rotate(180deg); }
+.faq-a { display:none;padding:0 20px 18px;font-size:13px;line-height:1.75;color:var(--ink3); }
+.faq-item.open .faq-a { display:block; }
+
+
+.foot { padding: clamp(28px,4vw,48px) clamp(20px,5vw,60px); border-top:var(--brd);background:var(--w);text-align:center; }
+.foot-brand { font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;color:var(--ink); }
+.foot-brand em { font-style:normal;color:var(--w);background:var(--p);padding:2px 7px 3px 6px;border-radius:4px;letter-spacing:0;margin-left:2px; }
+.foot-links { display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:14px; }
+.foot-links a { font-size:10px;color:var(--ink4);text-decoration:none;font-family:'Space Mono',monospace;padding:3px 8px;border-radius:5px;background:var(--s2);transition:all .15s; }
+.foot-links a:hover { color:var(--p);background:var(--p3); }
+.foot-copy { font-size:11px;color:var(--ink4); }
+
+/* ─── CMS ────────────────────────────────────────── */
+.cms { background:var(--s); min-height: 100vh; }
+.cms-nav { display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--w);border-bottom:var(--brd); position:sticky; top:0; z-index: 85; }
+.cms-logo { font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;color:var(--ink2);font-family:'Space Grotesk',sans-serif; }
+.cms-logo i { color:var(--p);font-size:16px; }
+.cms-usr { display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3); }
+.cms-av { width:30px;height:30px;border-radius:50%;background:var(--p3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--p); }
+.cms-tabs { display:flex;overflow-x:auto;gap:0;background:var(--w);border-bottom:var(--brd);scrollbar-width:none; position:sticky; top:calc(49px + 57px); z-index: 84; }
+.cms-tabs::-webkit-scrollbar { display:none; }
+.ctab { display:flex;align-items:center;gap:5px;padding:12px 14px;font-size:11px;cursor:pointer;color:var(--ink4);white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;background:transparent;font-family:'Space Grotesk',sans-serif;border-right:var(--brd);font-weight:500;border-top:none;border-left:none; }
+.ctab:hover { color:var(--p);background:var(--p3); }
+.ctab.on { color:var(--p);border-bottom-color:var(--p);background:var(--p3); }
+.ctab i { font-size:14px; }
+.cms-body { padding:16px clamp(14px,3vw,24px); max-width: 100%; }
+.cms-pg { display:none; }
+.cms-pg.on { display:block; }
+.cms-h { font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between; }
+.add-btn { display:flex;align-items:center;gap:4px;padding:6px 13px;border-radius:8px;background:var(--p);color:white;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:background .15s; }
+.add-btn:hover { background:var(--pb); }
+.cms-card { background:var(--w);border:var(--brd);border-radius:var(--br);padding:14px;margin-bottom:10px;transition:border-color .15s; }
+.cms-card:hover { border-color:rgba(91,71,240,.2); }
+.cc-head { display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px; }
+.cc-title { font-size:13px;font-weight:600;color:var(--ink); }
+.cc-sub { font-size:10px;color:var(--ink4);margin-top:2px;font-family:'Space Mono',monospace; }
+.act { padding:5px 10px;border-radius:6px;font-size:11px;border:var(--brd);background:var(--s);color:var(--ink3);cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:3px;font-weight:500; }
+.act.del { color:#C0234E;border-color:rgba(192,35,78,.2);background:var(--a3); }
+.cms-f { margin-bottom:10px; }
+.cms-f label { font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;font-weight:600; }
+.cms-f input,.cms-f select,.cms-f textarea { width:100%;padding:9px 11px;background:var(--s);border:var(--brd);border-radius:8px;color:var(--ink);font-size:12px;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .15s; }
+.cms-f input:focus,.cms-f select:focus,.cms-f textarea:focus { border-color:rgba(91,71,240,.35);background:var(--w); }
+.cms-f textarea { min-height:56px;resize:vertical;line-height:1.5; }
+.cms-f select option { background:var(--w); }
+.cms-save { width:100%;padding:11px;border-radius:var(--br);background:var(--p);color:white;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;margin-top:4px;transition:all .15s;letter-spacing:.2px; }
+.cms-save:hover { background:var(--pb); }
+.st { display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600; }
+.st-p { background:var(--p3);color:var(--pb); }
+.st-g { background:var(--g2);color:#007B5C; }
+.st-o { background:var(--o2);color:#B05400; }
+.st-d { background:var(--s2);color:var(--ink4); }
+.cms-metrics { display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px; }
+.cm { background:var(--w);border:var(--brd);border-radius:var(--br);padding:12px; }
+.cm-l { font-size:10px;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:600; }
+.cm-v { font-size:22px;font-weight:700;font-family:'Space Grotesk',sans-serif;letter-spacing:-.5px; }
+.tgl-row { display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:var(--brd); }
+.tgl-row:last-child { border-bottom:none; }
+.tgl-t { font-size:13px;font-weight:500;color:var(--ink); }
+.tgl-s { font-size:11px;color:var(--ink4);margin-top:2px; }
+.tgl { position:relative;width:38px;height:22px;flex-shrink:0; }
+.tgl input { opacity:0;width:0;height:0; }
+.tgl-track { position:absolute;inset:0;background:var(--s2);border-radius:11px;cursor:pointer;border:var(--brd);transition:background .2s; }
+.tgl input:checked+.tgl-track { background:var(--p); }
+.tgl-thumb { position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:var(--w);border-radius:50%;transition:.2s;pointer-events:none; }
+.tgl input:checked~.tgl-thumb { left:19px; }
+.lead-card { background:var(--w);border:var(--brd);border-radius:var(--br);padding:12px;margin-bottom:8px;transition:border-color .15s; }
+.lead-card:hover { border-color:rgba(91,71,240,.2); }
+
+/* ─── RESPONSIVE BREAKPOINTS ─────────────────────── */
+
+/* ≥768px — tablet */
+@media (min-width: 768px) {
+  .nav-cta { display: flex; }
+  .stats { grid-template-columns: repeat(4, 1fr); }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .pillars { grid-template-columns: repeat(4, 1fr); }
+  .cms-metrics { grid-template-columns: repeat(4, 1fr); }
+  .tech-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* ≥1024px — desktop */
+@media (min-width: 1024px) {
+  .hbg { display: none; }
+  .nav-links { display: flex; }
+  .products-grid { grid-template-columns: repeat(3, 1fr); }
+  .compare-grid { grid-template-columns: 1fr 1fr; }
+  .tech-grid { grid-template-columns: repeat(9, 1fr); }
+}
+
+/* <1024px — hide desktop nav links, show hamburger */
+@media (max-width: 1023px) {
+  .nav-links { display: none; }
+}
+
+/* Small mobile */
+@media (max-width: 400px) {
+  .btn-row { flex-direction: column; }
+  .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .compare-grid { grid-template-columns: 1fr; }
+}
+
+/* Zoom-safe: use rem not px for nav height calc */
+@media (min-resolution: 1.5dppx) {
+  :root { --brd: 0.5px solid rgba(91,71,240,0.14); }
+}
+
+/* Prevent overflow at any zoom */
+.nav, .view-bar, .mmenu {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+</style>
 </head>
 <body>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080810;--bg2:#0E0E1C;--bg3:#161628;--bg4:#1E1E34;
-  --fg:#EEEAF0;--fg2:#9B97AC;--fg3:#58566A;
-  --gold:#C9A86C;--goldb:#7A6030;--goldf:#FFF7E6;
-  --gr:#22C55E;--bl:#60A5FA;--pu:#A78BFA;--re:#F87171;
-  --brd:0.5px solid rgba(255,255,255,0.07);--br:10px;--br2:16px;
-}
-body{background:var(--bg);color:var(--fg);font-family:'Outfit',system-ui,sans-serif;font-size:14px;overflow-x:hidden}
-.view{display:none}.view.on{display:block}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
+<h2 class="sr-only">VixioX — AI-First Software Agency</h2>
 
+<!-- ── VIEW SWITCHER (sticky top) ── -->
+<div class="view-bar" role="tablist">
+  <button class="vb on" role="tab" aria-selected="true" onclick="switchV('site',this)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Live site
+  </button>
+  <button class="vb" role="tab" aria-selected="false" onclick="switchV('cms',this)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>CMS panel
+  </button>
+</div>
 
-/* NAV */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:rgba(8,8,16,.95);border-bottom:var(--brd);position:sticky;top:0;z-index:40}
-.brand{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.5px}
-.brand em{font-style:normal;color:var(--gold)}
-.hbg{background:var(--bg3);border:var(--brd);border-radius:8px;padding:7px 9px;cursor:pointer;color:var(--fg2);font-size:16px;line-height:1;display:flex;align-items:center}
-.mmenu{display:none;flex-direction:column;background:var(--bg2);border-bottom:var(--brd)}
-.mmenu.open{display:flex}
-.mmi{padding:12px 20px;font-size:13px;color:var(--fg2);cursor:pointer;border-bottom:var(--brd);transition:color .15s}
-.mmi:hover{color:var(--fg)}
-.mmi:last-child{border-bottom:none}
-
-/* HERO */
-.hero{padding:44px 20px 36px;text-align:center}
-.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border:0.5px solid rgba(201,168,108,.4);border-radius:20px;font-size:11px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
-.pulse{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:p 2s ease-in-out infinite}
-@keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(28px,7vw,40px);font-weight:800;line-height:1.08;letter-spacing:-1px;margin-bottom:14px}
-.hero h1 em{font-style:normal;color:var(--gold)}
-.hero p{font-size:13px;color:var(--fg2);line-height:1.7;margin-bottom:26px;max-width:310px;margin-left:auto;margin-right:auto}
-.btn-g{display:block;width:100%;padding:13px;border-radius:var(--br);background:var(--gold);color:#07050A;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'Syne',sans-serif;margin-bottom:8px;letter-spacing:-.2px;transition:opacity .15s}
-.btn-g:hover{opacity:.86}
-.btn-o{display:block;width:100%;padding:12px;border-radius:var(--br);border:var(--brd);background:transparent;color:var(--fg2);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
-.btn-o:hover{color:var(--fg);border-color:rgba(255,255,255,.15)}
-
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,.05);border-top:var(--brd);border-bottom:var(--brd)}
-.stat{background:var(--bg2);padding:16px 12px;text-align:center}
-.sv{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px}
-.sv em{font-style:normal;color:var(--gold)}
-.sl{font-size:10px;color:var(--fg3);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
-
-/* SECTION */
-.sec{padding:32px 20px}
-.sec-lbl{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.sec h2{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,30px);font-weight:800;letter-spacing:-.5px;line-height:1.12;margin-bottom:10px}
-.sec p{font-size:13px;color:var(--fg2);line-height:1.65;margin-bottom:20px}
-
-/* AI ADVANTAGE */
-.adv-section{background:var(--bg2);border-top:var(--brd);border-bottom:var(--brd)}
-.adv-intro{padding:32px 20px 20px}
-.adv-intro h2{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,30px);font-weight:800;letter-spacing:-.5px;line-height:1.12;margin-bottom:10px}
-.adv-intro p{font-size:13px;color:var(--fg2);line-height:1.65}
-.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.05);margin-bottom:0}
-.compare-col{padding:18px 16px;background:var(--bg2)}
-.compare-col.them{background:var(--bg)}
-.col-hd{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.col-hd.us{color:var(--gold)}
-.col-hd.them{color:var(--fg3)}
-.adv-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
-.adv-item i{font-size:14px;flex-shrink:0;margin-top:1px}
-.adv-item-text{font-size:12px;line-height:1.5}
-.adv-item-text strong{display:block;font-weight:600;font-size:12px;margin-bottom:1px}
-.adv-item-text span{color:var(--fg3);font-size:11px}
-.ai-pillars{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:20px;background:var(--bg)}
-.pillar{background:var(--bg2);border:var(--brd);border-radius:var(--br);padding:14px}
-.pillar-icon{font-size:22px;margin-bottom:8px}
-.pillar-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:5px}
-.pillar-desc{font-size:11px;color:var(--fg2);line-height:1.55}
-.pillar.highlight{border-color:rgba(201,168,108,.35);background:rgba(201,168,108,.04)}
-.quote-strip{padding:20px;background:var(--bg3);border-top:var(--brd);border-bottom:var(--brd)}
-.quote-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.2px;line-height:1.4;margin-bottom:8px;color:var(--fg)}
-.quote-sub{font-size:12px;color:var(--fg3)}
-
-/* PRODUCTS */
-.product-card{background:var(--bg2);border:var(--brd);border-radius:var(--br2);padding:20px;margin:0 20px 12px;position:relative}
-.product-card.flag{border-color:rgba(201,168,108,.35);background:rgba(201,168,108,.03)}
-.pc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
-.pc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.bdg{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500}
-.bdg-gold{background:rgba(201,168,108,.13);color:var(--gold);border:0.5px solid rgba(201,168,108,.3)}
-.bdg-gr{background:rgba(34,197,94,.1);color:#4ADE80;border:0.5px solid rgba(34,197,94,.2)}
-.bdg-pu{background:rgba(167,139,250,.1);color:var(--pu);border:0.5px solid rgba(167,139,250,.2)}
-.pc-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:5px}
-.pc-desc{font-size:12px;color:var(--fg2);line-height:1.6;margin-bottom:10px}
-.pc-domain{font-size:10px;color:var(--fg3);font-family:'JetBrains Mono',monospace;margin-bottom:10px}
-.pc-tech{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
-.pc-tech span{padding:2px 7px;border-radius:4px;font-size:10px;background:rgba(255,255,255,.04);border:var(--brd);color:var(--fg3);font-family:'JetBrains Mono',monospace}
-.prog-label{display:flex;justify-content:space-between;font-size:10px;color:var(--fg3);margin-bottom:5px}
-.prog-track{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-bottom:14px;overflow:hidden}
-.prog-fill{height:100%;border-radius:2px}
-.notif-row{display:flex;gap:7px;flex-wrap:wrap}
-.notif-inp{flex:1;min-width:160px;background:var(--bg3);border:var(--brd);border-radius:8px;padding:9px 11px;color:var(--fg);font-size:12px;font-family:'Outfit',sans-serif;outline:none;min-width:0}
-.notif-inp::placeholder{color:var(--fg3)}
-.notif-btn{padding:9px 13px;border-radius:8px;background:var(--gold);color:#07050A;font-size:11px;font-weight:600;border:none;cursor:pointer;white-space:nowrap;font-family:'Syne',sans-serif;flex-shrink:0}
-
-/* PROCESS */
-.proc-item{display:flex;gap:14px;padding:0 20px;margin-bottom:20px}
-.proc-num{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:rgba(201,168,108,.18);line-height:1;width:36px;flex-shrink:0}
-.proc-body{}
-.proc-title{font-weight:600;font-size:14px;margin-bottom:4px}
-.proc-desc{font-size:12px;color:var(--fg2);line-height:1.6}
-
-/* TECH */
-.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);border-radius:var(--br2);overflow:hidden}
-.tech-it{background:var(--bg2);padding:16px 8px;text-align:center}
-.ti-icon{font-size:20px;margin-bottom:6px}
-.ti-name{font-size:10px;color:var(--fg3)}
-
-/* CONTACT */
-.ci-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.ci-icon{width:36px;height:36px;border-radius:9px;background:var(--bg3);border:var(--brd);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ci-icon i{font-size:16px;color:var(--gold)}
-.ci-label{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px}
-.ci-val{font-size:13px;font-weight:500}
-.cf{background:var(--bg2);border:var(--brd);border-radius:var(--br2);padding:20px;margin-top:20px}
-.fl{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px}
-.fi,.fs,.ft{width:100%;padding:9px 12px;background:var(--bg3);border:var(--brd);border-radius:var(--br);color:var(--fg);font-size:13px;font-family:'Outfit',sans-serif;outline:none;margin-bottom:12px}
-.ft{min-height:70px;resize:vertical;line-height:1.5}
-.fs option{background:var(--bg2)}
-
-/* FOOTER */
-.foot{padding:24px 20px;border-top:var(--brd);text-align:center}
-.foot-brand{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:12px}
-.foot-brand em{font-style:normal;color:var(--gold)}
-.foot-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:14px}
-.foot-links a{font-size:10px;color:var(--fg3);text-decoration:none;font-family:'JetBrains Mono',monospace}
-.foot-copy{font-size:11px;color:var(--fg3)}
-
-/* CMS */
-.cms{background:var(--bg);min-height:100vh}
-.cms-nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border-bottom:var(--brd)}
-.cms-logo{font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px;color:var(--fg2)}
-.cms-logo i{color:var(--gold);font-size:15px}
-.cms-usr{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--fg2)}
-.cms-av{width:26px;height:26px;border-radius:50%;background:rgba(201,168,108,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold)}
-.cms-tabs{display:flex;overflow-x:auto;gap:2px;padding:8px 12px;background:var(--bg2);border-bottom:var(--brd);scrollbar-width:none}
-.cms-tabs::-webkit-scrollbar{display:none}
-.ctab{display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:8px;font-size:11px;cursor:pointer;color:var(--fg3);white-space:nowrap;border:0.5px solid transparent;transition:all .15s;background:transparent;font-family:'Outfit',sans-serif}
-.ctab:hover{background:var(--bg3);color:var(--fg2)}
-.ctab.on{background:var(--bg3);border-color:rgba(201,168,108,.3);color:var(--gold);font-weight:500}
-.ctab i{font-size:13px}
-.cms-body{padding:14px}
-.cms-pg{display:none}.cms-pg.on{display:block}
-.cms-h{font-size:13px;font-weight:500;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-.add-btn{display:flex;align-items:center;gap:4px;padding:6px 11px;border-radius:7px;background:var(--gold);color:#07050A;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'Syne',sans-serif}
-.cms-card{background:var(--bg3);border:var(--brd);border-radius:var(--br);padding:14px;margin-bottom:10px}
-.cc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
-.cc-title{font-size:13px;font-weight:500}
-.cc-sub{font-size:10px;color:var(--fg3);margin-top:2px;font-family:'JetBrains Mono',monospace}
-.cc-acts{display:flex;gap:5px;flex-shrink:0}
-.act{padding:5px 9px;border-radius:6px;font-size:11px;border:var(--brd);background:var(--bg4);color:var(--fg2);cursor:pointer;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:3px}
-.act.del{color:var(--re);border-color:rgba(248,113,113,.2)}
-.cms-f{margin-bottom:10px}
-.cms-f label{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px}
-.cms-f input,.cms-f select,.cms-f textarea{width:100%;padding:8px 10px;background:var(--bg4);border:var(--brd);border-radius:7px;color:var(--fg);font-size:12px;font-family:'Outfit',sans-serif;outline:none}
-.cms-f textarea{min-height:55px;resize:vertical;line-height:1.5}
-.cms-f select option{background:var(--bg2)}
-.cms-save{width:100%;padding:11px;border-radius:var(--br);background:var(--gold);color:#07050A;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'Syne',sans-serif;margin-top:4px}
-.st{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 8px;border-radius:20px}
-.st-live{background:rgba(34,197,94,.1);color:#4ADE80}
-.st-cs{background:rgba(201,168,108,.1);color:var(--gold)}
-.st-dr{background:rgba(90,88,112,.2);color:var(--fg3)}
-.cms-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
-.cm{background:var(--bg3);border-radius:var(--br);padding:12px}
-.cm-l{font-size:10px;color:var(--fg3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.cm-v{font-size:20px;font-weight:600;font-family:'Syne',sans-serif}
-.tgl-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:var(--brd)}
-.tgl-row:last-child{border-bottom:none}
-.tgl-info{}
-.tgl-t{font-size:13px}
-.tgl-s{font-size:10px;color:var(--fg3);margin-top:2px}
-.tgl{position:relative;width:36px;height:20px;flex-shrink:0}
-.tgl input{opacity:0;width:0;height:0}
-.tgl-track{position:absolute;inset:0;background:var(--bg4);border-radius:10px;cursor:pointer;border:var(--brd);transition:background .2s}
-.tgl input:checked+.tgl-track{background:var(--gold)}
-.tgl-thumb{position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:var(--fg);border-radius:50%;transition:.2s;pointer-events:none}
-.tgl input:checked~.tgl-thumb{left:19px}
-.lead-card{background:var(--bg3);border:var(--brd);border-radius:var(--br);padding:12px;margin-bottom:8px}
-</style>
-
-<h2 class="sr-only">EvokCode agency — mobile-first site with AI advantage section, coming soon products with SchoolBrain in pipeline, plus a fully mobile-friendly CMS admin panel</h2>
-
-
-
-<!-- ═══════════════════════════ SITE ═══════════════════════════ -->
+<!-- ══════════════════════════════════════ SITE VIEW ══ -->
 <div id="v-site" class="view on">
 
-<div class="nav">
-  <div class="brand">Evoke<em>Code</em></div>
-  <button class="hbg" onclick="toggleM()" aria-label="Open menu"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
-</div>
-<div class="mmenu" id="mm">
-  <div class="mmi" onclick="goTo('hero')">Home</div>
-  <div class="mmi" onclick="goTo('advantage')">Why us</div>
-  <div class="mmi" onclick="goTo('products')">Products</div>
-  <div class="mmi" onclick="goTo('process')">Process</div>
-  <div class="mmi" onclick="goTo('contact')">Contact</div>
+<!-- Sticky Navbar -->
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-left">
+    <div class="brand">VIXIO<em>X</em></div>
+  </div>
+
+  <!-- Desktop links -->
+  <div class="nav-links">
+    <button class="nav-link" onclick="goS('hero')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+    </button>
+    <button class="nav-link" onclick="goS('advantage')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Why us
+    </button>
+    <button class="nav-link" onclick="goS('products')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="9" rx="2"/><rect x="13" y="2" width="9" height="9" rx="2"/><rect x="2" y="13" width="9" height="9" rx="2"/><rect x="13" y="13" width="9" height="9" rx="2"/></svg>Products
+    </button>
+    <button class="nav-link" onclick="goS('process')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><polyline points="3 6 4 7 6 5"/><polyline points="3 12 4 13 6 11"/><polyline points="3 18 4 19 6 17"/></svg>Process
+    </button>
+    <button class="nav-link" onclick="goS('stack')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Stack
+    </button>
+    <button class="nav-link" onclick="goS('contact')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Contact
+    </button>
+    <button class="nav-link" onclick="goS('faq')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ
+    </button>
+  </div>
+
+  <div class="nav-right">
+    <button class="nav-cta" onclick="goS('contact')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>Start a project
+    </button>
+    <button class="hbg" onclick="toggleM()" aria-label="Open menu" aria-expanded="false" id="hbg-btn">
+      <svg id="hbg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mmenu" id="mm" role="navigation" aria-label="Mobile navigation">
+  <div class="mmenu-inner">
+    <button class="mmi" onclick="goS('hero')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+    </button>
+    <button class="mmi" onclick="goS('advantage')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Why us
+    </button>
+    <button class="mmi" onclick="goS('products')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="9" rx="2"/><rect x="13" y="2" width="9" height="9" rx="2"/><rect x="2" y="13" width="9" height="9" rx="2"/><rect x="13" y="13" width="9" height="9" rx="2"/></svg>Products
+    </button>
+    <button class="mmi" onclick="goS('process')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><polyline points="3 6 4 7 6 5"/><polyline points="3 12 4 13 6 11"/><polyline points="3 18 4 19 6 17"/></svg>Process
+    </button>
+    <button class="mmi" onclick="goS('stack')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Stack
+    </button>
+    <button class="mmi" onclick="goS('contact')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Contact
+    </button>
+  </div>
+  <div class="mmenu-cta">
+    <button class="mmenu-cta-btn" onclick="goS('contact')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>Start a project
+    </button>
+  </div>
 </div>
 
-<!-- HERO -->
-<div class="hero" id="hero">
-  <div class="eyebrow"><span class="pulse"></span>AI-First Software Agency</div>
-  <h1>We don't just build software.<br>We build <em>intelligent</em> systems.</h1>
-  <p>While others write code, we architect AI-native products that think, learn, and scale — shipped to your own subdomain in days, not months.</p>
-  <button class="btn-g" onclick="goTo('advantage')">See why we're different</button>
-  <button class="btn-o" onclick="goTo('contact')">Start a project</button>
-</div>
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-orbit" aria-hidden="true"></div>
+  <div class="hero-orbit2" aria-hidden="true"></div>
+  <div class="hero-dot" aria-hidden="true"></div>
+  <div class="hero-dot2" aria-hidden="true"></div>
+  <div class="hero-dot3" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>AI-first software agency</div>
+    <h1>Vision meets execution.<br>We build <em>AI-native</em> architecture.</h1>
+    <p>VixioX is an AI-first engineering studio. We design, build and ship intelligent systems — local LLMs, RAG pipelines, multi-agent workflows, and production-grade backends — built AI-native from the ground up, not bolted on.</p>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goS('advantage')">
+        <i class="ti ti-rocket" aria-hidden="true"></i>See why we're different
+      </button>
+      <button class="btn-ghost" onclick="goS('contact')">Start a project</button>
+    </div>
+  </div>
+</section>
 
-<!-- STATS -->
+<!-- Stats -->
 <div class="stats">
-  <div class="stat"><div class="sv">7<em>+</em></div><div class="sl">AI products built</div></div>
-  <div class="stat"><div class="sv">48<em>h</em></div><div class="sl">MVP turnaround</div></div>
-  <div class="stat"><div class="sv">100<em>%</em></div><div class="sl">AI-powered core</div></div>
+  <div class="stat"><div class="sv">7<em>+</em></div><div class="sl">Products in pipeline</div></div>
+  <div class="stat"><div class="sv">48<em>h</em></div><div class="sl">MVP delivery</div></div>
+  <div class="stat"><div class="sv">100<em>%</em></div><div class="sl">AI-native core</div></div>
   <div class="stat"><div class="sv">0<em>₹</em></div><div class="sl">Hidden fees</div></div>
 </div>
 
-<!-- AI ADVANTAGE SECTION -->
-<div class="adv-section" id="advantage">
-  <div class="adv-intro">
+<!-- Advantage -->
+<section class="adv-bg" id="advantage">
+  <div class="sec" style="padding-bottom:16px">
     <div class="sec-lbl">Why choose us</div>
-    <h2>We're not a typical agency. We're an AI lab that ships products.</h2>
-    <p>Most agencies outsource AI features as an add-on. We build AI into the architecture from day one — local LLMs, RAG pipelines, vector memory, and intelligent automation are our defaults, not our extras.</p>
+    <h2>We're not an agency. We're an AI lab that ships.</h2>
+    <p>Most agencies bolt AI on as an afterthought. At VixioX, we build local LLMs, RAG pipelines, and vector memory into the architecture from day one — no expensive API subscriptions, no data leaks, full ownership for you.</p>
   </div>
-
-  <div class="compare-row">
-    <div class="compare-col us">
-      <div class="col-hd us"><i class="ti ti-rocket" aria-hidden="true" style="font-size:13px"></i>EvokCode</div>
-      <div class="adv-item">
-        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong>Local LLM integration</strong><span>Qwen, Llama, Mistral on your own server. Zero API costs, full privacy.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong>RAG memory systems</strong><span>ChromaDB-backed semantic search over your own documents & data.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong>Multi-agent workflows</strong><span>AI agents that plan, execute, and verify — not just chatbots.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong>48h MVPs</strong><span>Rapid deployment with full AI stack. See it live before you pay more.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-check" style="color:var(--gr);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong>Subdomain per product</strong><span>Every product gets its own domain, brand, and independent codebase.</span></div>
-      </div>
+  <div class="compare-grid">
+    <div class="compare-us">
+      <div class="col-label us"><i class="ti ti-rocket" style="font-size:13px" aria-hidden="true"></i>VixioX</div>
+      <div class="ai"><i class="ti ti-check" style="color:#007B5C" aria-hidden="true"></i><div><strong>Local LLMs on your server</strong><span>Qwen, Mistral, Llama — zero API costs, full data privacy.</span></div></div>
+      <div class="ai"><i class="ti ti-check" style="color:#007B5C" aria-hidden="true"></i><div><strong>RAG memory systems</strong><span>ChromaDB semantic search over your own documents.</span></div></div>
+      <div class="ai"><i class="ti ti-check" style="color:#007B5C" aria-hidden="true"></i><div><strong>Multi-agent workflows</strong><span>AI agents that plan, execute and verify — not chatbots.</span></div></div>
+      <div class="ai"><i class="ti ti-check" style="color:#007B5C" aria-hidden="true"></i><div><strong>48h MVP delivery</strong><span>See it live before you commit to more.</span></div></div>
+      <div class="ai"><i class="ti ti-check" style="color:#007B5C" aria-hidden="true"></i><div><strong>Subdomain per product</strong><span>Own brand, own domain, own codebase.</span></div></div>
     </div>
-    <div class="compare-col them">
-      <div class="col-hd them"><i class="ti ti-building" aria-hidden="true" style="font-size:13px"></i>Other agencies</div>
-      <div class="adv-item">
-        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong style="color:var(--fg2)">Expensive API calls</strong><span>OpenAI tokens billed to you, forever. No ownership.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong style="color:var(--fg2)">Copy-paste AI wrappers</strong><span>Basic ChatGPT API calls dressed up as AI products.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong style="color:var(--fg2)">No AI architecture</strong><span>AI bolted on after build. Not designed for intelligence.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong style="color:var(--fg2)">Months to delivery</strong><span>6–12 week timelines for basic features. Endless revisions.</span></div>
-      </div>
-      <div class="adv-item">
-        <i class="ti ti-x" style="color:var(--re);font-size:14px" aria-hidden="true"></i>
-        <div class="adv-item-text"><strong style="color:var(--fg2)">One-size-fits-all</strong><span>Generic platforms. No dedicated branding or subdomain.</span></div>
-      </div>
+    <div class="compare-them">
+      <div class="col-label them"><i class="ti ti-building" style="font-size:13px" aria-hidden="true"></i>Other agencies</div>
+      <div class="ai ai-them"><i class="ti ti-x" style="color:#C0234E" aria-hidden="true"></i><div><strong>Expensive API calls</strong><span>OpenAI tokens billed forever. No ownership.</span></div></div>
+      <div class="ai ai-them"><i class="ti ti-x" style="color:#C0234E" aria-hidden="true"></i><div><strong>ChatGPT wrappers</strong><span>Basic API calls dressed up as AI products.</span></div></div>
+      <div class="ai ai-them"><i class="ti ti-x" style="color:#C0234E" aria-hidden="true"></i><div><strong>No AI architecture</strong><span>AI bolted on after build, not designed for intelligence.</span></div></div>
+      <div class="ai ai-them"><i class="ti ti-x" style="color:#C0234E" aria-hidden="true"></i><div><strong>Months to deliver</strong><span>6–12 week timelines for basic features.</span></div></div>
+      <div class="ai ai-them"><i class="ti ti-x" style="color:#C0234E" aria-hidden="true"></i><div><strong>One-size-fits-all</strong><span>Generic platforms, no dedicated subdomain.</span></div></div>
     </div>
   </div>
-
-  <div class="quote-strip">
-    <div class="quote-text">"The gap between agencies that use AI tools and agencies that build AI systems is the same as the gap between a rider and an engineer."</div>
-    <div class="quote-sub">— EvokCode founding principle</div>
+  <div class="quote-box">
+    <p class="quote-text">"The gap between agencies that use AI tools and agencies that build AI systems is the same gap as between a driver and an engineer."</p>
+    <div class="quote-by">— VixioX founding principle</div>
   </div>
+  <div class="pillars">
+    <div class="pillar"><div class="pillar-icon"><i class="ti ti-brain" aria-hidden="true"></i></div><div class="pillar-title">Local LLMs</div><div class="pillar-desc">Qwen / Mistral / Llama on your infra. Zero token cost.</div></div>
+    <div class="pillar"><div class="pillar-icon"><i class="ti ti-search" aria-hidden="true"></i></div><div class="pillar-title">RAG pipelines</div><div class="pillar-desc">ChromaDB vector search over your own docs.</div></div>
+    <div class="pillar"><div class="pillar-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div><div class="pillar-title">Fast APIs</div><div class="pillar-desc">FastAPI async backends with JWT auth &amp; RBAC.</div></div>
+    <div class="pillar"><div class="pillar-icon"><i class="ti ti-chart-bar" aria-hidden="true"></i></div><div class="pillar-title">AI dashboards</div><div class="pillar-desc">React analytics with real-time AI insights.</div></div>
+  </div>
+</section>
 
-  <div class="ai-pillars">
-    <div class="pillar highlight">
-      <div class="pillar-icon">🧠</div>
-      <div class="pillar-title">Local LLMs</div>
-      <div class="pillar-desc">Qwen, Mistral, Llama running on your infra. No data leaves your server.</div>
+<!-- Products -->
+<section class="sec" id="products" style="padding-bottom:0">
+  <div class="sec-lbl">Pipeline</div>
+  <h2>7 products. 7 subdomains. All coming.</h2>
+  <p>Every product is built in-house by the VixioX team — AI-native architecture from the ground up. SchoolBrain is our flagship, already in advanced development. Each targets a real industry pain point with local AI intelligence — no cloud API dependency, no generic wrappers.</p>
+</section>
+
+<div class="products-grid">
+
+  <div class="product-card flagship" style="animation-delay:.05s">
+    <div class="pc-top">
+      <div class="pc-icon" style="background:#EDE9FF"><i class="ti ti-brain" style="color:var(--p)" aria-hidden="true"></i></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px"><span class="bdg bdg-p">In pipeline</span><span class="bdg bdg-a">Flagship</span></div>
     </div>
-    <div class="pillar">
-      <div class="pillar-icon">🔍</div>
-      <div class="pillar-title">RAG pipelines</div>
-      <div class="pillar-desc">Semantic search over your documents using ChromaDB vector memory.</div>
-    </div>
-    <div class="pillar">
-      <div class="pillar-icon">⚡</div>
-      <div class="pillar-title">Fast APIs</div>
-      <div class="pillar-desc">FastAPI backends with async endpoints, JWT auth, and role-based access.</div>
-    </div>
-    <div class="pillar">
-      <div class="pillar-icon">📊</div>
-      <div class="pillar-title">AI dashboards</div>
-      <div class="pillar-desc">React analytics with real-time AI insights, not just charts.</div>
-    </div>
+    <div class="pc-title">SchoolBrain.ai</div>
+    <div class="pc-desc">AI school analytics — detects struggling students, generates quizzes, creates intervention plans, and answers teacher queries via RAG-powered chat. Built with local Qwen 2.5 + ChromaDB. Backend 85% complete.</div>
+    <div class="pc-domain"><i class="ti ti-world" aria-hidden="true"></i>schoolbrain.vixiox.com</div>
+    <div class="pc-tech"><span>FastAPI</span><span>Qwen 2.5</span><span>ChromaDB</span><span>RAG</span><span>React</span></div>
+    <div class="prog-label"><span>Build progress</span><span>85%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pb-sb" style="width:0;background:var(--p)"></div></div>
+    <div class="notif-row"><input class="notif-inp" type="email" placeholder="Notify me at launch" id="ni-sb"><button class="notif-btn" onclick="nfy('sb')">Notify me</button></div>
   </div>
+
+  <div class="product-card" style="animation-delay:.1s">
+    <div class="pc-top"><div class="pc-icon" style="background:#E0FFF8"><i class="ti ti-stethoscope" style="color:#007B5C" aria-hidden="true"></i></div><span class="bdg bdg-p">Coming soon</span></div>
+    <div class="pc-title">ClinicAI</div>
+    <div class="pc-desc">Smart clinic management — AI scheduling, patient risk scoring, prescription summaries and automated WhatsApp follow-ups.</div>
+    <div class="pc-domain"><i class="ti ti-world" aria-hidden="true"></i>clinic.vixiox.com</div>
+    <div class="pc-tech"><span>FastAPI</span><span>LLM</span><span>PostgreSQL</span><span>Twilio</span></div>
+    <div class="prog-label"><span>Build progress</span><span>72%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pb-cl" style="width:0;background:#00D4A0"></div></div>
+    <div class="notif-row"><input class="notif-inp" type="email" placeholder="Notify me at launch" id="ni-cl"><button class="notif-btn" onclick="nfy('cl')">Notify me</button></div>
+  </div>
+
+  <div class="product-card" style="animation-delay:.15s">
+    <div class="pc-top"><div class="pc-icon" style="background:#EDE9FF"><i class="ti ti-briefcase" style="color:var(--p)" aria-hidden="true"></i></div><span class="bdg bdg-p">Coming soon</span></div>
+    <div class="pc-title">TalentOS</div>
+    <div class="pc-desc">AI recruitment — LLM resume parsing, candidate ranking, bias-free scoring and auto interview question generation.</div>
+    <div class="pc-domain"><i class="ti ti-world" aria-hidden="true"></i>talent.vixiox.com</div>
+    <div class="pc-tech"><span>Python</span><span>Ollama</span><span>React</span><span>PDF</span></div>
+    <div class="prog-label"><span>Build progress</span><span>48%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pb-ta" style="width:0;background:var(--p2)"></div></div>
+    <div class="notif-row"><input class="notif-inp" type="email" placeholder="Notify me at launch" id="ni-ta"><button class="notif-btn" onclick="nfy('ta')">Notify me</button></div>
+  </div>
+
+  <div class="product-card" style="animation-delay:.2s">
+    <div class="pc-top"><div class="pc-icon" style="background:#FFF3EA"><i class="ti ti-shopping-cart" style="color:#B05400" aria-hidden="true"></i></div><span class="bdg bdg-p">Coming soon</span></div>
+    <div class="pc-title">RetailMind</div>
+    <div class="pc-desc">Retail analytics AI — inventory prediction, demand forecasting, customer segmentation and AI reorder recommendations.</div>
+    <div class="pc-domain"><i class="ti ti-world" aria-hidden="true"></i>retail.vixiox.com</div>
+    <div class="pc-tech"><span>FastAPI</span><span>ML</span><span>Redis</span><span>Charts</span></div>
+    <div class="prog-label"><span>Build progress</span><span>35%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pb-re" style="width:0;background:var(--o)"></div></div>
+    <div class="notif-row"><input class="notif-inp" type="email" placeholder="Notify me at launch" id="ni-re"><button class="notif-btn" onclick="nfy('re')">Notify me</button></div>
+  </div>
+
+  <div class="product-card" style="animation-delay:.25s">
+    <div class="pc-top"><div class="pc-icon" style="background:#FFF0F5"><i class="ti ti-scale" style="color:#C0234E" aria-hidden="true"></i></div><span class="bdg bdg-p">Coming soon</span></div>
+    <div class="pc-title">LegalBot</div>
+    <div class="pc-desc">AI legal assistant for SMEs — contract drafting, clause analysis, risk flagging and Indian law RAG queries.</div>
+    <div class="pc-domain"><i class="ti ti-world" aria-hidden="true"></i>legal.vixiox.com</div>
+    <div class="pc-tech"><span>RAG</span><span>ChromaDB</span><span>LLM</span><span>PDF</span></div>
+    <div class="prog-label"><span>Build progress</span><span>20%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pb-le" style="width:0;background:var(--a)"></div></div>
+    <div class="notif-row"><input class="notif-inp" type="email" placeholder="Notify me at launch" id="ni-le"><button class="notif-btn" onclick="nfy('le')">Notify me</button></div>
+  </div>
+
+  <div class="product-card" style="animation-delay:.3s">
+    <div class="pc-top"><div class="pc-icon" style="background:#E0FFF8"><i class="ti ti-trending-up" style="color:#007B5C" aria-hidden="true"></i></div><span class="bdg bdg-p">Coming soon</span></div>
+    <div class="pc-title">FinSight</div>
+    <div class="pc-desc">Finance AI for SMBs — cash flow tracking, anomaly detection, plain-language P&amp;L and 30-day runway forecast.</div>
+    <div class="pc-domain"><i class="ti ti-world" aria-hidden="true"></i>finsight.vixiox.com</div>
+    <div class="pc-tech"><span>FastAPI</span><span>Qwen</span><span>SQLite</span><span>Charts</span></div>
+    <div class="prog-label"><span>Build progress</span><span>60%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pb-fi" style="width:0;background:var(--g)"></div></div>
+    <div class="notif-row"><input class="notif-inp" type="email" placeholder="Notify me at launch" id="ni-fi"><button class="notif-btn" onclick="nfy('fi')">Notify me</button></div>
+  </div>
+
+  <div class="product-card" style="animation-delay:.35s">
+    <div class="pc-top"><div class="pc-icon" style="background:#FFF0F5"><i class="ti ti-building-estate" style="color:#C0234E" aria-hidden="true"></i></div><span class="bdg bdg-p">Coming soon</span></div>
+    <div class="pc-title">PropertyAI</div>
+    <div class="pc-desc">Real estate AI — property valuation, smart lead scoring, rental yield prediction and AI-generated descriptions.</div>
+    <div class="pc-domain"><i class="ti ti-world" aria-hidden="true"></i>property.vixiox.com</div>
+    <div class="pc-tech"><span>FastAPI</span><span>ML</span><span>Maps API</span><span>React</span></div>
+    <div class="prog-label"><span>Build progress</span><span>15%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pb-pr" style="width:0;background:var(--a)"></div></div>
+    <div class="notif-row"><input class="notif-inp" type="email" placeholder="Notify me at launch" id="ni-pr"><button class="notif-btn" onclick="nfy('pr')">Notify me</button></div>
+  </div>
+
 </div>
 
-<!-- PRODUCTS -->
-<div class="sec" id="products" style="padding-bottom:0">
-  <div style="padding:0 0 20px">
-    <div class="sec-lbl">Our pipeline</div>
-    <h2>7 products. 7 subdomains.</h2>
-    <p>Every product is being built in-house — AI-native from the ground up. Notify yourself for any you care about.</p>
+<!-- Process -->
+<section class="proc-wrap" id="process">
+  <div class="sec" style="padding-bottom:8px">
+    <div class="sec-lbl">How we work</div>
+    <h2>From idea to deployed in days</h2>
   </div>
-</div>
+  <div class="proc-item"><div class="proc-num">01</div><div class="proc-body"><div class="proc-title">Discovery call</div><div class="proc-desc">Map your requirements, users and data flows. We find where AI adds the most value — not where it sounds impressive.</div></div></div>
+  <div class="proc-item"><div class="proc-num">02</div><div class="proc-body"><div class="proc-title">AI architecture</div><div class="proc-desc">Design LLM integration, RAG pipelines, data schema and API structure before touching feature code.</div></div></div>
+  <div class="proc-item"><div class="proc-num">03</div><div class="proc-body"><div class="proc-title">Build and ship</div><div class="proc-desc">Agile sprints with daily demos. Live on your subdomain within 48h of first sprint.</div></div></div>
+  <div class="proc-item" style="padding-bottom:28px"><div class="proc-num">04</div><div class="proc-body"><div class="proc-title">AI tuning</div><div class="proc-desc">Post-launch model fine-tuning, prompt engineering and RAG refinement based on real usage.</div></div></div>
+</section>
 
-<!-- SchoolBrain -->
-<div class="product-card flag" style="margin-bottom:12px">
-  <div class="pc-top">
-    <div class="pc-icon" style="background:rgba(96,165,250,.1);border:0.5px solid rgba(96,165,250,.2)">🧠</div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
-      <span class="bdg bdg-gold">In pipeline</span>
-      <span class="bdg bdg-pu">Flagship</span>
-    </div>
-  </div>
-  <div class="pc-title">SchoolBrain.ai</div>
-  <div class="pc-desc">AI-powered school analytics — identifies struggling students, generates quizzes, creates 7-day intervention plans, and answers teacher queries via RAG-powered chat. Built with local Qwen 2.5 + ChromaDB. Backend fully functional.</div>
-  <div class="pc-domain">schoolbrain.evokecode.in</div>
-  <div class="pc-tech"><span>FastAPI</span><span>Qwen 2.5</span><span>ChromaDB</span><span>RAG</span><span>React</span><span>JWT</span></div>
-  <div class="prog-label"><span>Build progress</span><span>85%</span></div>
-  <div class="prog-track"><div class="prog-fill" style="width:85%;background:var(--bl)"></div></div>
-  <div class="notif-row">
-    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-sb">
-    <button class="notif-btn" onclick="notifyMe('sb')">Notify me</button>
-  </div>
-</div>
-
-<!-- ClinicAI -->
-<div class="product-card" style="margin-bottom:12px">
-  <div class="pc-top">
-    <div class="pc-icon" style="background:rgba(34,197,94,.08);border:0.5px solid rgba(34,197,94,.2)">🏥</div>
-    <span class="bdg bdg-gold">Coming soon</span>
-  </div>
-  <div class="pc-title">ClinicAI</div>
-  <div class="pc-desc">Smart clinic management with AI appointment scheduling, patient risk scoring, prescription summaries and automated WhatsApp follow-ups.</div>
-  <div class="pc-domain">clinic.evokecode.in</div>
-  <div class="pc-tech"><span>FastAPI</span><span>LLM</span><span>PostgreSQL</span><span>Twilio</span></div>
-  <div class="prog-label"><span>Build progress</span><span>72%</span></div>
-  <div class="prog-track"><div class="prog-fill" style="width:72%;background:var(--gold)"></div></div>
-  <div class="notif-row">
-    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-cl">
-    <button class="notif-btn" onclick="notifyMe('cl')">Notify me</button>
-  </div>
-</div>
-
-<!-- TalentOS -->
-<div class="product-card" style="margin-bottom:12px">
-  <div class="pc-top">
-    <div class="pc-icon" style="background:rgba(167,139,250,.08);border:0.5px solid rgba(167,139,250,.2)">💼</div>
-    <span class="bdg bdg-gold">Coming soon</span>
-  </div>
-  <div class="pc-title">TalentOS</div>
-  <div class="pc-desc">AI recruitment — LLM resume parsing, candidate ranking, bias-free scoring and auto interview question generation for HR teams.</div>
-  <div class="pc-domain">talent.evokecode.in</div>
-  <div class="pc-tech"><span>Python</span><span>Ollama</span><span>React</span><span>PDF parsing</span></div>
-  <div class="prog-label"><span>Build progress</span><span>48%</span></div>
-  <div class="prog-track"><div class="prog-fill" style="width:48%;background:var(--pu)"></div></div>
-  <div class="notif-row">
-    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-ta">
-    <button class="notif-btn" onclick="notifyMe('ta')">Notify me</button>
-  </div>
-</div>
-
-<!-- RetailMind -->
-<div class="product-card" style="margin-bottom:12px">
-  <div class="pc-top">
-    <div class="pc-icon" style="background:rgba(251,146,60,.08);border:0.5px solid rgba(251,146,60,.2)">🛒</div>
-    <span class="bdg bdg-gold">Coming soon</span>
-  </div>
-  <div class="pc-title">RetailMind</div>
-  <div class="pc-desc">Retail analytics AI — inventory prediction, demand forecasting, customer segmentation and AI-powered reorder recommendations.</div>
-  <div class="pc-domain">retail.evokecode.in</div>
-  <div class="pc-tech"><span>FastAPI</span><span>ML models</span><span>Redis</span><span>Recharts</span></div>
-  <div class="prog-label"><span>Build progress</span><span>35%</span></div>
-  <div class="prog-track"><div class="prog-fill" style="width:35%;background:#FB923C"></div></div>
-  <div class="notif-row">
-    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-re">
-    <button class="notif-btn" onclick="notifyMe('re')">Notify me</button>
-  </div>
-</div>
-
-<!-- LegalBot -->
-<div class="product-card" style="margin-bottom:12px">
-  <div class="pc-top">
-    <div class="pc-icon" style="background:rgba(201,168,108,.08);border:0.5px solid rgba(201,168,108,.25)">⚖️</div>
-    <span class="bdg bdg-gold">Coming soon</span>
-  </div>
-  <div class="pc-title">LegalBot</div>
-  <div class="pc-desc">AI legal assistant for SMEs — contract drafting, clause analysis, risk flagging and Indian law RAG queries.</div>
-  <div class="pc-domain">legal.evokecode.in</div>
-  <div class="pc-tech"><span>RAG</span><span>ChromaDB</span><span>LLM</span><span>PDF</span></div>
-  <div class="prog-label"><span>Build progress</span><span>20%</span></div>
-  <div class="prog-track"><div class="prog-fill" style="width:20%;background:var(--gold)"></div></div>
-  <div class="notif-row">
-    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-le">
-    <button class="notif-btn" onclick="notifyMe('le')">Notify me</button>
-  </div>
-</div>
-
-<!-- FinSight -->
-<div class="product-card" style="margin-bottom:12px">
-  <div class="pc-top">
-    <div class="pc-icon" style="background:rgba(20,184,166,.08);border:0.5px solid rgba(20,184,166,.2)">📈</div>
-    <span class="bdg bdg-gold">Coming soon</span>
-  </div>
-  <div class="pc-title">FinSight</div>
-  <div class="pc-desc">Finance AI for SMBs — cash flow tracking, anomaly detection, plain-language P&L summaries and 30-day runway forecast.</div>
-  <div class="pc-domain">finsight.evokecode.in</div>
-  <div class="pc-tech"><span>FastAPI</span><span>Qwen</span><span>SQLite</span><span>Charts</span></div>
-  <div class="prog-label"><span>Build progress</span><span>60%</span></div>
-  <div class="prog-track"><div class="prog-fill" style="width:60%;background:#14B8A6"></div></div>
-  <div class="notif-row">
-    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-fi">
-    <button class="notif-btn" onclick="notifyMe('fi')">Notify me</button>
-  </div>
-</div>
-
-<!-- PropertyAI -->
-<div class="product-card" style="margin-bottom:20px">
-  <div class="pc-top">
-    <div class="pc-icon" style="background:rgba(244,63,94,.08);border:0.5px solid rgba(244,63,94,.2)">🏠</div>
-    <span class="bdg bdg-gold">Coming soon</span>
-  </div>
-  <div class="pc-title">PropertyAI</div>
-  <div class="pc-desc">Real-estate AI — property valuation, smart lead scoring, rental yield prediction and AI-generated property descriptions.</div>
-  <div class="pc-domain">property.evokecode.in</div>
-  <div class="pc-tech"><span>FastAPI</span><span>ML</span><span>Maps API</span><span>React</span></div>
-  <div class="prog-label"><span>Build progress</span><span>15%</span></div>
-  <div class="prog-track"><div class="prog-fill" style="width:15%;background:#F43F5E"></div></div>
-  <div class="notif-row">
-    <input class="notif-inp" type="email" placeholder="Get notified at launch" id="ni-pr">
-    <button class="notif-btn" onclick="notifyMe('pr')">Notify me</button>
-  </div>
-</div>
-
-<!-- PROCESS -->
-<div class="sec" id="process" style="background:var(--bg2);border-top:var(--brd);border-bottom:var(--brd);padding-bottom:0">
-  <div class="sec-lbl">How we work</div>
-  <h2>From idea to deployed in days</h2>
-</div>
-<div style="background:var(--bg2);padding:0 0 24px">
-  <div class="proc-item"><div class="proc-num">01</div><div class="proc-body"><div class="proc-title">Discovery call</div><div class="proc-desc">Map your requirements, users, and data flows. We identify where AI adds the most value — not where it sounds impressive.</div></div></div>
-  <div class="proc-item"><div class="proc-num">02</div><div class="proc-body"><div class="proc-title">AI architecture design</div><div class="proc-desc">Design LLM integration, RAG pipelines, data schema and API structure before touching feature code.</div></div></div>
-  <div class="proc-item"><div class="proc-num">03</div><div class="proc-body"><div class="proc-title">Build & ship</div><div class="proc-desc">Agile sprints with daily demos. Deployed on your subdomain within 48h of first sprint completion.</div></div></div>
-  <div class="proc-item"><div class="proc-num">04</div><div class="proc-body"><div class="proc-title">AI tuning & iteration</div><div class="proc-desc">Post-launch: model fine-tuning, prompt engineering, RAG refinement based on real usage data.</div></div></div>
-</div>
-
-<!-- TECH -->
-<div class="sec" id="stack">
+<!-- Stack -->
+<section class="sec" id="stack">
   <div class="sec-lbl">Technology</div>
   <h2>Our battle-tested AI stack</h2>
   <div class="tech-grid">
-    <div class="tech-it"><div class="ti-icon">⚡</div><div class="ti-name">FastAPI</div></div>
-    <div class="tech-it"><div class="ti-icon">🤖</div><div class="ti-name">Qwen / Ollama</div></div>
-    <div class="tech-it"><div class="ti-icon">🗄️</div><div class="ti-name">ChromaDB</div></div>
-    <div class="tech-it"><div class="ti-icon">⚛️</div><div class="ti-name">React</div></div>
-    <div class="tech-it"><div class="ti-icon">🐘</div><div class="ti-name">PostgreSQL</div></div>
-    <div class="tech-it"><div class="ti-icon">🔐</div><div class="ti-name">JWT Auth</div></div>
-    <div class="tech-it"><div class="ti-icon">📦</div><div class="ti-name">Docker</div></div>
-    <div class="tech-it"><div class="ti-icon">🌐</div><div class="ti-name">Nginx</div></div>
-    <div class="tech-it"><div class="ti-icon">🧬</div><div class="ti-name">LangChain</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div><div class="ti-name">FastAPI</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-brain" aria-hidden="true"></i></div><div class="ti-name">Qwen/Ollama</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-database" aria-hidden="true"></i></div><div class="ti-name">ChromaDB</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-code" aria-hidden="true"></i></div><div class="ti-name">React</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-server" aria-hidden="true"></i></div><div class="ti-name">PostgreSQL</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-lock" aria-hidden="true"></i></div><div class="ti-name">JWT Auth</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-box" aria-hidden="true"></i></div><div class="ti-name">Docker</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-world" aria-hidden="true"></i></div><div class="ti-name">Nginx</div></div>
+    <div class="tech-it"><div class="ti-icon"><i class="ti ti-link" aria-hidden="true"></i></div><div class="ti-name">LangChain</div></div>
   </div>
-</div>
+</section>
 
-<!-- CONTACT -->
-<div class="sec" id="contact">
-  <div class="sec-lbl">Get in touch</div>
+<!-- Testimonials -->
+<section class="sec" id="testimonials" style="background:var(--w)">
+  <div class="sec-lbl">Client voices</div>
+  <h2>Built for teams that need real results</h2>
+  <p>From early-stage startups to established businesses — here's what working with a truly AI-native engineering team actually feels like.</p>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"We got a working AI analytics dashboard in under two weeks. The RAG-powered query feature alone saves our team an hour a day. Nothing else we evaluated comes close to this level of intelligence."</p>
+      <div class="testi-author"><div class="testi-av" style="background:#EDE9FF;color:var(--p)">PK</div><div><div class="testi-name">Head of Operations, EdTech Startup</div><div class="testi-role">SchoolBrain.ai early access</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Other agencies quoted us 4 months. VixioX had a live prototype in 48 hours. The local LLM setup means our sensitive data never leaves our server — that was completely non-negotiable for us."</p>
+      <div class="testi-author"><div class="testi-av" style="background:#E0FFF8;color:#007B5C">DR</div><div><div class="testi-name">Director, Healthcare Technology</div><div class="testi-role">ClinicAI beta partner</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Their AI architecture approach is completely different. They don't plug ChatGPT into a form — they build intelligent pipelines that actually understand our business logic and data from day one."</p>
+      <div class="testi-author"><div class="testi-av" style="background:#FFF3EA;color:#B05400">AM</div><div><div class="testi-name">CTO, Retail Technology Venture</div><div class="testi-role">RetailMind design partner</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Why AI-Native Deep Dive -->
+<section class="sec adv-bg" id="why-ai">
+  <div class="sec-lbl">The VixioX difference</div>
+  <h2>Why AI-native architecture changes everything</h2>
+  <p>Most software agencies treat AI as a plugin. We treat it as the foundation. Here's what that means in practice.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <div class="why-title">Data never leaves your server</div>
+      <div class="why-body">Running Qwen, Mistral or Llama locally means your sensitive business data — patients, students, financials — is processed entirely on your own infrastructure. Zero data sent to OpenAI or any third party. Zero recurring token costs. Full GDPR and data-sovereignty compliance by default.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <div class="why-title">Memory that actually works</div>
+      <div class="why-body">Our RAG pipelines with ChromaDB give your AI products semantic memory over your own documents. Instead of a generic chatbot, you get a system that can answer "What were Q3 interventions for struggling students?" or "Which clauses in this contract carry financial risk?" — from your own data.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <div class="why-title">Agents that do, not just talk</div>
+      <div class="why-body">We build multi-agent systems: one agent plans the task, another executes it, a third verifies the output. This means AI that can draft a report, check its own logic, and flag what it's uncertain about — not a chatbot that just sounds confident.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <div class="why-title">You own everything</div>
+      <div class="why-body">Every line of code, every model weight, every database belongs to you. Subdomains under your brand. Source code delivered. No vendor lock-in to any AI provider. If we succeed, you own a defensible AI product — not a subscription to someone else's platform.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq" style="background:var(--w)">
+  <div class="sec-lbl">Questions answered</div>
+  <h2>Frequently asked questions</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>What does "AI-native" actually mean?</span>
+        <svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">It means AI is designed into the architecture before the first line of feature code is written. We plan the LLM integration, RAG pipelines, vector memory and agent workflows upfront — not bolted on later. The result is a system where intelligence is structural, not cosmetic.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How fast is the 48h MVP claim?</span>
+        <svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">After a discovery call and architecture session (usually day one), we start the first sprint immediately. Within 48 hours of sprint start, you get a live, working build on your subdomain. Not a mockup — a real, deployed backend with functional AI. You see it before any further commitment.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Do I need to understand AI to work with you?</span>
+        <svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">Not at all. You need to understand your business problem and your users. We translate that into the right AI architecture. Every sprint includes plain-language explanations and demos — no technical jargon required from your side.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>What industries do you work with?</span>
+        <svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">Our pipeline spans EdTech, healthcare, HR/recruitment, retail, legal, finance, and real estate. We've found AI adds the most value where there are large documents, complex decisions, or repetitive expert tasks. If your business has those, we can likely build something powerful for you.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>How much does it cost?</span>
+        <svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">Projects typically start at ₹50,000 for a focused MVP and scale based on scope. We're transparent about pricing from the first call — no hidden fees, no retainers unless you want ongoing tuning. Use the contact form below and select your budget range to get a tailored estimate.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Who owns the code and the AI models?</span>
+        <svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">You do — completely. Full source code handoff, all model weights and database exports, deployed under your subdomain and brand. We believe the best long-term relationship is one where you're not dependent on us to keep the lights on. We build for ownership, not lock-in.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Can you work with my existing team or codebase?</span>
+        <svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">Yes. We can embed as an AI engineering team alongside your developers, add AI capabilities to an existing product, or integrate with your current stack. Our FastAPI backends are built to connect cleanly with React, Next.js, mobile apps, or any REST consumer.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="sec" id="contact">
+  <div class="sec-lbl">Contact</div>
   <h2>Let's build your AI product</h2>
-  <p>Have a problem to solve or a product to ship? We'll design the right AI architecture and ship it fast.</p>
-  <div class="ci-row"><div class="ci-icon"><i class="ti ti-mail" aria-hidden="true"></i></div><div><div class="ci-label">Email</div><div class="ci-val">hello@evokecode.in</div></div></div>
-  <div class="ci-row"><div class="ci-icon"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></div><div><div class="ci-label">WhatsApp</div><div class="ci-val">+91 98765 43210</div></div></div>
-  <div class="ci-row"><div class="ci-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div><div><div class="ci-label">Based in</div><div class="ci-val">Ludhiana, Punjab · Remote worldwide</div></div></div>
+  <p>Have a problem to solve or a product to ship? The VixioX team will design the right AI architecture and get it live fast. We work with startups, SMBs and enterprises across India and worldwide.</p>
+
+  <div class="contact-info-row"><div class="ci-icon"><i class="ti ti-mail" aria-hidden="true"></i></div><div><div class="ci-label">Email</div><div class="ci-val">contact@vixiox.com</div></div></div>
+  <div class="contact-info-row"><div class="ci-icon"><i class="ti ti-phone" aria-hidden="true"></i></div><div><div class="ci-label">Phone / WhatsApp</div><div class="ci-val">+91 76967 36640</div></div></div>
+  <div class="contact-info-row"><div class="ci-icon"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></div><div><div class="ci-label">WhatsApp</div><div class="ci-val">+91 76967 36640</div></div></div>
+  <div class="contact-info-row"><div class="ci-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div><div><div class="ci-label">Location</div><div class="ci-val">Chandigarh, Punjab · Remote worldwide</div></div></div>
+  <div class="contact-info-row"><div class="ci-icon"><i class="ti ti-clock" aria-hidden="true"></i></div><div><div class="ci-label">Response time</div><div class="ci-val">Within 4 hours · Mon–Sat</div></div></div>
+  <div class="contact-info-row"><div class="ci-icon"><i class="ti ti-world" aria-hidden="true"></i></div><div><div class="ci-label">Website</div><div class="ci-val">vixiox.com</div></div></div>
   <div class="cf">
-    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px;letter-spacing:-.2px">Start a project</div>
-    <label class="fl">Name</label><input class="fi" type="text" placeholder="Arjun Mehta">
-    <label class="fl">Email</label><input class="fi" type="email" placeholder="arjun@company.com">
-    <label class="fl">Project type</label>
-    <select class="fs" style="margin-bottom:12px"><option>AI SaaS Platform</option><option>Analytics Dashboard</option><option>Custom Backend API</option><option>LLM / RAG System</option><option>EdTech Product</option><option>Something else</option></select>
-    <label class="fl">Budget</label>
-    <select class="fs" style="margin-bottom:12px"><option>₹50k–₹1L</option><option>₹1L–₹3L</option><option>₹3L–₹10L</option><option>₹10L+</option><option>Let's discuss</option></select>
-    <label class="fl">Tell us about it</label>
-    <textarea class="ft" placeholder="Describe what you want to build…"></textarea>
-    <button class="btn-g" onclick="submitCF(this)" style="margin-top:4px">Send message</button>
-  </div>
-</div>
+    <div class="cf-title">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--p)" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Start a project
+    </div>
 
-<div class="foot">
-  <div class="foot-brand">Evoke<em>Code</em></div>
+    <!-- Hidden iframe for Google Forms submission (no page reload) -->
+    <iframe name="gf-hidden" style="display:none"></iframe>
+
+    <form id="vx-contact-form"
+      action="https://docs.google.com/forms/d/e/YOUR_GOOGLE_FORM_ID/formResponse"
+      method="POST"
+      target="gf-hidden"
+      onsubmit="handleGFSubmit(event)">
+
+      <label class="fl">Your name</label>
+      <input class="fi" type="text" name="entry.YOUR_NAME_ENTRY" placeholder="e.g. Arjun Mehta" required>
+
+      <label class="fl">Email</label>
+      <input class="fi" type="email" name="entry.YOUR_EMAIL_ENTRY" placeholder="arjun@company.com" required>
+
+      <label class="fl">Phone / WhatsApp (optional)</label>
+      <input class="fi" type="tel" name="entry.YOUR_PHONE_ENTRY" placeholder="+91 98765 00000">
+
+      <label class="fl">What do you want to build?</label>
+      <select class="fs" name="entry.YOUR_TYPE_ENTRY" style="margin-bottom:13px" required>
+        <option value="">Select project type…</option>
+        <option>AI-Native Architecture</option>
+        <option>RAG / LLM System</option>
+        <option>Analytics Dashboard</option>
+        <option>Backend API</option>
+        <option>EdTech Product</option>
+        <option>Healthcare AI</option>
+        <option>Something else</option>
+      </select>
+
+      <label class="fl">Budget range</label>
+      <select class="fs" name="entry.YOUR_BUDGET_ENTRY" style="margin-bottom:13px">
+        <option value="">Select budget…</option>
+        <option>₹50k–₹1L</option>
+        <option>₹1L–₹3L</option>
+        <option>₹3L–₹10L</option>
+        <option>₹10L+</option>
+        <option>Let's discuss</option>
+      </select>
+
+      <label class="fl">Tell us about it</label>
+      <textarea class="ft" name="entry.YOUR_MSG_ENTRY" placeholder="Describe what you want to build, the problem it solves, and any timeline…" required></textarea>
+
+      <button type="submit" class="btn-primary" id="vx-submit-btn" style="margin-top:8px;width:100%;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send message
+      </button>
+    </form>
+
+    <!-- Success state (shown after submit) -->
+    <div id="vx-success" style="display:none;text-align:center;padding:28px 16px">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--g2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007B5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px">Message sent!</div>
+      <div style="font-size:13px;color:var(--ink3);line-height:1.6">We'll review your project and reply to <strong id="vx-reply-email"></strong> within 4 hours (Mon–Sat).</div>
+      <button onclick="resetContactForm()" style="margin-top:16px;padding:9px 20px;border-radius:9px;background:var(--s2);border:var(--brd);color:var(--p);font-size:12px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif">Send another</button>
+    </div>
+  </div>
+
+  <!-- ⬇ SETUP INSTRUCTIONS (visible in source, invisible on page) -->
+  <!--
+  ══════════════════════════════════════════════════════
+  GOOGLE FORMS SETUP — replace placeholder values above
+  ══════════════════════════════════════════════════════
+  1. Go to https://forms.google.com and create a new form.
+  2. Add fields: Name, Email, Phone, Project type, Budget, Message.
+  3. Click the ⋮ menu → "Get pre-filled link" → fill dummy values → copy link.
+  4. From the pre-filled URL, copy:
+       - The form ID  (between /d/e/ and /viewform)
+       - Each entry.XXXXXXXXX number for every field
+  5. Replace in the form above:
+       YOUR_GOOGLE_FORM_ID  → the form ID
+       YOUR_NAME_ENTRY      → entry.XXXXXXXXX for Name
+       YOUR_EMAIL_ENTRY     → entry.XXXXXXXXX for Email
+       YOUR_PHONE_ENTRY     → entry.XXXXXXXXX for Phone
+       YOUR_TYPE_ENTRY      → entry.XXXXXXXXX for Project type
+       YOUR_BUDGET_ENTRY    → entry.XXXXXXXXX for Budget
+       YOUR_MSG_ENTRY       → entry.XXXXXXXXX for Message
+  6. In Google Forms → Responses → link a Google Sheet for spreadsheet view.
+  7. Enable email notifications: Responses → ⋮ → Get email notifications.
+  ══════════════════════════════════════════════════════
+  -->
+</section>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="foot-brand">VIXIO<em>X</em></div>
+  <div style="font-size:12px;color:var(--ink3);margin-bottom:10px">contact@vixiox.com · vixiox.com · Chandigarh, India · Remote worldwide</div>
   <div class="foot-links">
-    <a href="#">schoolbrain.evokecode.in</a>
-    <a href="#">clinic.evokecode.in</a>
-    <a href="#">talent.evokecode.in</a>
-    <a href="#">retail.evokecode.in</a>
-    <a href="#">legal.evokecode.in</a>
-    <a href="#">finsight.evokecode.in</a>
-    <a href="#">property.evokecode.in</a>
+    <a href="#">schoolbrain.vixiox.com</a><a href="#">clinic.vixiox.com</a><a href="#">talent.vixiox.com</a><a href="#">retail.vixiox.com</a><a href="#">legal.vixiox.com</a><a href="#">finsight.vixiox.com</a><a href="#">property.vixiox.com</a>
   </div>
-  <div class="foot-copy">© 2025 EvokCode · All rights reserved</div>
-</div>
-</div>
+  <div class="foot-copy">© 2025 VixioX · All rights reserved · contact@vixiox.com</div>
+</footer>
 
-<!-- ═══════════════════════════ CMS ═══════════════════════════ -->
+</div><!-- /v-site -->
+
+<!-- ══════════════════════════════════════ CMS VIEW ══ -->
 <div id="v-cms" class="view cms">
-  <div class="cms-nav">
-    <div class="cms-logo"><i class="ti ti-settings" aria-hidden="true"></i>EvokCode CMS</div>
-    <div class="cms-usr"><div class="cms-av">A</div>Admin</div>
-  </div>
-  <div class="cms-tabs">
-    <button class="ctab on" onclick="cTab('dash',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</button>
-    <button class="ctab" onclick="cTab('hero',this)"><i class="ti ti-home" aria-hidden="true"></i>Hero</button>
-    <button class="ctab" onclick="cTab('adv',this)"><i class="ti ti-trophy" aria-hidden="true"></i>Advantage</button>
-    <button class="ctab" onclick="cTab('prods',this)"><i class="ti ti-apps" aria-hidden="true"></i>Products</button>
-    <button class="ctab" onclick="cTab('proc',this)"><i class="ti ti-list-check" aria-hidden="true"></i>Process</button>
-    <button class="ctab" onclick="cTab('contact',this)"><i class="ti ti-mail" aria-hidden="true"></i>Contact</button>
-    <button class="ctab" onclick="cTab('settings',this)"><i class="ti ti-adjustments" aria-hidden="true"></i>Settings</button>
-    <button class="ctab" onclick="cTab('leads',this)"><i class="ti ti-users" aria-hidden="true"></i>Leads</button>
-  </div>
-  <div class="cms-body">
 
-    <!-- DASHBOARD -->
-    <div id="cms-dash" class="cms-pg on">
-      <div class="cms-h">Overview</div>
-      <div class="cms-metrics">
-        <div class="cm"><div class="cm-l">Page views</div><div class="cm-v" style="color:var(--bl)">3,241</div></div>
-        <div class="cm"><div class="cm-l">Notify signups</div><div class="cm-v" style="color:var(--gr)">198</div></div>
-        <div class="cm"><div class="cm-l">Leads</div><div class="cm-v" style="color:var(--gold)">31</div></div>
-        <div class="cm"><div class="cm-l">Live products</div><div class="cm-v" style="color:var(--pu)">0</div></div>
-      </div>
-      <div class="cms-h" style="margin-top:6px">Pipeline status</div>
-      <div id="dash-prods"></div>
-    </div>
-
-    <!-- HERO -->
-    <div id="cms-hero" class="cms-pg">
-      <div class="cms-h">Hero section</div>
-      <div class="cms-f"><label>Eyebrow text</label><input type="text" value="AI-First Software Agency"></div>
-      <div class="cms-f"><label>Headline</label><textarea>We don't just build software. We build intelligent systems.</textarea></div>
-      <div class="cms-f"><label>Subheadline</label><textarea>While others write code, we architect AI-native products that think, learn, and scale.</textarea></div>
-      <div class="cms-f"><label>Primary CTA</label><input type="text" value="See why we're different"></div>
-      <div class="cms-f"><label>Secondary CTA</label><input type="text" value="Start a project"></div>
-      <button class="cms-save" onclick="svd(this)">Save hero</button>
-    </div>
-
-    <!-- ADVANTAGE -->
-    <div id="cms-adv" class="cms-pg">
-      <div class="cms-h">AI advantage section</div>
-      <div class="cms-f"><label>Section headline</label><textarea>We're not a typical agency. We're an AI lab that ships products.</textarea></div>
-      <div class="cms-f"><label>Section description</label><textarea>Most agencies outsource AI features as an add-on. We build AI into the architecture from day one.</textarea></div>
-      <div class="cms-h" style="margin-top:16px">Quote strip</div>
-      <div class="cms-f"><label>Quote text</label><textarea>"The gap between agencies that use AI tools and agencies that build AI systems is the same as the gap between a rider and an engineer."</textarea></div>
-      <div class="cms-f"><label>Quote attribution</label><input type="text" value="EvokCode founding principle"></div>
-      <div class="cms-h" style="margin-top:16px">Our advantages (left column)</div>
-      <div id="adv-list">
-        <div class="cms-card" style="margin-bottom:8px"><div class="cms-f" style="margin-bottom:6px"><label>Advantage title</label><input type="text" value="Local LLM integration"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="Qwen, Llama, Mistral on your own server. Zero API costs, full privacy."></div></div>
-        <div class="cms-card" style="margin-bottom:8px"><div class="cms-f" style="margin-bottom:6px"><label>Advantage title</label><input type="text" value="RAG memory systems"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="ChromaDB-backed semantic search over your own documents & data."></div></div>
-        <div class="cms-card" style="margin-bottom:8px"><div class="cms-f" style="margin-bottom:6px"><label>Advantage title</label><input type="text" value="Multi-agent workflows"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="AI agents that plan, execute, and verify — not just chatbots."></div></div>
-      </div>
-      <button class="cms-save" onclick="svd(this)">Save advantage section</button>
-    </div>
-
-    <!-- PRODUCTS -->
-    <div id="cms-prods" class="cms-pg">
-      <div class="cms-h">Products <button class="add-btn" onclick="addProd()"><i class="ti ti-plus" aria-hidden="true"></i>Add</button></div>
-      <div id="prod-list"></div>
-    </div>
-
-    <!-- PROCESS -->
-    <div id="cms-proc" class="cms-pg">
-      <div class="cms-h">Process steps</div>
-      <div class="cms-card" style="margin-bottom:8px">
-        <div class="cms-f"><label>Step 01 title</label><input type="text" value="Discovery call"></div>
-        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Map your requirements, users, and data flows. We identify where AI adds the most value.</textarea></div>
-      </div>
-      <div class="cms-card" style="margin-bottom:8px">
-        <div class="cms-f"><label>Step 02 title</label><input type="text" value="AI architecture design"></div>
-        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Design LLM integration, RAG pipelines, data schema and API structure.</textarea></div>
-      </div>
-      <div class="cms-card" style="margin-bottom:8px">
-        <div class="cms-f"><label>Step 03 title</label><input type="text" value="Build & ship"></div>
-        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Agile sprints with daily demos. Deployed on your subdomain within 48h.</textarea></div>
-      </div>
-      <div class="cms-card" style="margin-bottom:12px">
-        <div class="cms-f"><label>Step 04 title</label><input type="text" value="AI tuning & iteration"></div>
-        <div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Post-launch: model fine-tuning, prompt engineering, RAG refinement.</textarea></div>
-      </div>
-      <button class="cms-save" onclick="svd(this)">Save process</button>
-    </div>
-
-    <!-- CONTACT -->
-    <div id="cms-contact" class="cms-pg">
-      <div class="cms-h">Contact info</div>
-      <div class="cms-f"><label>Email</label><input type="text" value="hello@evokecode.in"></div>
-      <div class="cms-f"><label>WhatsApp</label><input type="text" value="+91 98765 43210"></div>
-      <div class="cms-f"><label>Location</label><input type="text" value="Ludhiana, Punjab · Remote worldwide"></div>
-      <div class="cms-f"><label>Response time</label><input type="text" value="Within 4 hours · Mon–Sat"></div>
-      <div class="cms-h" style="margin-top:16px">Form dropdowns</div>
-      <div class="cms-f"><label>Project types</label><textarea>AI SaaS Platform,Analytics Dashboard,Custom Backend API,LLM / RAG System,EdTech Product,Something else</textarea></div>
-      <div class="cms-f"><label>Budget options</label><textarea>₹50k–₹1L,₹1L–₹3L,₹3L–₹10L,₹10L+,Let's discuss</textarea></div>
-      <button class="cms-save" onclick="svd(this)">Save contact</button>
-    </div>
-
-    <!-- SETTINGS -->
-    <div id="cms-settings" class="cms-pg">
-      <div class="cms-h">Site settings</div>
-      <div class="cms-f"><label>Agency name</label><input type="text" value="EvokCode"></div>
-      <div class="cms-f"><label>Primary domain</label><input type="text" value="evokecode.in"></div>
-      <div class="cms-f"><label>Tagline</label><input type="text" value="AI-First Software Agency"></div>
-      <div class="cms-f"><label>Meta description</label><textarea>We build intelligent AI-native SaaS products and backends for businesses that want to scale fast.</textarea></div>
-      <div class="cms-h" style="margin-top:16px">Feature toggles</div>
-      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Notify-me forms</div><div class="tgl-s">Email capture on coming soon cards</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
-      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">AI advantage section</div><div class="tgl-s">Show comparison with other agencies</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
-      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Contact form</div><div class="tgl-s">Show project inquiry form</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
-      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Stats bar</div><div class="tgl-s">Show numbers below hero</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
-      <div class="tgl-row"><div class="tgl-info"><div class="tgl-t">Maintenance mode</div><div class="tgl-s">Show maintenance page to visitors</div></div><label class="tgl"><input type="checkbox"><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
-      <button class="cms-save" style="margin-top:14px" onclick="svd(this)">Save settings</button>
-    </div>
-
-    <!-- LEADS -->
-    <div id="cms-leads" class="cms-pg">
-      <div class="cms-h">Contact leads <span style="font-size:11px;color:var(--fg3);font-weight:400">31 total</span></div>
-      <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">Priya Sharma</span><span style="font-size:10px;color:var(--fg3)">Today 10:22</span></div><div style="font-size:11px;color:var(--fg3)">priya@school.in</div><div style="font-size:11px;color:var(--bl);margin-top:3px">EdTech Product · ₹1L–₹3L</div></div>
-      <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">Rahul Gupta</span><span style="font-size:10px;color:var(--fg3)">Yesterday</span></div><div style="font-size:11px;color:var(--fg3)">rahul@clinic.co</div><div style="font-size:11px;color:var(--bl);margin-top:3px">AI SaaS Platform · ₹3L–₹10L</div></div>
-      <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">Ananya Singh</span><span style="font-size:10px;color:var(--fg3)">2 days ago</span></div><div style="font-size:11px;color:var(--fg3)">ananya@retail.com</div><div style="font-size:11px;color:var(--bl);margin-top:3px">Analytics Dashboard · ₹50k–₹1L</div></div>
-      <div class="cms-h" style="margin-top:16px">Notify-me signups <span style="font-size:11px;color:var(--fg3);font-weight:400">198 total</span></div>
-      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">doc@hospital.in</div><div style="font-size:10px;color:var(--gold);margin-top:2px">ClinicAI</div></div><span style="font-size:10px;color:var(--fg3)">Today</span></div></div>
-      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">hr@corp.com</div><div style="font-size:10px;color:var(--gold);margin-top:2px">TalentOS</div></div><span style="font-size:10px;color:var(--fg3)">Today</span></div></div>
-      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">teacher@dav.in</div><div style="font-size:10px;color:var(--gold);margin-top:2px">SchoolBrain.ai</div></div><span style="font-size:10px;color:var(--fg3)">Yesterday</span></div></div>
-      <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:500">cfo@startup.io</div><div style="font-size:10px;color:var(--gold);margin-top:2px">FinSight</div></div><span style="font-size:10px;color:var(--fg3)">Yesterday</span></div></div>
-    </div>
-
-  </div>
+<div class="cms-nav">
+  <div class="cms-logo"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>VixioX CMS</div>
+  <div class="cms-usr"><div class="cms-av">A</div><span>Admin</span></div>
 </div>
+
+<div class="cms-tabs" role="tablist">
+  <button class="ctab on" role="tab" onclick="cT('dash',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</button>
+  <button class="ctab" role="tab" onclick="cT('hero',this)"><i class="ti ti-home" aria-hidden="true"></i>Hero</button>
+  <button class="ctab" role="tab" onclick="cT('adv',this)"><i class="ti ti-trophy" aria-hidden="true"></i>Advantage</button>
+  <button class="ctab" role="tab" onclick="cT('prods',this)"><i class="ti ti-apps" aria-hidden="true"></i>Products</button>
+  <button class="ctab" role="tab" onclick="cT('proc',this)"><i class="ti ti-list-check" aria-hidden="true"></i>Process</button>
+  <button class="ctab" role="tab" onclick="cT('contact',this)"><i class="ti ti-mail" aria-hidden="true"></i>Contact</button>
+  <button class="ctab" role="tab" onclick="cT('settings',this)"><i class="ti ti-settings" aria-hidden="true"></i>Settings</button>
+  <button class="ctab" role="tab" onclick="cT('leads',this)"><i class="ti ti-users" aria-hidden="true"></i>Leads</button>
+</div>
+
+<div class="cms-body">
+
+  <div id="cms-dash" class="cms-pg on">
+    <div class="cms-h">Overview</div>
+    <div class="cms-metrics">
+      <div class="cm"><div class="cm-l">Page views</div><div class="cm-v" style="color:var(--p)">3,241</div></div>
+      <div class="cm"><div class="cm-l">Notify signups</div><div class="cm-v" style="color:#007B5C">198</div></div>
+      <div class="cm"><div class="cm-l">Contact leads</div><div class="cm-v" style="color:var(--o)">31</div></div>
+      <div class="cm"><div class="cm-l">Live products</div><div class="cm-v" style="color:var(--ink4)">0</div></div>
+    </div>
+    <div class="cms-h">Pipeline status</div>
+    <div id="dash-prods"></div>
+  </div>
+
+  <div id="cms-hero" class="cms-pg">
+    <div class="cms-h">Hero section</div>
+    <div class="cms-f"><label>Eyebrow</label><input type="text" value="AI-first software agency"></div>
+    <div class="cms-f"><label>Headline</label><textarea>We don't just build software. We build intelligent systems.</textarea></div>
+    <div class="cms-f"><label>Subheadline</label><textarea>While others write code, we architect AI-native products that think, learn, and scale.</textarea></div>
+    <div class="cms-f"><label>Primary CTA</label><input type="text" value="See why we're different"></div>
+    <div class="cms-f"><label>Secondary CTA</label><input type="text" value="Start a project"></div>
+    <button class="cms-save" onclick="svd(this)">Save hero</button>
+  </div>
+
+  <div id="cms-adv" class="cms-pg">
+    <div class="cms-h">AI advantage section</div>
+    <div class="cms-f"><label>Section headline</label><textarea>We're not an agency. We're an AI lab that ships.</textarea></div>
+    <div class="cms-f"><label>Description</label><textarea>Most agencies bolt AI on as an afterthought. We build local LLMs, RAG pipelines, and vector memory into the architecture from day one.</textarea></div>
+    <div class="cms-f"><label>Quote text</label><textarea>"The gap between agencies that use AI tools and agencies that build AI systems is the same gap as between a driver and an engineer."</textarea></div>
+    <div class="cms-f"><label>Quote attribution</label><input type="text" value="VixioX founding principle · Sapan Sharma"></div>
+    <div class="cms-h" style="margin-top:14px">Our 5 advantages</div>
+    <div class="cms-card"><div class="cms-f"><label>Advantage 1 title</label><input type="text" value="Local LLMs on your server"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="Qwen, Mistral, Llama — zero API costs, full data privacy."></div></div>
+    <div class="cms-card"><div class="cms-f"><label>Advantage 2 title</label><input type="text" value="RAG memory systems"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="ChromaDB semantic search over your own documents."></div></div>
+    <div class="cms-card"><div class="cms-f"><label>Advantage 3 title</label><input type="text" value="Multi-agent workflows"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><input type="text" value="AI agents that plan, execute and verify — not chatbots."></div></div>
+    <button class="cms-save" onclick="svd(this)">Save advantage section</button>
+  </div>
+
+  <div id="cms-prods" class="cms-pg">
+    <div class="cms-h">Products <button class="add-btn" onclick="addP()"><i class="ti ti-plus" aria-hidden="true"></i>Add</button></div>
+    <div id="prod-list"></div>
+  </div>
+
+  <div id="cms-proc" class="cms-pg">
+    <div class="cms-h">Process steps</div>
+    <div class="cms-card"><div class="cms-f"><label>Step 01 title</label><input type="text" value="Discovery call"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Map requirements, users and data flows. Find where AI adds real value.</textarea></div></div>
+    <div class="cms-card"><div class="cms-f"><label>Step 02 title</label><input type="text" value="AI architecture"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Design LLM integration, RAG pipelines, data schema before features.</textarea></div></div>
+    <div class="cms-card"><div class="cms-f"><label>Step 03 title</label><input type="text" value="Build and ship"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Agile sprints, daily demos. Live on your subdomain in 48h.</textarea></div></div>
+    <div class="cms-card"><div class="cms-f"><label>Step 04 title</label><input type="text" value="AI tuning"></div><div class="cms-f" style="margin-bottom:0"><label>Description</label><textarea>Post-launch model fine-tuning, prompt engineering, RAG refinement.</textarea></div></div>
+    <button class="cms-save" onclick="svd(this)">Save process</button>
+  </div>
+
+  <div id="cms-contact" class="cms-pg">
+    <div class="cms-h">Contact info</div>
+    <div class="cms-f"><label>Email</label><input type="text" value="contact@vixiox.com"></div>
+    <div class="cms-f"><label>Location</label><input type="text" value="Chandigarh, Punjab · Remote worldwide"></div>
+    <div class="cms-f"><label>Response time</label><input type="text" value="Within 4 hours · Mon–Sat"></div>
+    <div class="cms-f"><label>Project type options</label><textarea>AI SaaS Platform,Analytics Dashboard,Backend API,LLM / RAG System,EdTech Product,Something else</textarea></div>
+    <div class="cms-f"><label>Budget options</label><textarea>₹50k–₹1L,₹1L–₹3L,₹3L–₹10L,₹10L+,Let's discuss</textarea></div>
+    <button class="cms-save" onclick="svd(this)">Save contact</button>
+  </div>
+
+  <div id="cms-settings" class="cms-pg">
+    <div class="cms-h">Site settings</div>
+    <div class="cms-f"><label>Agency name</label><input type="text" value="VixioX"></div>
+    <div class="cms-f"><label>Primary domain</label><input type="text" value="vixiox.com"></div>
+    <div class="cms-f"><label>Contact email</label><input type="text" value="contact@vixiox.com"></div>
+    <div class="cms-f"><label>Phone</label><input type="text" value="+91 76967 36640"></div>
+    <div class="cms-f"><label>Tagline</label><input type="text" value="AI-First Software Agency"></div>
+    <div class="cms-f"><label>Meta description</label><textarea>VixioX builds intelligent AI-native SaaS products and backends. We ship local LLMs, RAG pipelines and production backends fast. Contact: contact@vixiox.com</textarea></div>
+    <div class="cms-h" style="margin-top:14px">Feature toggles</div>
+    <div class="tgl-row"><div><div class="tgl-t">Notify-me forms</div><div class="tgl-s">Email capture on coming soon cards</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+    <div class="tgl-row"><div><div class="tgl-t">AI advantage section</div><div class="tgl-s">Show agency comparison block</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+    <div class="tgl-row"><div><div class="tgl-t">Contact form</div><div class="tgl-s">Show project inquiry form</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+    <div class="tgl-row"><div><div class="tgl-t">Stats bar</div><div class="tgl-s">Show numbers below hero</div></div><label class="tgl"><input type="checkbox" checked><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+    <div class="tgl-row"><div><div class="tgl-t">Maintenance mode</div><div class="tgl-s">Show maintenance page to visitors</div></div><label class="tgl"><input type="checkbox"><div class="tgl-track"></div><div class="tgl-thumb"></div></label></div>
+    <button class="cms-save" style="margin-top:14px" onclick="svd(this)">Save settings</button>
+  </div>
+
+  <div id="cms-leads" class="cms-pg">
+    <div class="cms-h">Contact leads <span style="font-size:11px;color:var(--ink4);font-weight:400">31 total</span></div>
+    <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-weight:600;font-size:13px">Priya Sharma</span><span style="font-size:10px;color:var(--ink4)">Today 10:22</span></div><div style="font-size:11px;color:var(--ink4)">priya@school.in</div><div style="font-size:11px;color:var(--p);margin-top:3px;font-weight:500">EdTech Product · ₹1L–₹3L</div></div>
+    <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-weight:600;font-size:13px">Rahul Gupta</span><span style="font-size:10px;color:var(--ink4)">Yesterday</span></div><div style="font-size:11px;color:var(--ink4)">rahul@clinic.co</div><div style="font-size:11px;color:var(--p);margin-top:3px;font-weight:500">AI SaaS Platform · ₹3L–₹10L</div></div>
+    <div class="lead-card"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-weight:600;font-size:13px">Ananya Singh</span><span style="font-size:10px;color:var(--ink4)">2 days ago</span></div><div style="font-size:11px;color:var(--ink4)">ananya@retail.com</div><div style="font-size:11px;color:var(--p);margin-top:3px;font-weight:500">Analytics Dashboard · ₹50k–₹1L</div></div>
+    <div class="cms-h" style="margin-top:16px">Notify-me signups <span style="font-size:11px;color:var(--ink4);font-weight:400">198 total</span></div>
+    <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:600">teacher@dav.in</div><div style="font-size:10px;color:var(--p);margin-top:2px;font-weight:600">SchoolBrain.ai</div></div><span style="font-size:10px;color:var(--ink4)">Today</span></div></div>
+    <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:600">doc@hospital.in</div><div style="font-size:10px;color:var(--p);margin-top:2px;font-weight:600">ClinicAI</div></div><span style="font-size:10px;color:var(--ink4)">Today</span></div></div>
+    <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:600">hr@corp.com</div><div style="font-size:10px;color:var(--p);margin-top:2px;font-weight:600">TalentOS</div></div><span style="font-size:10px;color:var(--ink4)">Yesterday</span></div></div>
+    <div class="lead-card"><div style="display:flex;justify-content:space-between"><div><div style="font-size:12px;font-weight:600">cfo@startup.io</div><div style="font-size:10px;color:var(--p);margin-top:2px;font-weight:600">FinSight</div></div><span style="font-size:10px;color:var(--ink4)">Yesterday</span></div></div>
+  </div>
+
+</div><!-- /cms-body -->
+</div><!-- /v-cms -->
 
 <script>
+/* ── GOOGLE FORMS CONTACT ── */
+function handleGFSubmit(e){
+  const form = document.getElementById('vx-contact-form');
+  const btn  = document.getElementById('vx-submit-btn');
+  const emailInput = form.querySelector('input[type="email"]');
+  const emailVal = emailInput ? emailInput.value : '';
+
+  // Button loading state
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="animation:spin .7s linear infinite"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Sending…';
+  btn.disabled = true;
+
+  // After short delay show success (iframe submission is fire-and-forget)
+  setTimeout(function(){
+    form.style.display = 'none';
+    const success = document.getElementById('vx-success');
+    const replyEl = document.getElementById('vx-reply-email');
+    if(replyEl) replyEl.textContent = emailVal || 'your email';
+    success.style.display = 'block';
+  }, 1200);
+}
+
+function resetContactForm(){
+  const form = document.getElementById('vx-contact-form');
+  form.reset();
+  form.style.display = 'block';
+  document.getElementById('vx-success').style.display = 'none';
+  const btn = document.getElementById('vx-submit-btn');
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send message';
+  btn.disabled = false;
+}
+
+/* ── FAQ TOGGLE ── */
+function toggleFaq(el){
+  const item = el.closest('.faq-item');
+  item.classList.toggle('open');
+}
+
+/* ── DATA ── */
 const PRODS=[
-  {id:"sb",name:"SchoolBrain.ai",domain:"schoolbrain.evokecode.in",status:"pipeline",pct:85,desc:"AI school analytics platform — student risk detection, quiz gen, RAG chat, intervention plans.",tech:"FastAPI,Qwen 2.5,ChromaDB,React,JWT"},
-  {id:"cl",name:"ClinicAI",domain:"clinic.evokecode.in",status:"coming",pct:72,desc:"Smart clinic management with AI appointment scheduling and patient risk scoring.",tech:"FastAPI,LLM,PostgreSQL,Twilio"},
-  {id:"ta",name:"TalentOS",domain:"talent.evokecode.in",status:"coming",pct:48,desc:"AI recruitment platform with LLM resume parsing and bias-free scoring.",tech:"Python,Ollama,React,PDF parsing"},
-  {id:"re",name:"RetailMind",domain:"retail.evokecode.in",status:"coming",pct:35,desc:"Retail analytics AI with inventory prediction and demand forecasting.",tech:"FastAPI,ML models,Redis,Recharts"},
-  {id:"le",name:"LegalBot",domain:"legal.evokecode.in",status:"coming",pct:20,desc:"AI legal assistant for SMEs — contract drafting and Indian law RAG queries.",tech:"RAG,ChromaDB,LLM,PDF"},
-  {id:"fi",name:"FinSight",domain:"finsight.evokecode.in",status:"coming",pct:60,desc:"Finance AI for SMBs — cash flow, P&L summaries and runway forecast.",tech:"FastAPI,Qwen,SQLite,Charts"},
-  {id:"pr",name:"PropertyAI",domain:"property.evokecode.in",status:"coming",pct:15,desc:"Real estate AI — property valuation, lead scoring and rental yield prediction.",tech:"FastAPI,ML,Maps API,React"},
+  {id:"sb",name:"SchoolBrain.ai",domain:"schoolbrain.vixiox.com",status:"pipeline",pct:85,desc:"AI school analytics — student risk detection, quiz generation, RAG chat, intervention plans.",tech:"FastAPI,Qwen 2.5,ChromaDB,React"},
+  {id:"cl",name:"ClinicAI",domain:"clinic.vixiox.com",status:"coming",pct:72,desc:"Smart clinic management with AI scheduling and patient risk scoring.",tech:"FastAPI,LLM,PostgreSQL,Twilio"},
+  {id:"ta",name:"TalentOS",domain:"talent.vixiox.com",status:"coming",pct:48,desc:"AI recruitment platform with LLM resume parsing.",tech:"Python,Ollama,React,PDF"},
+  {id:"re",name:"RetailMind",domain:"retail.vixiox.com",status:"coming",pct:35,desc:"Retail analytics AI with inventory prediction.",tech:"FastAPI,ML,Redis,Charts"},
+  {id:"le",name:"LegalBot",domain:"legal.vixiox.com",status:"coming",pct:20,desc:"AI legal assistant for SMEs — contracts and Indian law RAG.",tech:"RAG,ChromaDB,LLM,PDF"},
+  {id:"fi",name:"FinSight",domain:"finsight.vixiox.com",status:"coming",pct:60,desc:"Finance AI for SMBs — cash flow and runway forecast.",tech:"FastAPI,Qwen,SQLite,Charts"},
+  {id:"pr",name:"PropertyAI",domain:"property.vixiox.com",status:"coming",pct:15,desc:"Real estate AI — valuation and lead scoring.",tech:"FastAPI,ML,Maps API,React"},
 ];
+const pColors={85:"var(--p)",72:"#00D4A0",48:"var(--p2)",35:"var(--o)",20:"var(--a)",60:"#00D4A0",15:"var(--a)"};
+const stMap={pipeline:{cls:"st-p",lbl:"In pipeline"},coming:{cls:"st-p",lbl:"Coming soon"},live:{cls:"st-g",lbl:"Live"},draft:{cls:"st-d",lbl:"Draft"}};
 
-const pctColors={85:"var(--bl)",72:"var(--gold)",48:"var(--pu)",35:"#FB923C",20:"var(--gold)",60:"#14B8A6",15:"#F43F5E"};
-
-function switchV(id,btn){
+/* ── VIEW SWITCH ── */
+function switchV(id, btn){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.querySelectorAll('.vb').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.vb').forEach(b=>{b.classList.remove('on');b.setAttribute('aria-selected','false');});
   document.getElementById('v-'+id).classList.add('on');
-  btn.classList.add('on');
-}
-(function(){
-  const p=new URLSearchParams(location.search).get('view');
-  if(p==='cms'){
-    const btns=document.querySelectorAll('.vb');
-    switchV('cms',btns[1]);
-  }
-})();
-function toggleM(){
-  const m=document.getElementById('mm');
-  m.classList.toggle('open');
-}
-function goTo(id){
-  const el=document.getElementById(id);
-  if(el) el.scrollIntoView({behavior:'smooth'});
+  if(btn){ btn.classList.add('on'); btn.setAttribute('aria-selected','true'); }
   document.getElementById('mm').classList.remove('open');
 }
-function notifyMe(id){
+
+/* ── QUERY PARAM INIT ── */
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get('view'); // ?view=cms or ?view=site
+  const vbar = document.querySelector('.view-bar');
+  const nav  = document.querySelector('.nav');
+  const cmsNav = document.querySelector('.cms-nav');
+  const cmsTabs = document.querySelector('.cms-tabs');
+
+  if(view === 'cms'){
+    switchV('cms', null);
+  } else if(view === 'both'){
+    // Show the view-bar switcher, default to site
+    vbar.classList.add('visible');
+    const barH = vbar.offsetHeight;
+    nav.style.top = barH + 'px';
+    if(cmsNav) cmsNav.style.top = barH + 'px';
+    if(cmsTabs) cmsTabs.style.top = (barH + 57) + 'px';
+    switchV('site', null);
+  } else {
+    // Default — live site, no view-bar
+    switchV('site', null);
+  }
+})();
+
+/* ── MOBILE MENU ── */
+function toggleM(){
+  const mm=document.getElementById('mm');
+  const btn=document.getElementById('hbg-btn');
+  const icon=document.getElementById('hbg-icon');
+  const isOpen=mm.classList.toggle('open');
+  btn.setAttribute('aria-expanded', isOpen);
+  // Swap between hamburger ☰ and close ✕
+  icon.innerHTML = isOpen
+    ? '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
+    : '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+}
+
+/* ── SCROLL NAV ── */
+function goS(id){
+  const el=document.getElementById(id);
+  if(el){
+    const vbar = document.querySelector('.view-bar');
+    const vbarH = vbar.classList.contains('visible') ? vbar.offsetHeight : 0;
+    const navEl = document.querySelector('.nav');
+    const navH = navEl ? navEl.offsetHeight : 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - vbarH - navH - 8;
+    window.scrollTo({top, behavior:'smooth'});
+  }
+  document.getElementById('mm').classList.remove('open');
+  document.getElementById('hbg-btn').setAttribute('aria-expanded','false');
+  document.getElementById('hbg-icon').innerHTML='<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+}
+
+/* ── NOTIFY ── */
+function nfy(id){
   const inp=document.getElementById('ni-'+id);
-  if(!inp||!inp.value||!inp.value.includes('@')){if(inp){inp.style.borderColor='rgba(248,113,113,.5)';setTimeout(()=>inp.style.borderColor='',1500);}return;}
+  if(!inp||!inp.value||!inp.value.includes('@')){
+    if(inp){inp.style.borderColor='rgba(255,92,138,.5)';setTimeout(()=>inp.style.borderColor='',1500);}
+    return;
+  }
   const btn=inp.nextElementSibling;
   inp.value='';
-  btn.textContent='Saved ✓';btn.style.background='var(--gr)';btn.style.color='#fff';
-  setTimeout(()=>{btn.textContent='Notify me';btn.style.background='';btn.style.color='';},2500);
+  btn.textContent='Saved!';btn.style.background='#007B5C';
+  setTimeout(()=>{btn.textContent='Notify me';btn.style.background='';},2500);
 }
+
+/* ── CONTACT FORM ── */
 function submitCF(btn){
-  btn.textContent='Sent ✓';btn.style.background='var(--gr)';
-  setTimeout(()=>{btn.textContent='Send message';btn.style.background='var(--gold)';},2500);
+  btn.innerHTML='<i class="ti ti-check" style="font-size:14px;margin-right:6px"></i>Sent!';
+  btn.style.background='#007B5C';
+  setTimeout(()=>{
+    btn.innerHTML='<i class="ti ti-send" style="font-size:14px;margin-right:6px"></i>Send message';
+    btn.style.background='';
+  },2500);
 }
-function cTab(id,el){
+
+/* ── CMS TABS ── */
+function cT(id,el){
   document.querySelectorAll('.cms-pg').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.ctab').forEach(t=>{t.classList.remove('on');t.setAttribute('aria-selected','false');});
   document.getElementById('cms-'+id).classList.add('on');
   el.classList.add('on');
+  el.setAttribute('aria-selected','true');
 }
+
+/* ── CMS SAVE ── */
 function svd(btn){
   const t=btn.textContent;
-  btn.textContent='Saved ✓';btn.style.background='var(--gr)';btn.style.color='#fff';
-  setTimeout(()=>{btn.textContent=t;btn.style.background='';btn.style.color='';},2000);
+  btn.textContent='Saved!';btn.style.background='#007B5C';
+  setTimeout(()=>{btn.textContent=t;btn.style.background='';},2000);
 }
-function addProd(){
-  const list=document.getElementById('prod-list');
+
+/* ── ADD PRODUCT ── */
+function addP(){
   const d=document.createElement('div');d.className='cms-card';
-  d.innerHTML=`<div class="cc-head"><div><div class="cc-title">New product</div></div><div class="cc-acts"><button class="act del" onclick="this.closest('.cms-card').remove()"><i class="ti ti-trash" aria-hidden="true"></i></button></div></div>
-  <div class="cms-f"><label>Product name</label><input type="text" placeholder="MyProduct"></div>
+  d.innerHTML=`<div class="cc-head"><div class="cc-title">New product</div><button class="act del" onclick="this.closest('.cms-card').remove()"><i class="ti ti-trash"></i>Delete</button></div>
+  <div class="cms-f"><label>Name</label><input type="text" placeholder="MyProduct"></div>
   <div class="cms-f"><label>Domain</label><input type="text" placeholder="myproduct.evokecode.in"></div>
   <div class="cms-f"><label>Status</label><select><option>coming</option><option>pipeline</option><option>live</option><option>draft</option></select></div>
   <div class="cms-f"><label>Progress %</label><input type="range" min="0" max="100" value="0" step="1" oninput="this.previousElementSibling.textContent='Progress: '+this.value+'%'"></div>
   <div class="cms-f"><label>Description</label><textarea placeholder="Short description…"></textarea></div>
   <div class="cms-f"><label>Tech stack (comma separated)</label><input type="text" placeholder="FastAPI,React,LLM"></div>
   <button class="cms-save" onclick="svd(this)">Save product</button>`;
-  list.appendChild(d);
+  document.getElementById('prod-list').appendChild(d);
 }
+
+/* ── RENDER CMS ── */
 function renderProds(){
-  const stColors={pipeline:"var(--bl)",coming:"var(--gold)",live:"var(--gr)",draft:"var(--fg3)"};
-  const stLabel={pipeline:"In pipeline",coming:"Coming soon",live:"Live",draft:"Draft"};
   document.getElementById('prod-list').innerHTML=PRODS.map(p=>`
     <div class="cms-card">
-      <div class="cc-head">
-        <div><div class="cc-title">${p.name}</div><div class="cc-sub">${p.domain}</div></div>
-        <span class="st" style="background:${stColors[p.status]}18;color:${stColors[p.status]}">${stLabel[p.status]}</span>
-      </div>
+      <div class="cc-head"><div><div class="cc-title">${p.name}</div><div class="cc-sub">${p.domain}</div></div>
+      <span class="st ${stMap[p.status].cls}">${stMap[p.status].lbl}</span></div>
       <div class="cms-f"><label>Name</label><input type="text" value="${p.name}"></div>
       <div class="cms-f"><label>Domain</label><input type="text" value="${p.domain}"></div>
       <div class="cms-f"><label>Description</label><textarea>${p.desc}</textarea></div>
       <div class="cms-f"><label>Status</label><select>${['pipeline','coming','live','draft'].map(s=>`<option${p.status===s?' selected':''}>${s}</option>`).join('')}</select></div>
       <div class="cms-f"><label>Progress: ${p.pct}%</label><input type="range" min="0" max="100" value="${p.pct}" step="1" oninput="this.previousElementSibling.textContent='Progress: '+this.value+'%'"></div>
       <div class="cms-f"><label>Tech stack</label><input type="text" value="${p.tech}"></div>
-      <div style="display:flex;gap:8px">
-        <button class="cms-save" style="flex:1" onclick="svd(this)">Save</button>
-        <button class="act del" style="padding:10px 13px"><i class="ti ti-trash" aria-hidden="true"></i></button>
-      </div>
+      <div style="display:flex;gap:8px"><button class="cms-save" style="flex:1" onclick="svd(this)">Save</button><button class="act del"><i class="ti ti-trash"></i></button></div>
     </div>`).join('');
-  const stColors2={pipeline:"var(--bl)",coming:"var(--gold)",live:"var(--gr)",draft:"var(--fg3)"};
+
   document.getElementById('dash-prods').innerHTML=PRODS.map(p=>`
     <div class="cms-card" style="padding:11px 13px;margin-bottom:8px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div style="font-size:13px;font-weight:500">${p.name}</div>
-        <span class="st" style="background:${stColors2[p.status]}18;color:${stColors2[p.status]}">${p.status}</span>
+        <div style="font-size:13px;font-weight:600;color:var(--ink)">${p.name}</div>
+        <span class="st ${stMap[p.status].cls}">${stMap[p.status].lbl}</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
-        <div style="flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden">
-          <div style="width:${p.pct}%;height:100%;background:${pctColors[p.pct]||'var(--gold)'};border-radius:2px"></div>
+        <div style="flex:1;height:4px;background:var(--s2);border-radius:2px;overflow:hidden">
+          <div style="width:${p.pct}%;height:100%;background:${pColors[p.pct]||'var(--p)'};border-radius:2px"></div>
         </div>
-        <span style="font-size:10px;color:var(--fg3);min-width:26px;text-align:right">${p.pct}%</span>
+        <span style="font-size:10px;color:var(--ink4);font-family:'Space Mono',monospace;min-width:28px;text-align:right;font-weight:700">${p.pct}%</span>
       </div>
     </div>`).join('');
 }
 renderProds();
+
+/* ── PROGRESS BARS ANIMATE ── */
+setTimeout(()=>{
+  [{id:'sb',pct:85},{id:'cl',pct:72},{id:'ta',pct:48},{id:'re',pct:35},{id:'le',pct:20},{id:'fi',pct:60},{id:'pr',pct:15}]
+    .forEach(b=>{const el=document.getElementById('pb-'+b.id);if(el)el.style.width=b.pct+'%';});
+},600);
+
+/* ── CLOSE MENU ON OUTSIDE CLICK ── */
+document.addEventListener('click', e => {
+  const mm = document.getElementById('mm');
+  const btn = document.getElementById('hbg-btn');
+  if (mm.classList.contains('open') && !mm.contains(e.target) && !btn.contains(e.target)) {
+    mm.classList.remove('open');
+    btn.setAttribute('aria-expanded','false');
+    document.getElementById('hbg-icon').innerHTML='<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+  }
+});
 </script>
 </body>
 </html>
