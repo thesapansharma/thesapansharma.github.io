@@ -1790,6 +1790,12 @@ body {
 </button>
 
 <script>
+// Prevent auto scroll-restoration and force viewport scroll to top instantly
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 /* ── LOADER & INTRO ENGINE ─────────────────────────── */
 let introActive = true;
 let animFrameId = null;
