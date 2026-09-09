@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>VixioX — AI-First Software Agency | Local LLMs, RAG Pipelines & AI Products</title>
-<meta name="description" content="VixioX is an AI-native engineering studio building local LLMs, RAG pipelines, and multi-agent workflows. 48h MVP delivery. 7 AI products in pipeline. Zero API costs. Contact: contact@vixiox.com">
+<title>VixioX — AI-First Software Agency | Cloud & Local LLMs, RAG Pipelines & AI Products</title>
+<meta name="description" content="VixioX is an AI-native engineering studio building cloud and local LLMs, RAG pipelines, and multi-agent workflows. 48h MVP delivery. 7 AI products in pipeline. Contact: contact@vixiox.com">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="author" content="VixioX">
 <meta name="theme-color" content="#4338CA">
@@ -14,11 +14,11 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://vixiox.com/">
 <meta property="og:title" content="VixioX — AI-First Software Agency">
-<meta property="og:description" content="We build AI-native products — local LLMs, RAG pipelines, multi-agent workflows. 48h MVP delivery.">
+<meta property="og:description" content="We build AI-native products — cloud LLMs, RAG pipelines, multi-agent workflows. 48h MVP delivery.">
 <meta property="og:site_name" content="VixioX">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"VixioX","url":"https://vixiox.com","description":"AI-first software agency building local LLMs, RAG pipelines, and multi-agent AI products.","foundingDate":"2024","email":"contact@vixiox.com","telephone":"+917696736640","address":{"@type":"PostalAddress","addressLocality":"Chandigarh","addressRegion":"Punjab","addressCountry":"IN"},"contactPoint":{"@type":"ContactPoint","telephone":"+917696736640","contactType":"customer service","email":"contact@vixiox.com","availableLanguage":["English","Hindi"],"areaServed":"Worldwide"}}
+{"@context":"https://schema.org","@type":"Organization","name":"VixioX","url":"https://vixiox.com","description":"AI-first software agency building cloud and local LLMs, RAG pipelines, and multi-agent AI products.","foundingDate":"2024","email":"contact@vixiox.com","telephone":"+917696736640","address":{"@type":"PostalAddress","addressLocality":"Chandigarh","addressRegion":"Punjab","addressCountry":"IN"},"contactPoint":{"@type":"ContactPoint","telephone":"+917696736640","contactType":"customer service","email":"contact@vixiox.com","availableLanguage":["English","Hindi"],"areaServed":"Worldwide"}}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,25 +36,25 @@ ul,ol{list-style:none}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 :root {
-  --bg: #FFFFFF; /* pure white base */
-  --bg2: #F8F9FA; /* clean neutral pearl white */
-  --bg3: #F1F3F5; /* clean light slate */
+  --bg: #FFFFFF;
+  --bg2: #F8F9FA;
+  --bg3: #F1F3F5;
   --surface: rgba(255, 255, 255, 0.7);
   --surface2: rgba(248, 249, 250, 0.6);
-  --ink: #111019; /* dark velvet charcoal */
-  --ink2: #21202E; /* mid graphite */
-  --ink3: #585764; /* slate gray subtext */
-  --ink4: #8E8D9C; /* muted gray */
-  --ink5: #DEE2E6; /* clean divider */
-  --p: #1E1B4B; /* deep navy/iris */
-  --p-light: #BFA785; /* premium platinum gold */
-  --p2: #8C7853; /* dark bronze */
+  --ink: #111019;
+  --ink2: #21202E;
+  --ink3: #585764;
+  --ink4: #8E8D9C;
+  --ink5: #DEE2E6;
+  --p: #1E1B4B;
+  --p-light: #BFA785;
+  --p2: #8C7853;
   --p3: rgba(191, 167, 133, 0.05);
   --p-dark: #0B0A0F;
   --p-text: #FFFFFF;
-  --acc: #6366F1; /* elegant royal indigo highlight */
+  --acc: #6366F1;
   --acc2: #EEF2FF;
-  --grn: #0984E3; /* clean blue/green */
+  --grn: #0984E3;
   --grn2: #E1F5FE;
   --amb: #E67E22;
   --amb2: #FDEDEC;
@@ -74,26 +74,12 @@ ul,ol{list-style:none}
   --t3: .9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Premium Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(195, 163, 117, 0.25);
-  border-radius: 100px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(195, 163, 117, 0.55);
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(195, 163, 117, 0.25); border-radius: 100px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(195, 163, 117, 0.55); }
 
-/* Text Selection */
-::selection {
-  background: rgba(195, 163, 117, 0.2);
-  color: var(--ink);
-}
+::selection { background: rgba(195, 163, 117, 0.2); color: var(--ink); }
 
 html {
   font-size: 16px;
@@ -113,7 +99,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ═══ 3D VIEWPORT RIG ═══ */
 .camera-viewport {
   width: 100%;
   perspective: 1500px;
@@ -132,7 +117,6 @@ body {
   will-change: transform, filter, opacity;
 }
 
-/* Intro states */
 .intro-state-1 {
   transform: translate3d(0, 180px, -500px) rotateX(20deg) rotateY(-10deg) rotateZ(3deg);
   filter: blur(20px);
@@ -151,7 +135,6 @@ body {
   opacity: 1;
 }
 
-/* ═══ ANIMATIONS ═══ */
 @keyframes float {
   0%, 100% { transform: translateY(0) translateZ(0); }
   50% { transform: translateY(-12px) translateZ(15px); }
@@ -220,7 +203,6 @@ body {
   transition: transform .1s linear;
 }
 
-/* ═══ CURRENCY BADGE ═══ */
 .currency-flag {
   display: inline-flex;
   align-items: center;
@@ -237,7 +219,6 @@ body {
   transition: opacity .3s;
 }
 
-/* ═══ FLOATING NAV ═══ */
 .nav-wrapper {
   position: fixed;
   top: 0;
@@ -289,7 +270,6 @@ body {
 
 .nav { position: relative; }
 
-/* ═══ BRAND ═══ */
 .brand {
   font-family: 'Fraunces', serif;
   font-size: 21px;
@@ -415,7 +395,6 @@ body {
 .mmenu-cta-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; border-radius: var(--r2); background: var(--p); color: #fff; font-size: 14px; font-weight: 600; transition: all var(--t1); }
 .mmenu-cta-btn:hover { background: var(--p-light); color: var(--ink); }
 
-/* ═══ HERO ═══ */
 .hero {
   position: relative;
   overflow: hidden;
@@ -459,7 +438,6 @@ body {
 .orb-2 { width: 350px; height: 350px; background: var(--acc); top: 32%; left: 3%; animation: float 11s ease-in-out infinite .8s; }
 .orb-3 { width: 400px; height: 400px; background: var(--p2); top: 58%; right: 18%; animation: float 8s ease-in-out infinite 1.2s; }
 
-/* ═══ 3D GLOWING HERO RINGS ═══ */
 .hero-rings {
   position: absolute;
   right: clamp(-40px, 4vw, 80px);
@@ -705,7 +683,6 @@ body {
   animation: blink 2s ease-in-out infinite;
 }
 
-/* ═══ STATS BAR ═══ */
 .stats-bar {
   background: rgba(252, 251, 249, 0.45);
   backdrop-filter: blur(24px);
@@ -758,7 +735,6 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ═══ SECTIONS ═══ */
 .sec {
   padding: clamp(100px, 12vw, 180px) clamp(24px, 8vw, 100px);
   position: relative;
@@ -792,7 +768,6 @@ body {
 
 .sec-desc { font-size: clamp(15.5px, 1.6vw, 17.5px); color: var(--ink3); line-height: 1.85; max-width: 620px; margin-bottom: 56px; }
 
-/* ═══ GLASS CARDS OVERRIDE ═══ */
 .compare-card, .pillar, .product-card, .testi-card, .why-card, .cf {
   background: rgba(255, 255, 255, 0.65) !important;
   backdrop-filter: blur(24px) saturate(180%) !important;
@@ -809,7 +784,6 @@ body {
   overflow: hidden;
 }
 
-/* Card reflection spotlight pseudo-element */
 .compare-card::before, .pillar::before, .product-card::before, .testi-card::before, .why-card::before, .cf::before {
   content: '';
   position: absolute;
@@ -843,7 +817,6 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
 }
 
-/* ═══ ADVANTAGE ═══ */
 .adv-sec { background: transparent; border-top: var(--brd); border-bottom: var(--brd); }
 .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 40px; }
 .compare-card { padding: clamp(30px, 4vw, 48px); border-radius: var(--r3); }
@@ -881,7 +854,7 @@ body {
   margin-bottom: 40px;
   box-shadow: 0 15px 40px rgba(36, 34, 54, 0.15);
 }
-.quote-band::before { content: '“'; position: absolute; top: -30px; left: 16px; font-size: 200px; color: rgba(255, 255, 255, 0.06); font-family: Georgia, serif; line-height: 1; pointer-events: none; }
+.quote-band::before { content: '\201C'; position: absolute; top: -30px; left: 16px; font-size: 200px; color: rgba(255, 255, 255, 0.06); font-family: Georgia, serif; line-height: 1; pointer-events: none; }
 .quote-text { font-family: 'Fraunces', serif; font-size: clamp(18px, 2.6vw, 22px); font-weight: 500; color: #fff; line-height: 1.65; margin-bottom: 16px; position: relative; z-index: 2; }
 .quote-by { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: rgba(255, 255, 255, 0.55); position: relative; z-index: 2; letter-spacing: 1px; }
 
@@ -892,7 +865,6 @@ body {
 .pillar-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; position: relative; z-index: 2; }
 .pillar-desc { font-size: 13px; color: var(--ink3); line-height: 1.65; position: relative; z-index: 2; }
 
-/* ═══ PRODUCTS ═══ */
 .products-sec { background: rgba(246, 244, 238, 0.45); }
 .products-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
 .product-card { padding: clamp(28px, 3.5vw, 40px); border-radius: var(--r3); }
@@ -923,7 +895,6 @@ body {
 .notif-btn { padding: 12px 20px; border-radius: var(--r1); background: var(--p); color: #fff; font-size: 11.5px; font-weight: 700; font-family: 'JetBrains Mono', monospace; white-space: nowrap; flex-shrink: 0; transition: all var(--t1); box-shadow: 0 4px 10px rgba(36, 34, 54, 0.1); }
 .notif-btn:hover { background: var(--p-light); color: var(--ink); }
 
-/* ═══ PROCESS ═══ */
 .process-sec { background: transparent; border-top: var(--brd); border-bottom: var(--brd); }
 .proc-grid { display: grid; grid-template-columns: 1fr; position: relative; }
 .proc-grid::before { content: ''; position: absolute; left: 21px; top: 25px; bottom: 25px; width: 1.5px; background: linear-gradient(180deg, var(--p-light), var(--p2), rgba(195,163,117,0)); opacity: .2; }
@@ -935,7 +906,6 @@ body {
 .proc-title { font-family: 'Fraunces', serif; font-size: 18.5px; font-weight: 750; color: var(--ink); margin-bottom: 8px; letter-spacing: -.2px; }
 .proc-desc { font-size: 14px; color: var(--ink3); line-height: 1.8; }
 
-/* ═══ STACK ═══ */
 .stack-sec { background: rgba(246, 244, 238, 0.45); }
 .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(195, 163, 117, 0.15); border: var(--brd); border-radius: var(--r3); overflow: hidden; }
 .tech-item { background: var(--bg); padding: 32px 16px; text-align: center; transition: all var(--t2); }
@@ -945,20 +915,18 @@ body {
 .tech-name { font-size: 11.5px; font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--ink3); letter-spacing: .4px; transition: color var(--t2); }
 .tech-item:hover .tech-name { color: var(--p2); }
 
-/* ═══ TESTIMONIALS ═══ */
 .testi-sec { background: transparent; border-top: var(--brd); }
 .testi-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
 .testi-card { padding: clamp(28px, 3.5vw, 40px); border-radius: var(--r3); display: flex; flex-direction: column; gap: 20px; }
 .testi-stars { color: #D0A240; font-size: 14px; letter-spacing: 3px; }
 .testi-text { font-size: 14.5px; line-height: 1.8; color: var(--ink3); flex: 1; font-style: italic; }
-.testi-text::before { content: '“'; color: var(--p-light); font-style: normal; font-weight: 700; font-size: 20px; line-height: 0; }
-.testi-text::after { content: '”'; color: var(--p-light); font-style: normal; font-weight: 700; font-size: 20px; line-height: 0; }
+.testi-text::before { content: '\201C'; color: var(--p-light); font-style: normal; font-weight: 700; font-size: 20px; line-height: 0; }
+.testi-text::after { content: '\201D'; color: var(--p-light); font-style: normal; font-weight: 700; font-size: 20px; line-height: 0; }
 .testi-author { display: flex; align-items: center; gap: 14px; margin-top: 6px; }
 .testi-av { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 700; flex-shrink: 0; border: 2px solid rgba(195, 163, 117, 0.15); }
 .testi-name { font-size: 14px; font-weight: 600; color: var(--ink); }
 .testi-role { font-size: 10.5px; color: var(--p-light); font-weight: 650; margin-top: 3px; font-family: 'JetBrains Mono', monospace; }
 
-/* ═══ WHY AI-NATIVE ═══ */
 .why-sec { background: rgba(246, 244, 238, 0.45); }
 .why-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
 .why-card { padding: clamp(30px, 4vw, 48px); border-radius: var(--r3); }
@@ -968,7 +936,6 @@ body {
 .why-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -.3px; margin-bottom: 12px; }
 .why-body { font-size: 14px; line-height: 1.85; color: var(--ink3); }
 
-/* ═══ FAQ ═══ */
 .faq-sec { background: transparent; border-top: var(--brd); }
 .faq-list { border: var(--brd); border-radius: var(--r3); overflow: hidden; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .faq-item { border-bottom: var(--brd); transition: background var(--t1); }
@@ -984,7 +951,6 @@ body {
 .faq-body-inner { overflow: hidden; }
 .faq-a { padding: 0 28px 24px; font-size: 14.5px; line-height: 1.85; color: var(--ink3); }
 
-/* ═══ CONTACT ═══ */
 .contact-sec { background: rgba(246, 244, 238, 0.45); }
 .contact-layout { display: grid; grid-template-columns: 1fr; gap: 48px; }
 .contact-info { display: flex; flex-direction: column; gap: 20px; }
@@ -1007,7 +973,6 @@ body {
 .submit-btn:hover { background: var(--p-light); color: var(--ink); box-shadow: 0 12px 25px rgba(195, 163, 117, 0.25); }
 .submit-btn:disabled { opacity: .7; pointer-events: none; }
 
-/* ═══ FOOTER ═══ */
 .footer {
   background: var(--p-dark);
   border-top: var(--brd);
@@ -1024,7 +989,6 @@ body {
 .footer-link:hover { color: var(--p-light); border-color: rgba(195, 163, 117, 0.4); background: rgba(195, 163, 117, 0.1); }
 .footer-copy { font-size: 11.5px; color: rgba(255, 255, 255, 0.35); font-family: 'JetBrains Mono', monospace; }
 
-/* ═══ BACK TO TOP ═══ */
 .back-top {
   position: fixed;
   bottom: 28px;
@@ -1049,7 +1013,6 @@ body {
 .back-top.show { opacity: 1; transform: translateY(0); pointer-events: all; }
 .back-top:hover { background: var(--p-light); color: var(--ink); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(195, 163, 117, 0.3); }
 
-/* ═══ LOADER / LOGO REVEAL ═══ */
 #loader {
   position: fixed;
   inset: 0;
@@ -1102,7 +1065,6 @@ body {
 @keyframes loader-anim { to { width: 100%; } }
 .loader-text { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink4); letter-spacing: 3px; text-transform: uppercase; margin-top: 20px; opacity: 0; animation: fade-in 1.2s ease 0.6s forwards; }
 
-/* ═══ SKIP INTRO BUTTON ═══ */
 .skip-intro-btn {
   position: fixed;
   bottom: 36px;
@@ -1139,7 +1101,6 @@ body {
   pointer-events: all;
 }
 
-/* ═══ KINETIC TYPOGRAPHY ═══ */
 .kinetic-line {
   display: inline-block;
   overflow: hidden;
@@ -1166,7 +1127,6 @@ body {
   filter: blur(0px);
 }
 
-/* ═══ RIPPLE CLICK EFFECT ═══ */
 .btn-ripple {
   position: absolute;
   width: 150px;
@@ -1185,7 +1145,6 @@ body {
   }
 }
 
-/* ═══ HERO DASHBOARD WIDGETS ═══ */
 .hero-dashboard {
   position: absolute;
   right: clamp(20px, 5vw, 100px);
@@ -1238,7 +1197,6 @@ body {
   padding: 12px 16px;
 }
 
-/* Float states triggered by JS */
 .pipeline-card.reveal-in {
   opacity: 1;
   transform: translateY(0) translateZ(30px) rotateX(2deg) rotateY(-5deg);
@@ -1333,7 +1291,6 @@ body {
   color: var(--ink2);
 }
 
-/* ═══ AMBIENT BACKGROUND CANVAS ═══ */
 #ambient-canvas {
   position: fixed;
   inset: 0;
@@ -1342,7 +1299,6 @@ body {
   background: #FFFFFF;
 }
 
-/* ═══ RESPONSIVE ═══ */
 @media(min-width:480px){.products-grid{grid-template-columns:repeat(2,1fr)}.pillars-grid{grid-template-columns:repeat(4,1fr)}}
 @media(min-width:768px){
   .nav-cta{display:flex}
@@ -1381,7 +1337,6 @@ body {
 }
 @media(max-width:380px){.trust-row{flex-direction:column;align-items:flex-start}.trust-sep{display:none}}
 
-/* ═══ CLIENT LOGO CLOUD ═══ */
 .logo-cloud {
   padding: 40px clamp(24px, 8vw, 100px) 20px;
   text-align: center;
@@ -1428,7 +1383,6 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ═══ SERVICES SECTION ═══ */
 .services-sec {
   padding: clamp(60px, 8vw, 120px) clamp(24px, 8vw, 100px);
   max-width: 1240px;
@@ -1493,7 +1447,6 @@ body {
   line-height: 1.7;
 }
 
-/* ═══ ENGAGEMENT MODELS / PACKAGES ═══ */
 .packages-sec {
   padding: clamp(60px, 8vw, 120px) clamp(24px, 8vw, 100px);
   max-width: 1240px;
@@ -1605,7 +1558,6 @@ body {
   justify-content: center;
 }
 
-/* ═══ SECURITY BANNER ═══ */
 .security-sec {
   padding: clamp(60px, 8vw, 100px) clamp(24px, 8vw, 100px);
   max-width: 1240px;
@@ -1685,7 +1637,6 @@ body {
   line-height: 1.6;
 }
 
-/* ═══ SPA MULTI-PAGE ROUTER ═══ */
 .page-view {
   display: none !important;
 }
@@ -1701,7 +1652,6 @@ body {
 </head>
 <body>
 
-<!-- LOADER -->
 <div id="loader" role="progressbar" aria-label="Loading VixioX" aria-busy="true">
   <div class="loader-brand">VIXIO<em>X</em></div>
   <div class="loader-bar"><div class="loader-fill"></div></div>
@@ -1709,20 +1659,16 @@ body {
 </div>
 
 
-<!-- AMBIENT CANVAS BACKGROUND -->
 <canvas id="ambient-canvas"></canvas>
 
-<!-- SKIP INTRO BUTTON -->
 <button id="skip-intro" class="skip-intro-btn" onclick="skipCinematicIntro()">
   Skip Intro
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 18 19 12 13 6"/><polyline points="6 18 12 12 6 6"/></svg>
 </button>
-<!-- SCROLL PROGRESS -->
 <div class="scroll-prog" id="scroll-prog" role="progressbar" aria-hidden="true"></div>
 
 <div class="app" id="app">
 
-<!-- NAV WRAPPER -->
 <header>
   <div class="nav-wrapper" id="nav-wrapper">
     <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
@@ -1754,7 +1700,6 @@ body {
     </nav>
   </div>
 
-  <!-- Mobile menu -->
   <div class="mmenu" id="mmenu" role="dialog" aria-label="Navigation" aria-hidden="true">
     <a href="#advantage" class="mmi" onclick="closeMenu()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Why us
@@ -1785,7 +1730,6 @@ body {
 <div class="camera-viewport">
   <div class="camera-rig intro-state-1" id="camera-rig">
 
-<!-- HERO -->
 <main>
 <section class="hero grid-bg" id="hero" aria-labelledby="hero-heading">
   <div class="hero-glow" aria-hidden="true"></div>
@@ -1807,7 +1751,7 @@ body {
     <h1 id="hero-heading">
       Vision meets<br><em>execution.</em><br>AI-native<br>architecture.
     </h1>
-    <p class="hero-desc" id="hero-desc">VixioX is an AI-native engineering studio. We design, build and ship intelligent systems — local LLMs, RAG pipelines, multi-agent workflows, and production-grade backends — built AI-native from the ground up, not bolted on.</p>
+    <p class="hero-desc" id="hero-desc">VixioX is an AI-native engineering studio. We design, build and ship intelligent systems — cloud LLMs, RAG pipelines, multi-agent workflows, and production-grade backends — built AI-native from the ground up, not bolted on.</p>
     <div class="btn-row" id="hero-btn-row">
       <a href="#advantage" class="btn-primary">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
@@ -1828,7 +1772,6 @@ body {
   </div>
 </section>
 
-<!-- TRUSTED LOGOS -->
 <section class="logo-cloud reveal" aria-label="Trusted companies">
   <p class="logo-cloud-title">Trusted by engineering teams at forward-thinking companies</p>
   <div class="logo-grid">
@@ -1855,31 +1798,26 @@ body {
   </div>
 </section>
 
-<!-- SPECIALIZATIONS -->
 <section class="services-sec reveal" id="services" aria-labelledby="services-heading">
   <div class="sec-tag">Specializations</div>
   <h2 id="services-heading">Our core engineering <em>capabilities.</em></h2>
   <p class="sec-desc">We architect and ship high-integrity systems that utilize the absolute frontier of artificial intelligence, running private, safe, and scale-ready.</p>
   <div class="services-grid">
-    <!-- Card 1 -->
     <div class="service-card">
       <div class="service-icon">🤖</div>
       <h3 class="service-title">Multi-Agent Systems</h3>
       <p class="service-desc">Autonomous AI agents that collaborate to execute complex business workflows. Built using advanced orchestration frameworks like LangGraph with real-time human-in-the-loop triggers.</p>
     </div>
-    <!-- Card 2 -->
     <div class="service-card">
       <div class="service-icon">⚡</div>
-      <h3 class="service-title">On-Premise & Local LLMs</h3>
-      <p class="service-desc">Run open-source models (Llama 3, Qwen, Mistral) on your own servers. Maintain complete data sovereignty, eliminate external API costs, and guarantee zero-latency execution.</p>
+      <h3 class="service-title">Cloud & On-Premise LLMs</h3>
+      <p class="service-desc">Integrate hosted LLM APIs (OpenAI, Anthropic, Google) for speed and scale, or run open-source models (Llama 3, Qwen, Mistral) on your own servers when data sovereignty and zero-latency execution matter most.</p>
     </div>
-    <!-- Card 3 -->
     <div class="service-card">
       <div class="service-icon">🔎</div>
       <h3 class="service-title">Cognitive Search & RAG</h3>
       <p class="service-desc">High-precision vector retrieval pipelines that search unstructured data at scale. Features custom chunking strategies, hybrid metadata routing, and advanced re-ranking models.</p>
     </div>
-    <!-- Card 4 -->
     <div class="service-card">
       <div class="service-icon">🔌</div>
       <h3 class="service-title">High-Throughput Backends</h3>
@@ -1888,13 +1826,11 @@ body {
   </div>
 </section>
 
-<!-- STATS -->
 <section class="stats-bar" aria-label="VixioX key metrics">
   <div class="stats-inner">
     <div class="stat reveal delay-1"><div class="stat-val" data-target="7" data-suffix="+">0</div><div class="stat-lbl">Products in pipeline</div></div>
     <div class="stat reveal delay-2"><div class="stat-val" data-target="48" data-suffix="h">0</div><div class="stat-lbl">MVP delivery time</div></div>
     <div class="stat reveal delay-3"><div class="stat-val" data-target="100" data-suffix="%">0</div><div class="stat-lbl">AI-native core</div></div>
-    <!-- currency-aware "no hidden fees" stat -->
     <div class="stat reveal delay-4">
       <div class="stat-val" id="stat-zero-fees">₹0</div>
       <div class="stat-lbl">Hidden fees</div>
@@ -1902,15 +1838,14 @@ body {
   </div>
 </section>
 
-<!-- ADVANTAGE -->
 <section class="adv-sec sec" id="advantage" aria-labelledby="adv-heading">
   <div class="sec-tag">Why choose us</div>
   <h2 id="adv-heading" class="reveal">We're not an agency.<br>We're an <em>AI lab</em> that ships.</h2>
-  <p class="sec-desc reveal delay-1">Most agencies bolt AI on as an afterthought. At VixioX, we build local LLMs, RAG pipelines, and vector memory into the architecture from day one — no expensive API subscriptions, no data leaks, full ownership for you.</p>
+  <p class="sec-desc reveal delay-1">Most agencies bolt AI on as an afterthought. At VixioX, we build cloud and local LLMs, RAG pipelines, and vector memory into the architecture from day one — no wasted spend, no data leaks, full ownership for you.</p>
   <div class="compare-grid reveal">
     <article class="compare-card us" aria-label="VixioX advantages">
       <div class="col-lbl us"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>VixioX</div>
-      <div class="adv-item"><div class="adv-ico yes" aria-label="Advantage"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--grn)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="adv-title">Local LLMs on your server</div><div class="adv-desc">Qwen, Mistral, Llama — zero API costs, full data privacy.</div></div></div>
+      <div class="adv-item"><div class="adv-ico yes" aria-label="Advantage"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--grn)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="adv-title">Cloud or on-prem LLMs</div><div class="adv-desc">Hosted APIs (GPT, Claude, Gemini) or self-hosted models like Qwen, Mistral, Llama — matched to your privacy and budget needs.</div></div></div>
       <div class="adv-item"><div class="adv-ico yes" aria-label="Advantage"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--grn)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="adv-title">RAG memory systems</div><div class="adv-desc">ChromaDB semantic search over your own documents.</div></div></div>
       <div class="adv-item"><div class="adv-ico yes" aria-label="Advantage"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--grn)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="adv-title">Multi-agent workflows</div><div class="adv-desc">AI agents that plan, execute and verify — not chatbots.</div></div></div>
       <div class="adv-item"><div class="adv-ico yes" aria-label="Advantage"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--grn)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="adv-title">48h MVP delivery</div><div class="adv-desc">See it live before you commit to more.</div></div></div>
@@ -1918,7 +1853,7 @@ body {
     </article>
     <article class="compare-card them" aria-label="Other agencies comparison">
       <div class="col-lbl them"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Other agencies</div>
-      <div class="adv-item"><div class="adv-ico no" aria-label="Disadvantage"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="them"><div class="adv-title">Expensive API calls</div><div class="adv-desc">OpenAI tokens billed forever. No ownership.</div></div></div>
+      <div class="adv-item"><div class="adv-ico no" aria-label="Disadvantage"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="them"><div class="adv-title">One-size-fits-all AI calls</div><div class="adv-desc">No thought given to cost, latency or data ownership.</div></div></div>
       <div class="adv-item"><div class="adv-ico no" aria-label="Disadvantage"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="them"><div class="adv-title">ChatGPT wrappers</div><div class="adv-desc">Basic API calls dressed up as AI products.</div></div></div>
       <div class="adv-item"><div class="adv-ico no" aria-label="Disadvantage"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="them"><div class="adv-title">No AI architecture</div><div class="adv-desc">AI bolted on after build, not designed for intelligence.</div></div></div>
       <div class="adv-item"><div class="adv-ico no" aria-label="Disadvantage"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="them"><div class="adv-title">Months to deliver</div><div class="adv-desc">6–12 week timelines for basic features.</div></div></div>
@@ -1930,14 +1865,13 @@ body {
     <footer><cite class="quote-by">— VixioX founding principle</cite></footer>
   </blockquote>
   <div class="pillars-grid">
-    <div class="pillar reveal delay-1"><div class="pillar-icon" aria-hidden="true">🧠</div><div class="pillar-title">Local LLMs</div><p class="pillar-desc">Qwen / Mistral / Llama on your infra. Zero token cost.</p></div>
+    <div class="pillar reveal delay-1"><div class="pillar-icon" aria-hidden="true">🧠</div><div class="pillar-title">Cloud & local LLMs</div><p class="pillar-desc">Hosted APIs or Qwen / Mistral / Llama on your infra — whichever fits.</p></div>
     <div class="pillar reveal delay-2"><div class="pillar-icon" aria-hidden="true">🔍</div><div class="pillar-title">RAG pipelines</div><p class="pillar-desc">ChromaDB vector search over your own docs.</p></div>
     <div class="pillar reveal delay-3"><div class="pillar-icon" aria-hidden="true">⚡</div><div class="pillar-title">Fast APIs</div><p class="pillar-desc">FastAPI async backends with JWT auth &amp; RBAC.</p></div>
     <div class="pillar reveal delay-4"><div class="pillar-icon" aria-hidden="true">📊</div><div class="pillar-title">AI dashboards</div><p class="pillar-desc">React analytics with real-time AI insights.</p></div>
   </div>
 </section>
 
-<!-- PRODUCTS -->
 <section class="products-sec sec" id="products" aria-labelledby="products-heading">
   <div class="sec-tag">Pipeline</div>
   <h2 id="products-heading" class="reveal">7 products. 7 subdomains.<br><em>All AI-native.</em></h2>
@@ -1946,7 +1880,7 @@ body {
     <article class="product-card flagship reveal" role="listitem">
       <div class="pc-top"><div class="pc-icon" style="background:var(--p3)" aria-hidden="true">🧠</div><div class="badges"><span class="badge badge-p">In pipeline</span><span class="badge badge-a">Flagship</span></div></div>
       <h3 class="pc-title">EduPulse</h3>
-      <p class="pc-desc">AI school analytics — detects struggling students, generates quizzes, creates intervention plans, and answers teacher queries via RAG-powered chat. Built with local Qwen 2.5 + ChromaDB.</p>
+      <p class="pc-desc">AI school analytics — detects struggling students, generates quizzes, creates intervention plans, and answers teacher queries via RAG-powered chat. Built with Qwen 2.5 + ChromaDB.</p>
       <div class="pc-domain"><span class="dot" aria-hidden="true"></span>edupulse.vixiox.com</div>
       <div class="pc-tech"><span class="tech-pill">FastAPI</span><span class="tech-pill">Qwen 2.5</span><span class="tech-pill">ChromaDB</span><span class="tech-pill">RAG</span><span class="tech-pill">React</span></div>
       <div class="prog-meta"><span class="prog-label">Build progress</span><span class="prog-pct">85%</span></div>
@@ -2016,7 +1950,6 @@ body {
   </div>
 </section>
 
-<!-- PROCESS -->
 <section class="process-sec sec" id="process" aria-labelledby="process-heading">
   <div class="sec-tag">How we work</div>
   <h2 id="process-heading" class="reveal">From idea to deployed<br>in <em>days</em>, not months.</h2>
@@ -2029,13 +1962,11 @@ body {
   </div>
 </section>
 
-<!-- ENGAGEMENT MODELS -->
 <section class="packages-sec reveal" id="packages" aria-labelledby="packages-heading">
   <div class="sec-tag">How to partner</div>
   <h2 id="packages-heading">Flexible, transparent <em>sprint pricing</em></h2>
   <p class="sec-desc">Choose an engagement model built for speed, zero overhead, and clear deliverables. No retainers, no surprise bills.</p>
   <div class="packages-grid">
-    <!-- Card 1 -->
     <div class="pkg-card">
       <h3 class="pkg-title">MVP Sprint</h3>
       <p class="pkg-subtitle">RAPID VALIDATION</p>
@@ -2061,7 +1992,6 @@ body {
       <a href="#contact" class="btn-ghost pkg-btn">Book MVP Sprint</a>
     </div>
     
-    <!-- Card 2 (Popular) -->
     <div class="pkg-card popular">
       <span class="pkg-badge">Best Value</span>
       <h3 class="pkg-title">Enterprise Build</h3>
@@ -2078,7 +2008,7 @@ body {
         </li>
         <li class="pkg-feat-item">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          Local fine-tuned LLM hostings
+          Cloud or local fine-tuned LLM hosting
         </li>
         <li class="pkg-feat-item">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2092,7 +2022,6 @@ body {
       <a href="#contact" class="btn-primary pkg-btn">Initiate Build</a>
     </div>
 
-    <!-- Card 3 -->
     <div class="pkg-card">
       <h3 class="pkg-title">Dedicated Tuning</h3>
       <p class="pkg-subtitle">CONTINUOUS EVOLUTION</p>
@@ -2120,7 +2049,6 @@ body {
   </div>
 </section>
 
-<!-- STACK -->
 <section class="stack-sec sec" id="stack" aria-labelledby="stack-heading">
   <div class="sec-tag">Technology</div>
   <h2 id="stack-heading" class="reveal">Our battle-tested <em>AI stack</em></h2>
@@ -2138,49 +2066,44 @@ body {
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
 <section class="testi-sec sec" id="testimonials" aria-labelledby="testi-heading">
   <div class="sec-tag">Client voices</div>
   <h2 id="testi-heading" class="reveal">Built for teams that need <em>real results</em></h2>
   <p class="sec-desc reveal delay-1">From early-stage startups to established businesses — here's what working with a truly AI-native engineering team feels like.</p>
   <div class="testi-grid" role="list">
     <article class="testi-card reveal" role="listitem"><div class="testi-stars" aria-label="5 stars">★★★★★</div><p class="testi-text">We got a working AI analytics dashboard in under two weeks. The RAG-powered query feature alone saves our team an hour a day. Nothing else we evaluated comes close.</p><footer class="testi-author"><div class="testi-av" style="background:var(--p3);color:var(--p)" aria-hidden="true">PK</div><div><div class="testi-name">Head of Operations, EdTech Startup</div><div class="testi-role">EduPulse.ai early access</div></div></footer></article>
-    <article class="testi-card reveal delay-2" role="listitem"><div class="testi-stars" aria-label="5 stars">★★★★★</div><p class="testi-text">Other agencies quoted us 4 months. VixioX had a live prototype in 48 hours. The local LLM setup means our sensitive data never leaves our server — completely non-negotiable for us.</p><footer class="testi-author"><div class="testi-av" style="background:var(--grn2);color:var(--grn)" aria-hidden="true">DR</div><div><div class="testi-name">Director, Healthcare Technology</div><div class="testi-role">ClinicAI beta partner</div></div></footer></article>
+    <article class="testi-card reveal delay-2" role="listitem"><div class="testi-stars" aria-label="5 stars">★★★★★</div><p class="testi-text">Other agencies quoted us 4 months. VixioX had a live prototype in 48 hours. Their flexible cloud and on-prem setup meant our sensitive data stayed exactly where we needed it — completely non-negotiable for us.</p><footer class="testi-author"><div class="testi-av" style="background:var(--grn2);color:var(--grn)" aria-hidden="true">DR</div><div><div class="testi-name">Director, Healthcare Technology</div><div class="testi-role">ClinicAI beta partner</div></div></footer></article>
     <article class="testi-card reveal delay-4" role="listitem"><div class="testi-stars" aria-label="5 stars">★★★★★</div><p class="testi-text">Their AI architecture approach is completely different. They don't plug ChatGPT into a form — they build intelligent pipelines that actually understand our business logic from day one.</p><footer class="testi-author"><div class="testi-av" style="background:var(--amb2);color:var(--amb)" aria-hidden="true">AM</div><div><div class="testi-name">CTO, Retail Technology Venture</div><div class="testi-role">RetailMind design partner</div></div></footer></article>
   </div>
 </section>
 
-<!-- WHY AI-NATIVE -->
 <section class="why-sec sec" id="why-ai" aria-labelledby="why-heading">
   <div class="sec-tag">The VixioX difference</div>
   <h2 id="why-heading" class="reveal">Why AI-native architecture<br><em>changes everything</em></h2>
   <p class="sec-desc reveal delay-1">Most software agencies treat AI as a plugin. We treat it as the foundation. Here's what that means in practice.</p>
   <div class="why-grid">
-    <article class="why-card reveal"><div class="why-num">01 — Data sovereignty</div><h3 class="why-title">Data never leaves your server</h3><p class="why-body">Running Qwen, Mistral or Llama locally means your sensitive business data — patients, students, financials — is processed entirely on your own infrastructure. Zero data sent to OpenAI or any third party.</p></article>
+    <article class="why-card reveal"><div class="why-num">01 — Flexible deployment</div><h3 class="why-title">Cloud or on-prem, your call</h3><p class="why-body">Use hosted LLM APIs for speed and scale, or run models like Qwen, Mistral or Llama on your own infrastructure when data sovereignty matters most — for patients, students or financials. We architect for whichever fits your business.</p></article>
     <article class="why-card reveal delay-2"><div class="why-num">02 — Semantic memory</div><h3 class="why-title">Memory that actually works</h3><p class="why-body">Our RAG pipelines with ChromaDB give your AI products semantic memory over your own documents. Instead of a generic chatbot, you get a system that can answer real questions from your own data.</p></article>
     <article class="why-card reveal delay-1"><div class="why-num">03 — Multi-agent AI</div><h3 class="why-title">Agents that do, not just talk</h3><p class="why-body">We build multi-agent systems: one agent plans the task, another executes it, a third verifies the output. AI that can draft a report, check its own logic, and flag what it's uncertain about.</p></article>
-    <article class="why-card reveal delay-3"><div class="why-num">04 — Full ownership</div><h3 class="why-title">You own everything</h3><p class="why-body">Every line of code, every model weight, every database belongs to you. Subdomains under your brand. Source code delivered. No vendor lock-in. You own a defensible AI product — not a subscription.</p></article>
+    <article class="why-card reveal delay-3"><div class="why-num">04 — Full ownership</div><h3 class="why-title">You own everything</h3><p class="why-body">Every line of code, every model configuration, every database belongs to you. Subdomains under your brand. Source code delivered. No vendor lock-in. You own a defensible AI product — not a subscription.</p></article>
   </div>
 </section>
 
-<!-- SECURITY & DATA SOVEREIGNTY -->
 <section class="security-sec reveal" id="security" aria-labelledby="security-heading">
   <div class="sec-box">
     <div class="sec-header">
       <div class="sec-tag" style="color:var(--p-light); border-color:rgba(191,167,133,0.35); margin-bottom: 20px;">Security & Sovereignty</div>
-      <h2 id="security-heading">Enterprise-grade <em>data security.</em> Built on-premise.</h2>
-      <p>Data privacy is not an afterthought. VixioX architects AI platforms with enterprise-grade safety structures, ensuring your proprietary intelligence remains yours.</p>
+      <h2 id="security-heading">Enterprise-grade <em>data security.</em> Built to fit your infrastructure.</h2>
+      <p>Data privacy is not an afterthought. VixioX architects AI platforms with enterprise-grade safety structures, whether powered by cloud AI providers or hosted entirely on your own infrastructure — your proprietary intelligence remains yours.</p>
     </div>
     <div class="sec-grid">
-      <!-- Item 1 -->
       <div class="sec-item">
         <h3 class="sec-item-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          100% Data Sovereignty
+          Data Sovereignty, Your Way
         </h3>
-        <p class="sec-item-desc">By deploying local models (Llama 3, Qwen) inside your network, data processing stays inside your firewalls. Zero external API leakage.</p>
+        <p class="sec-item-desc">Choose cloud LLM providers for speed and scale, or deploy models like Llama 3 and Qwen inside your own network when data must stay within your firewalls.</p>
       </div>
-      <!-- Item 2 -->
       <div class="sec-item">
         <h3 class="sec-item-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -2188,7 +2111,6 @@ body {
         </h3>
         <p class="sec-item-desc">Architected to comply with standard security controls, including encryption-at-rest, secure sockets, and role-based access logs.</p>
       </div>
-      <!-- Item 3 -->
       <div class="sec-item">
         <h3 class="sec-item-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg>
@@ -2196,7 +2118,6 @@ body {
         </h3>
         <p class="sec-item-desc">We ship directly inside your private cloud (AWS VPC, Azure, GCP or private metal GPU racks) for seamless backend integration.</p>
       </div>
-      <!-- Item 4 -->
       <div class="sec-item">
         <h3 class="sec-item-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
@@ -2208,7 +2129,6 @@ body {
   </div>
 </section>
 
-<!-- FAQ -->
 <section class="faq-sec sec" id="faq" aria-labelledby="faq-heading">
   <div class="sec-tag">Questions answered</div>
   <h2 id="faq-heading" class="reveal">Frequently asked <em>questions</em></h2>
@@ -2217,15 +2137,13 @@ body {
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">How fast is the 48h MVP claim?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">After discovery and architecture (day one), we start the first sprint immediately. Within 48 hours of sprint start, you get a live, working build on your subdomain. Not a mockup — a real, deployed backend with functional AI.</p></div></div></div>
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">Do I need to understand AI to work with you?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">Not at all. You need to understand your business problem and your users. We translate that into the right AI architecture. Every sprint includes plain-language explanations and demos.</p></div></div></div>
 
-    <!-- PRICING FAQ — currency-aware -->
-    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">How much does it cost?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a" id="faq-pricing-answer">Projects typically start at ₹50,000 for a focused MVP and scale based on scope. We\'re transparent about pricing from the first call — no hidden fees, no retainers unless you want ongoing tuning.</p></div></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">How much does it cost?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a" id="faq-pricing-answer">Projects typically start at ₹50,000 for a focused MVP and scale based on scope. We're transparent about pricing from the first call — no hidden fees, no retainers unless you want ongoing tuning.</p></div></div></div>
 
-    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">Who owns the code and the AI models?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">You do — completely. Full source code handoff, all model weights and database exports, deployed under your subdomain and brand. No dependency on us to keep the lights on.</p></div></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">Who owns the code and the AI models?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">You do — completely. Full source code handoff, all model configurations and database exports, deployed under your subdomain and brand. No dependency on us to keep the lights on.</p></div></div></div>
     <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span class="faq-q-text">Can you work with my existing team or codebase?</span><span class="faq-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span></button><div class="faq-body"><div class="faq-body-inner"><p class="faq-a">Yes. We can embed as an AI engineering team alongside your developers, add AI capabilities to an existing product, or integrate with your current stack. Our FastAPI backends connect cleanly with React, Next.js, mobile apps, or any REST consumer.</p></div></div></div>
   </div>
 </section>
 
-<!-- CONTACT -->
 <section class="contact-sec sec" id="contact" aria-labelledby="contact-heading">
   <div class="sec-tag">Contact</div>
   <h2 id="contact-heading" class="reveal">Let's build your <em>AI product</em></h2>
@@ -2240,7 +2158,6 @@ body {
       </address>
     </div>
     <div class="cf reveal delay-2">
-      <!-- cf-title gets a USD badge injected by JS when non-India -->
       <h3 class="cf-title" id="cf-title-el">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>Start a project
       </h3>
@@ -2255,7 +2172,6 @@ body {
         <label class="fl" for="cf-type">What do you want to build?</label>
         <select class="fs" id="cf-type" name="entry.743240775" required><option value="">Select project type…</option><option>AI-Native Architecture</option><option>RAG / LLM System</option><option>Analytics Dashboard</option><option>Backend API</option><option>EdTech Product</option><option>Healthcare AI</option><option>Something else</option></select>
 
-        <!-- Budget dropdown — options swapped by JS for non-India visitors -->
         <label class="fl" for="cf-budget">Budget range</label>
         <select class="fs" id="cf-budget" name="entry.1731338020">
           <option value="">Select budget…</option>
@@ -2281,7 +2197,6 @@ body {
 </section>
 </main>
 
-<!-- FOOTER -->
 <footer class="footer" role="contentinfo">
   <div class="footer-brand">VIXIO<em>X</em></div>
   <p class="footer-sub">contact@vixiox.com · +91 76967 36640 · Chandigarh, India · Remote worldwide</p>
@@ -2301,33 +2216,25 @@ body {
 
 </div>
 
-<!-- BACK TO TOP -->
 <button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
 <script>
-// Prevent auto scroll-restoration and force viewport scroll to top instantly
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
 window.scrollTo(0, 0);
 
-/* ── LOADER & INTRO ENGINE ─────────────────────────── */
 let introActive = true;
 let animFrameId = null;
 
 function initAll() {
-  // Initialize canvas
   initAmbientCanvas();
-  // Initialize card reflection & interactive effects
   initCardReflections();
-  // Split hero heading for kinetic typography
   initKineticTypography();
-  // Initialize magnetic CTA buttons
   initMagneticButtons();
   
-  // Show loader logo sequence, then start intro
   setTimeout(() => {
     startCinematicIntro();
   }, 1800);
@@ -2344,7 +2251,6 @@ function startCinematicIntro() {
   const rig = document.getElementById('camera-rig');
   const skipBtn = document.getElementById('skip-intro');
   
-  // 1. Fade out loader & emerge in angled 3D state
   if (loader) loader.classList.add('hide');
   if (skipBtn) skipBtn.classList.add('show');
   
@@ -2356,24 +2262,20 @@ function startCinematicIntro() {
     }
   }, 100);
   
-  // 2. Camera zoom to Hero & reveal text kinetic typography
   setTimeout(() => {
     if (!introActive) return;
     if (rig) {
       rig.classList.remove('intro-state-2');
       rig.classList.add('intro-state-active');
     }
-    // Trigger kinetic text splits
     document.querySelectorAll('.kinetic-word').forEach(word => {
       word.classList.add('reveal-in');
     });
     
-    // Eyebrow reveal
     const eyebrow = document.getElementById('hero-eyebrow');
     if (eyebrow) eyebrow.classList.add('reveal-in');
   }, 1000);
   
-  // 3. Hero elements reveal & dashboard cards slide in
   setTimeout(() => {
     if (!introActive) return;
     
@@ -2385,13 +2287,11 @@ function startCinematicIntro() {
     if (btns) btns.classList.add('reveal-in');
     if (trust) trust.classList.add('reveal-in');
     
-    // Float in dashboard cards
     document.querySelectorAll('.hd-card').forEach(card => {
       card.classList.add('reveal-in');
     });
   }, 1600);
   
-  // 4. Fade in navbar & complete intro
   setTimeout(() => {
     if (!introActive) return;
     completeIntro();
@@ -2417,7 +2317,6 @@ function completeIntro() {
     rig.className = 'camera-rig intro-state-active';
   }
   
-  // Instantly reveal all intro elements
   document.querySelectorAll('.kinetic-word').forEach(word => {
     word.classList.add('reveal-in');
   });
@@ -2431,7 +2330,6 @@ function completeIntro() {
     card.classList.add('reveal-in');
   });
   
-  // Initialize page-wide events
   initReveal();
   initCounters();
   initProgressBars();
@@ -2439,7 +2337,6 @@ function completeIntro() {
   introActive = false;
 }
 
-/* ── KINETIC TYPOGRAPHY SPLITTER ─────────────────────── */
 function initKineticTypography() {
   const heading = document.getElementById('hero-heading');
   if (heading) {
@@ -2465,7 +2362,6 @@ function initKineticTypography() {
   }
 }
 
-/* ── AMBIENT GLOW CANVAS ENGINE ──────────────────────── */
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
   if (!canvas) return;
@@ -2479,7 +2375,6 @@ function initAmbientCanvas() {
     height = canvas.height = window.innerHeight;
   });
   
-  // Eased coordinates for cursor-based gradient center
   let mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
   
   window.addEventListener('mousemove', e => {
@@ -2487,24 +2382,22 @@ function initAmbientCanvas() {
     mouse.targetY = e.clientY;
   });
   
-  // Stardust Particle Trail
   const particles = [];
   
   window.addEventListener('mousemove', e => {
-    if (Math.random() < 0.3) { // limit particle emission rate
+    if (Math.random() < 0.3) {
       particles.push({
         x: e.clientX,
         y: e.clientY,
         vx: (Math.random() - 0.5) * 1.0,
-        vy: -Math.random() * 1.2 - 0.3, // gently float upward
+        vy: -Math.random() * 1.2 - 0.3,
         alpha: 1.0,
         size: Math.random() * 3 + 1,
-        color: Math.random() > 0.5 ? '191, 167, 133' : '99, 102, 241' // Gold or Indigo
+        color: Math.random() > 0.5 ? '191, 167, 133' : '99, 102, 241'
       });
     }
   });
   
-  // Background slow floating colors
   const floatingBlobs = [
     { x: Math.random() * width, y: Math.random() * height, targetX: Math.random() * width, targetY: Math.random() * height, r: 400, speed: 0.001, color: 'rgba(191, 167, 133, 0.05)' },
     { x: Math.random() * width, y: Math.random() * height, targetX: Math.random() * width, targetY: Math.random() * height, r: 450, speed: 0.0008, color: 'rgba(99, 102, 241, 0.03)' },
@@ -2512,14 +2405,11 @@ function initAmbientCanvas() {
   ];
   
   function animate() {
-    // Clear canvas
     ctx.clearRect(0, 0, width, height);
     
-    // Easing the mouse follower
     mouse.x += (mouse.targetX - mouse.x) * 0.06;
     mouse.y += (mouse.targetY - mouse.y) * 0.06;
     
-    // 1. Render floating background light fields
     floatingBlobs.forEach(b => {
       b.x += (b.targetX - b.x) * b.speed;
       b.y += (b.targetY - b.y) * b.speed;
@@ -2537,7 +2427,6 @@ function initAmbientCanvas() {
       ctx.fill();
     });
     
-    // 2. Render mouse-follow glow orb
     const followGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 280);
     followGrad.addColorStop(0, 'rgba(191, 167, 133, 0.06)');
     followGrad.addColorStop(0.4, 'rgba(99, 102, 241, 0.03)');
@@ -2548,25 +2437,22 @@ function initAmbientCanvas() {
     ctx.arc(mouse.x, mouse.y, 280, 0, Math.PI * 2);
     ctx.fill();
     
-    // 3. Render stardust particles
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
       p.x += p.vx;
       p.y += p.vy;
-      p.alpha -= 0.012; // fade speed
+      p.alpha -= 0.012;
       
       if (p.alpha <= 0) {
         particles.splice(i, 1);
         continue;
       }
       
-      // Draw outer soft glow ring (high performance fake blur)
       ctx.fillStyle = `rgba(${p.color}, ${p.alpha * 0.25})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size * 2.8, 0, Math.PI * 2);
       ctx.fill();
       
-      // Draw inner solid spark core
       ctx.fillStyle = `rgba(${p.color}, ${p.alpha * 0.75})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -2579,7 +2465,6 @@ function initAmbientCanvas() {
   animate();
 }
 
-/* ── CARD REFLECTION & INTERACTIVE HOVER ────────────── */
 function initCardReflections() {
   document.querySelectorAll('.compare-card, .pillar, .product-card, .testi-card, .why-card, .cf').forEach(card => {
     card.addEventListener('mousemove', e => {
@@ -2589,12 +2474,10 @@ function initCardReflections() {
       card.style.setProperty('--mouse-x', `${x}px`);
       card.style.setProperty('--mouse-y', `${y}px`);
       
-      // 3D rotation tilt
-      const rotateX = ((y / r.height) - 0.5) * -6; // max 6deg
-      const rotateY = ((x / r.width) - 0.5) * 6;   // max 6deg
+      const rotateX = ((y / r.height) - 0.5) * -6;
+      const rotateY = ((x / r.width) - 0.5) * 6;
       card.style.transform = `translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
       
-      // Dynamic inner shadows & glow
       card.style.borderColor = 'rgba(195, 163, 117, 0.4)';
     });
     
@@ -2609,7 +2492,6 @@ function initCardReflections() {
     });
   });
   
-  // Custom ripple click handlers for buttons
   document.querySelectorAll('.btn-primary, .btn-ghost, .submit-btn, .nav-cta, .mmenu-cta-btn').forEach(btn => {
     btn.addEventListener('click', function(e) {
       const rect = this.getBoundingClientRect();
@@ -2627,20 +2509,17 @@ function initCardReflections() {
   });
 }
 
-/* ── MAGNETIC BUTTONS ENGINE ─────────────────────────── */
 function initMagneticButtons() {
-  if (window.innerWidth < 1024) return; // enable on desktop only
+  if (window.innerWidth < 1024) return;
   
   const magneticItems = document.querySelectorAll('.btn-primary, .btn-ghost, .submit-btn, .nav-cta');
   
   magneticItems.forEach(el => {
     el.addEventListener('mousemove', function(e) {
       const r = this.getBoundingClientRect();
-      // Calculate mouse displacement relative to center of element
       const x = e.clientX - r.left - r.width / 2;
       const y = e.clientY - r.top - r.height / 2;
       
-      // Pull translation (0.35 factor makes it feel organic)
       this.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px) scale(1.02)`;
     });
     
@@ -2655,7 +2534,6 @@ function initMagneticButtons() {
   });
 }
 
-/* ── SCROLL PROGRESS + FLOATING NAV ─────────────────── */
 const scrollProg = document.getElementById('scroll-prog');
 const navWrapper = document.getElementById('nav-wrapper');
 const backTop    = document.getElementById('back-top');
@@ -2668,7 +2546,6 @@ window.addEventListener('scroll', () => {
   if (backTop) backTop.classList.toggle('show', s > 400);
 }, { passive: true });
 
-/* ── ACTIVE NAV ───────────────────────────────────────── */
 const sectionIds = ['hero','advantage','services','products','process','stack','testimonials','why-ai','faq','contact'];
 let activeSection = '';
 
@@ -2692,7 +2569,6 @@ function updateActiveLink(id) {
   });
 }
 
-/* ── MOBILE MENU ─────────────────────────────────────── */
 function toggleMenu() {
   const mm = document.getElementById('mmenu'), btn = document.getElementById('hbg');
   const open = mm.classList.toggle('open');
@@ -2711,7 +2587,6 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
-/* ── SMOOTH SCROLL ───────────────────────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', e => {
     const target = document.querySelector(link.getAttribute('href'));
@@ -2723,7 +2598,6 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-/* ── REVEAL ON SCROLL ────────────────────────────────── */
 function initReveal() {
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
@@ -2731,7 +2605,6 @@ function initReveal() {
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 }
 
-/* ── PREMIUM COUNTERS (easeOutQuad) ──────────────────── */
 function initCounters() {
   const io = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -2742,13 +2615,13 @@ function initCounters() {
         if (target === 0) { io.unobserve(el); return; }
         
         let start = 0;
-        const duration = 2000; // 2 seconds
+        const duration = 2000;
         const startTime = performance.now();
         
         function update(currentTime) {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          const easeProgress = 1 - Math.pow(1 - progress, 4); // easeOutQuart
+          const easeProgress = 1 - Math.pow(1 - progress, 4);
           
           const current = Math.floor(easeProgress * target);
           el.textContent = current + suffix;
@@ -2768,7 +2641,6 @@ function initCounters() {
   document.querySelectorAll('[data-target]').forEach(el => io.observe(el));
 }
 
-/* ── PROGRESS BARS ───────────────────────────────────── */
 function initProgressBars() {
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.style.width = e.target.dataset.fill + '%'; io.unobserve(e.target); } });
@@ -2776,14 +2648,12 @@ function initProgressBars() {
   document.querySelectorAll('.prog-fill[data-fill]').forEach(el => io.observe(el));
 }
 
-/* ── FAQ ─────────────────────────────────────────────── */
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item'), isOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item.open').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded', false); });
   if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded', true); }
 }
 
-/* ── NOTIFY ──────────────────────────────────────────── */
 function notify(id) {
   const inp = document.getElementById('ni-' + id);
   if (!inp || !inp.value || !inp.value.includes('@')) {
@@ -2795,7 +2665,6 @@ function notify(id) {
   setTimeout(() => { btn.textContent = 'Notify me'; btn.style.background = ''; }, 2800);
 }
 
-/* ── CONTACT FORM ────────────────────────────────────── */
 function handleSubmit(e) {
   const form = document.getElementById('contact-form'), btn = document.getElementById('submit-btn');
   const email = document.getElementById('cf-email').value;
@@ -2812,14 +2681,12 @@ function resetForm() {
   btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>Send message`; btn.disabled = false;
 }
 
-/* ── SCROLL-COUPLED 3D CAMERA RIG & PARALLAX ─────────── */
 window.addEventListener('scroll', () => {
-  if (introActive) return; // disable during active intro
+  if (introActive) return;
   
   const scrollY = window.scrollY;
   const viewportHeight = window.innerHeight;
   
-  // Subtle camera rig tilt on scroll speed
   const speed = scrollY - (window.lastScrollY || 0);
   window.lastScrollY = scrollY;
   
@@ -2832,12 +2699,10 @@ window.addEventListener('scroll', () => {
     rig.style.transform = `rotateX(${window.currentRx}deg)`;
   }
   
-  // Parallax between background orbs and UI layers
   document.querySelectorAll('.orb').forEach((orb, i) => {
     orb.style.transform = `translateY(${scrollY * (i + 1) * 0.03}px)`;
   });
   
-  // Scroll parallax for comparison/product/why/testimonial cards
   document.querySelectorAll('.compare-card, .product-card, .testi-card, .why-card').forEach(card => {
     const rect = card.getBoundingClientRect();
     const cardCenter = rect.top + rect.height / 2;
@@ -2850,20 +2715,17 @@ window.addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-/* ── CURSOR-BASED PARALLAX FOR FLOATING ELEMENTS ─────── */
 window.addEventListener('mousemove', e => {
   if (window.innerWidth < 1024 || introActive) return;
   
   const cx = (e.clientX - window.innerWidth / 2) * 0.015;
   const cy = (e.clientY - window.innerHeight / 2) * 0.015;
   
-  // Subtly move hero elements in perspective
   const heroInner = document.querySelector('.hero-inner');
   if (heroInner) {
     heroInner.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
   }
   
-  // Float dashboard widgets in 3D layering
   const pipelineCard = document.querySelector('.pipeline-card');
   const metricsCard = document.querySelector('.metrics-card');
   const statusCard = document.querySelector('.status-card');
@@ -2879,7 +2741,6 @@ window.addEventListener('mousemove', e => {
   }
 });
 
-/* ── AUTO CURRENCY DETECTION ──────────────────────── */
 (async function detectCurrency() {
   try {
     const res = await fetch('https://ipapi.co/json/', {
@@ -2891,7 +2752,6 @@ window.addEventListener('mousemove', e => {
       applyUSD(data.country_code);
     }
   } catch (_) {
-    // silently fail
   }
 })();
 
